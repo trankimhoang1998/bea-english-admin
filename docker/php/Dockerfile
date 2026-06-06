@@ -6,7 +6,8 @@ RUN apk add --no-cache \
     libjpeg-turbo-dev \
     freetype-dev \
     icu-dev \
-    libexif-dev
+    libexif-dev \
+    oniguruma-dev
 
 RUN docker-php-ext-configure gd --with-jpeg --with-freetype \
  && docker-php-ext-install \
