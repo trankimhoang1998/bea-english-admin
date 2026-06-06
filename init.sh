@@ -1,17 +1,17 @@
 #!/bin/bash
 set -e
 
-if [ -f "src/artisan" ]; then
-  echo "src/ đã có Laravel. Bỏ qua cài đặt."
+if [ -f "artisan" ]; then
+  echo "Laravel đã được cài đặt. Bỏ qua."
   exit 0
 fi
 
-echo "Tạo thư mục src/..."
-mkdir -p src
-
 echo "Cài đặt Laravel (chạy với root để có quyền ghi)..."
-docker compose run --rm --user root php \
-  composer create-project laravel/laravel .
+docker compose run --rm --user root php sh -c '
+  composer create-project laravel/laravel /tmp/laravel-app
+  cp -rp /tmp/laravel-app/. /var/www/html/
+  rm -rf /tmp/laravel-app
+'
 
 echo "Cập nhật .env..."
 docker compose run --rm --user root php sh -c '
