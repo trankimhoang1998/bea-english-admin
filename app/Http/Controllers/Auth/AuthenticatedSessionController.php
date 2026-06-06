@@ -29,10 +29,10 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         $role = auth()->user()->role;
-        return redirect(match($role) {
-            'manager' => '/manager/dashboard',
-            'teacher' => '/teacher/dashboard',
-            default   => '/student/dashboard',
+        return redirect()->route(match($role) {
+            'manager' => 'dashboard',
+            'teacher' => 'teacher.dashboard',
+            default   => 'student.dashboard',
         });
     }
 
