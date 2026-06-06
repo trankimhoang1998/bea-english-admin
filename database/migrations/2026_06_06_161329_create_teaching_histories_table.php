@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('teaching_histories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('teacher_id')->constrained()->onDelete('cascade');
-            $table->foreignId('student_id')->constrained()->onDelete('cascade');
+            $table->foreignId('teacher_id')->constrained()->restrictOnDelete();
+            $table->foreignId('student_id')->constrained()->restrictOnDelete();
             $table->string('lesson');
-            $table->dateTime('lesson_time');
-            $table->enum('duration', ['25', '50'])->default('25')->comment('minutes');
-            $table->string('video_log')->nullable()->comment('path or URL to recorded video');
+            $table->dateTime('taught_at');
+            $table->unsignedSmallInteger('duration');
+            $table->string('video_path')->nullable();
             $table->text('note')->nullable();
             $table->timestamps();
         });

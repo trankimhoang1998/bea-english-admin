@@ -13,13 +13,9 @@ return new class extends Migration
     {
         Schema::create('learning_materials', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->string('file_path');
-            $table->string('file_name');
-            $table->unsignedBigInteger('file_size')->nullable()->comment('bytes');
-            $table->string('mime_type')->nullable();
-            $table->foreignId('uploaded_by')->constrained('users')->onDelete('cascade');
+            $table->foreignId('uploaded_by')->constrained('users')->restrictOnDelete();
             $table->timestamps();
         });
     }
