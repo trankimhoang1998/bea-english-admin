@@ -15,10 +15,8 @@ docker compose run --rm --user root php \
 
 echo "Cập nhật .env..."
 docker compose run --rm --user root php sh -c '
-  sed -i "s/DB_HOST=127.0.0.1/DB_HOST=mysql/" .env
-  sed -i "s/DB_DATABASE=laravel/DB_DATABASE=bea_english/" .env
-  sed -i "s/DB_USERNAME=root/DB_USERNAME=bea_user/" .env
-  sed -i "s/DB_PASSWORD=/DB_PASSWORD=secret/" .env
+  sed -i "/^DB_/d" .env
+  printf "\nDB_CONNECTION=mysql\nDB_HOST=mysql\nDB_PORT=3306\nDB_DATABASE=bea_english\nDB_USERNAME=bea_user\nDB_PASSWORD=secret\n" >> .env
 '
 
 echo "Generate app key..."
