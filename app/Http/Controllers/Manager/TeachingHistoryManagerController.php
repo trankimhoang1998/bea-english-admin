@@ -14,7 +14,7 @@ class TeachingHistoryManagerController extends Controller
     {
         $histories = TeachingHistory::with('teacher.user', 'student.user')
             ->latest('taught_at')
-            ->paginate(25);
+            ->paginate(10);
 
         return view('manager.histories.index', compact('histories'));
     }

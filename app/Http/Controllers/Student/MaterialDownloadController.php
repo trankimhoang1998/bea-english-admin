@@ -10,7 +10,7 @@ class MaterialDownloadController extends Controller
 {
     public function index()
     {
-        $materials = LearningMaterial::latest()->paginate(20);
+        $materials = LearningMaterial::latest()->paginate(10);
 
         return view('student.materials.index', compact('materials'));
     }

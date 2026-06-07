@@ -16,7 +16,7 @@ class ScheduleController extends Controller
     {
         $schedules = Schedule::with('teacher.user', 'student.user')
             ->orderBy('start_time')
-            ->paginate(30);
+            ->paginate(10);
 
         return view('manager.schedules.index', compact('schedules'));
     }

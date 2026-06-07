@@ -13,7 +13,7 @@ class LearningMaterialController extends Controller
 {
     public function index(): View
     {
-        $materials = LearningMaterial::with('uploader')->latest()->paginate(20);
+        $materials = LearningMaterial::with('uploader')->latest()->paginate(10);
 
         return view('manager.materials.index', compact('materials'));
     }

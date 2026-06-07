@@ -45,7 +45,7 @@ class TeachingHistoryController extends Controller
         $histories = TeachingHistory::where('teacher_id', $teacher->id)
             ->with('student.user')
             ->latest('taught_at')
-            ->paginate(20);
+            ->paginate(10);
 
         return view('teacher.histories.index', compact('histories'));
     }
