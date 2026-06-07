@@ -88,9 +88,26 @@
             padding-left: calc(1.5rem - 4px);
         }
         [x-cloak] { display: none !important; }
+        @keyframes toast-shrink {
+            from { width: 100%; }
+            to   { width: 0%; }
+        }
+        .toast-progress {
+            animation: toast-shrink linear forwards;
+        }
     </style>
 
-    <!-- Alpine.js store (must run before Alpine boots) -->
+    <!-- Pass Laravel flash messages to JS -->
+    <script>
+        window.__flash = {
+            success: @json(session('success')),
+            error:   @json(session('error')),
+            warning: @json(session('warning')),
+            info:    @json(session('info')),
+        };
+    </script>
+
+    <!-- Alpine.js stores (must run before Alpine boots) -->
     <script>
         document.addEventListener('alpine:init', () => {
             Alpine.store('confirmModal', {
@@ -115,6 +132,35 @@
                     this.open = false;
                 }
             });
+
+            Alpine.store('toast', {
+                items: [],
+                _id: 0,
+
+                show(message, type = 'success', duration = 4500) {
+                    const id = ++this._id;
+                    this.items.push({ id, message, type, duration, visible: true });
+                    setTimeout(() => this.dismiss(id), duration);
+                },
+
+                dismiss(id) {
+                    const item = this.items.find(i => i.id === id);
+                    if (item) item.visible = false;
+                    setTimeout(() => {
+                        this.items = this.items.filter(i => i.id !== id);
+                    }, 300);
+                }
+            });
+        });
+
+        // Show page-load flash messages as toasts once Alpine is ready
+        document.addEventListener('alpine:initialized', () => {
+            const f = window.__flash || {};
+            const store = Alpine.store('toast');
+            if (f.success) store.show(f.success, 'success');
+            if (f.error)   store.show(f.error,   'error');
+            if (f.warning) store.show(f.warning, 'warning');
+            if (f.info)    store.show(f.info,    'info');
         });
     </script>
 
@@ -215,6 +261,68 @@
                 </button>
             </div>
         </div>
+    </div>
+
+    {{-- ── Toast notification container (global) ── --}}
+    <div x-data
+         class="fixed bottom-lg right-md sm:right-lg z-[400] flex flex-col-reverse gap-sm pointer-events-none"
+         style="width: min(calc(100vw - 2rem), 380px)">
+        <template x-for="item in $store.toast.items" :key="item.id">
+            <div x-show="item.visible"
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0 translate-x-8"
+                 x-transition:enter-end="opacity-100 translate-x-0"
+                 x-transition:leave="transition ease-in duration-200"
+                 x-transition:leave-start="opacity-100 translate-x-0"
+                 x-transition:leave-end="opacity-0 translate-x-8"
+                 class="pointer-events-auto relative bg-surface-container-lowest rounded-xl shadow-lg border overflow-hidden"
+                 :class="{
+                     'border-green-200': item.type === 'success',
+                     'border-error/30':  item.type === 'error',
+                     'border-amber-300': item.type === 'warning',
+                     'border-outline-variant': item.type === 'info',
+                 }">
+
+                {{-- Left accent bar --}}
+                <div class="absolute left-0 top-0 bottom-0 w-1 rounded-l-xl"
+                     :class="{
+                         'bg-green-500': item.type === 'success',
+                         'bg-error':     item.type === 'error',
+                         'bg-amber-500': item.type === 'warning',
+                         'bg-tertiary':  item.type === 'info',
+                     }">
+                </div>
+
+                {{-- Content --}}
+                <div class="flex items-start gap-sm py-md pr-md" style="padding-left: calc(1rem + 4px)">
+                    <span class="material-symbols-outlined text-[20px] shrink-0"
+                          :class="{
+                              'text-green-600': item.type === 'success',
+                              'text-error':     item.type === 'error',
+                              'text-amber-500': item.type === 'warning',
+                              'text-tertiary':  item.type === 'info',
+                          }"
+                          x-text="{ success: 'check_circle', error: 'error', warning: 'warning', info: 'info' }[item.type]">
+                    </span>
+                    <p class="flex-1 text-body-sm text-on-surface leading-snug" x-text="item.message"></p>
+                    <button @click="$store.toast.dismiss(item.id)"
+                            class="shrink-0 ml-sm text-secondary hover:text-on-surface transition-colors rounded-lg hover:bg-surface-container-low p-xs -mt-xs -mr-xs">
+                        <span class="material-symbols-outlined text-[16px]">close</span>
+                    </button>
+                </div>
+
+                {{-- Progress bar --}}
+                <div class="h-[3px] toast-progress"
+                     :style="`animation-duration:${item.duration}ms`"
+                     :class="{
+                         'bg-green-500': item.type === 'success',
+                         'bg-error':     item.type === 'error',
+                         'bg-amber-400': item.type === 'warning',
+                         'bg-tertiary':  item.type === 'info',
+                     }">
+                </div>
+            </div>
+        </template>
     </div>
 
 </div>

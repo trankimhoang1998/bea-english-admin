@@ -45,13 +45,6 @@ class ScheduleController extends Controller
             ->with('success', 'Schedule created successfully.');
     }
 
-    public function show(Schedule $schedule): View
-    {
-        $schedule->load('teacher.user', 'student.user');
-
-        return view('manager.schedules.show', compact('schedule'));
-    }
-
     public function edit(Schedule $schedule): View
     {
         $schedule->load('teacher.user', 'student.user');

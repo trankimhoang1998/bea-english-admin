@@ -13,13 +13,6 @@
         </div>
     </x-slot>
 
-    @if(session('success'))
-        <div class="flex items-center gap-sm p-md bg-secondary-container/50 border border-secondary-container rounded-xl mb-lg">
-            <span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
-            <p class="text-body-sm text-on-surface">{{ session('success') }}</p>
-        </div>
-    @endif
-
     <div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full">
