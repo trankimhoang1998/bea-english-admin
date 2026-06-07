@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center justify-between">
+        <div class="flex flex-wrap items-center gap-sm justify-between">
             <div class="flex items-center gap-md">
                 <a href="{{ route('manager.teachers.index') }}"
                    class="text-secondary hover:text-on-surface transition-colors">

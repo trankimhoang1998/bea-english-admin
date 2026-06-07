@@ -81,7 +81,6 @@
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
-        /* Sidebar active link left border */
         .nav-active {
             background-color: #d0e1fb;
             color: #54647a;
@@ -94,22 +93,47 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body class="bg-background text-on-surface antialiased">
-    <div class="flex min-h-screen">
-        {{-- Fixed sidebar --}}
-        @include('layouts.navigation')
+<div x-data="{ sidebarOpen: false }" class="flex min-h-screen">
 
-        {{-- Main content area --}}
-        <main class="flex-1 ml-[280px] min-h-screen bg-background">
-            @isset($header)
-                <div class="bg-surface-container-lowest border-b border-outline-variant px-lg py-md sticky top-0 z-10">
-                    {{ $header }}
-                </div>
-            @endisset
+    {{-- ── Mobile top bar (hidden on md+) ── --}}
+    <header class="md:hidden fixed top-0 left-0 right-0 z-50 h-14 bg-surface-container-lowest border-b border-outline-variant flex items-center gap-md px-md">
+        <button @click="sidebarOpen = true"
+                class="p-sm rounded-lg hover:bg-surface-container-low transition-colors text-secondary">
+            <span class="material-symbols-outlined">menu</span>
+        </button>
+        <span class="font-black text-headline-sm text-primary leading-none">BEA English</span>
+        <div class="ml-auto text-label-sm text-secondary capitalize">{{ Auth::user()->role }}</div>
+    </header>
 
-            <div class="p-lg md:p-2xl">
-                {{ $slot }}
-            </div>
-        </main>
+    {{-- ── Sidebar backdrop (mobile) ── --}}
+    <div x-show="sidebarOpen"
+         x-transition:enter="transition-opacity ease-out duration-200"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition-opacity ease-in duration-150"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         @click="sidebarOpen = false"
+         class="md:hidden fixed inset-0 bg-on-surface/40 z-40 backdrop-blur-sm"
+         style="display:none;">
     </div>
+
+    {{-- ── Sidebar ── --}}
+    @include('layouts.navigation')
+
+    {{-- ── Main content ── --}}
+    <main class="flex-1 md:ml-[280px] min-h-screen bg-background pt-14 md:pt-0">
+        @isset($header)
+            <div class="bg-surface-container-lowest border-b border-outline-variant px-md md:px-lg py-md sticky top-14 md:top-0 z-10">
+                {{ $header }}
+            </div>
+        @endisset
+
+        <div class="p-md md:p-lg xl:p-2xl">
+            {{ $slot }}
+        </div>
+    </main>
+
+</div>
 </body>
 </html>

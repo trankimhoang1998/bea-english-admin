@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center justify-between">
+        <div class="flex flex-wrap items-center gap-sm justify-between">
             <div>
                 <h1 class="font-bold text-headline-sm text-on-surface">Dashboard</h1>
                 <p class="text-label-sm text-secondary mt-xs">Welcome back, {{ Auth::user()->name }}</p>
@@ -28,7 +28,7 @@
                 </div>
                 <span class="material-symbols-outlined text-secondary text-[18px] group-hover:text-primary transition-colors">arrow_forward</span>
             </div>
-            <p class="font-bold text-display-lg text-on-surface leading-none">{{ $teacherCount }}</p>
+            <p class="font-bold text-2xl md:text-display-lg text-on-surface leading-none">{{ $teacherCount }}</p>
             <p class="text-label-sm text-secondary mt-xs">Teachers</p>
         </a>
 
@@ -40,7 +40,7 @@
                 </div>
                 <span class="material-symbols-outlined text-secondary text-[18px] group-hover:text-primary transition-colors">arrow_forward</span>
             </div>
-            <p class="font-bold text-display-lg text-on-surface leading-none">{{ $studentCount }}</p>
+            <p class="font-bold text-2xl md:text-display-lg text-on-surface leading-none">{{ $studentCount }}</p>
             <p class="text-label-sm text-secondary mt-xs">Students</p>
         </a>
 
@@ -52,7 +52,7 @@
                 </div>
                 <span class="material-symbols-outlined text-secondary text-[18px] group-hover:text-primary transition-colors">arrow_forward</span>
             </div>
-            <p class="font-bold text-display-lg text-on-surface leading-none">{{ $scheduleCount }}</p>
+            <p class="font-bold text-2xl md:text-display-lg text-on-surface leading-none">{{ $scheduleCount }}</p>
             <p class="text-label-sm text-secondary mt-xs">Schedules</p>
         </a>
 
@@ -64,7 +64,7 @@
                 </div>
                 <span class="material-symbols-outlined text-secondary text-[18px] group-hover:text-primary transition-colors">arrow_forward</span>
             </div>
-            <p class="font-bold text-display-lg text-on-surface leading-none">{{ $materialCount }}</p>
+            <p class="font-bold text-2xl md:text-display-lg text-on-surface leading-none">{{ $materialCount }}</p>
             <p class="text-label-sm text-secondary mt-xs">Materials</p>
         </a>
     </div>

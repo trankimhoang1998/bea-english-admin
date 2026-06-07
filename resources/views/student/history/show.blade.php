@@ -27,34 +27,34 @@
             </div>
 
             <dl class="divide-y divide-outline-variant">
-                <div class="px-lg py-md grid grid-cols-3 gap-md">
+                <div class="px-lg py-md grid grid-cols-1 sm:grid-cols-3 gap-md">
                     <dt class="text-label-sm text-secondary font-medium">Teacher</dt>
                     <dd class="col-span-2 text-body-sm text-on-surface font-medium">
                         {{ $history->teacher->user->name }}
                         <span class="text-secondary text-label-sm ml-xs">({{ $history->teacher->teacher_id }})</span>
                     </dd>
                 </div>
-                <div class="px-lg py-md grid grid-cols-3 gap-md">
+                <div class="px-lg py-md grid grid-cols-1 sm:grid-cols-3 gap-md">
                     <dt class="text-label-sm text-secondary font-medium">Lesson</dt>
                     <dd class="col-span-2 text-body-sm text-on-surface">{{ $history->lesson }}</dd>
                 </div>
-                <div class="px-lg py-md grid grid-cols-3 gap-md">
+                <div class="px-lg py-md grid grid-cols-1 sm:grid-cols-3 gap-md">
                     <dt class="text-label-sm text-secondary font-medium">Date</dt>
                     <dd class="col-span-2 text-body-sm text-on-surface">
                         {{ \Carbon\Carbon::parse($history->taught_at)->format('d/m/Y H:i') }}
                     </dd>
                 </div>
-                <div class="px-lg py-md grid grid-cols-3 gap-md">
+                <div class="px-lg py-md grid grid-cols-1 sm:grid-cols-3 gap-md">
                     <dt class="text-label-sm text-secondary font-medium">Duration</dt>
                     <dd class="col-span-2">
                         <span class="text-label-sm bg-surface-container px-sm py-xs rounded-full text-secondary">{{ $history->duration }} min</span>
                     </dd>
                 </div>
-                <div class="px-lg py-md grid grid-cols-3 gap-md">
+                <div class="px-lg py-md grid grid-cols-1 sm:grid-cols-3 gap-md">
                     <dt class="text-label-sm text-secondary font-medium">Note</dt>
                     <dd class="col-span-2 text-body-sm text-on-surface">{{ $history->note ?? '—' }}</dd>
                 </div>
-                <div class="px-lg py-md grid grid-cols-3 gap-md">
+                <div class="px-lg py-md grid grid-cols-1 sm:grid-cols-3 gap-md">
                     <dt class="text-label-sm text-secondary font-medium">Video Recording</dt>
                     <dd class="col-span-2">
                         @if($history->video_path)

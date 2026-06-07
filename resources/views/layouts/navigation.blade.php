@@ -1,6 +1,14 @@
-<aside class="fixed left-0 top-0 h-full w-[280px] bg-surface-container-lowest border-r border-outline-variant flex flex-col z-40">
+<aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'"
+       class="fixed left-0 top-0 h-full w-[280px] bg-surface-container-lowest border-r border-outline-variant flex flex-col z-50 transition-transform duration-300 ease-in-out">
+
+    {{-- Close button (mobile only) --}}
+    <button @click="sidebarOpen = false"
+            class="md:hidden absolute top-md right-md p-xs rounded-lg hover:bg-surface-container-low transition-colors text-secondary">
+        <span class="material-symbols-outlined text-[22px]">close</span>
+    </button>
+
     {{-- Branding --}}
-    <div class="px-lg py-xl">
+    <div class="px-lg pt-xl pb-lg">
         <div class="flex items-center gap-md">
             <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white shrink-0">
                 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;">school</span>
@@ -18,63 +26,63 @@
     </div>
 
     {{-- Navigation links --}}
-    <nav class="flex-1 overflow-y-auto px-md space-y-xs">
+    <nav class="flex-1 overflow-y-auto px-md space-y-xs pb-lg">
         @if(Auth::user()->isManager())
-            <a href="{{ route('dashboard') }}"
+            <a href="{{ route('dashboard') }}" @click="sidebarOpen = false"
                class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('dashboard') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
                 <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('dashboard')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>dashboard</span>
                 <span class="text-label-md">Dashboard</span>
             </a>
-            <a href="{{ route('manager.teachers.index') }}"
+            <a href="{{ route('manager.teachers.index') }}" @click="sidebarOpen = false"
                class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('manager.teachers*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
                 <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('manager.teachers*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>person</span>
                 <span class="text-label-md">Teachers</span>
             </a>
-            <a href="{{ route('manager.students.index') }}"
+            <a href="{{ route('manager.students.index') }}" @click="sidebarOpen = false"
                class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('manager.students*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
                 <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('manager.students*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>group</span>
                 <span class="text-label-md">Students</span>
             </a>
-            <a href="{{ route('manager.schedules.index') }}"
+            <a href="{{ route('manager.schedules.index') }}" @click="sidebarOpen = false"
                class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('manager.schedules*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
                 <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('manager.schedules*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>calendar_month</span>
                 <span class="text-label-md">Schedules</span>
             </a>
-            <a href="{{ route('manager.materials.index') }}"
+            <a href="{{ route('manager.materials.index') }}" @click="sidebarOpen = false"
                class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('manager.materials*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
                 <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('manager.materials*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>folder_open</span>
                 <span class="text-label-md">Materials</span>
             </a>
-            <a href="{{ route('manager.histories.index') }}"
+            <a href="{{ route('manager.histories.index') }}" @click="sidebarOpen = false"
                class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('manager.histories*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
                 <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('manager.histories*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>history_edu</span>
                 <span class="text-label-md">Teaching History</span>
             </a>
 
         @elseif(Auth::user()->isTeacher())
-            <a href="{{ route('teacher.dashboard') }}"
+            <a href="{{ route('teacher.dashboard') }}" @click="sidebarOpen = false"
                class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('teacher.dashboard') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
                 <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('teacher.dashboard')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>calendar_today</span>
                 <span class="text-label-md">My Schedule</span>
             </a>
-            <a href="{{ route('teacher.histories.index') }}"
+            <a href="{{ route('teacher.histories.index') }}" @click="sidebarOpen = false"
                class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('teacher.histories*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
                 <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('teacher.histories*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>history_edu</span>
                 <span class="text-label-md">Teaching History</span>
             </a>
 
         @elseif(Auth::user()->isStudent())
-            <a href="{{ route('student.dashboard') }}"
+            <a href="{{ route('student.dashboard') }}" @click="sidebarOpen = false"
                class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('student.dashboard') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
                 <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('student.dashboard')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>calendar_today</span>
                 <span class="text-label-md">My Schedule</span>
             </a>
-            <a href="{{ route('student.history.index') }}"
+            <a href="{{ route('student.history.index') }}" @click="sidebarOpen = false"
                class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('student.history*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
                 <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('student.history*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>history_edu</span>
                 <span class="text-label-md">Learning History</span>
             </a>
-            <a href="{{ route('student.materials.index') }}"
+            <a href="{{ route('student.materials.index') }}" @click="sidebarOpen = false"
                class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('student.materials*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
                 <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('student.materials*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>folder_open</span>
                 <span class="text-label-md">Materials</span>

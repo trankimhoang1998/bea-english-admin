@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center justify-between">
+        <div class="flex flex-wrap items-center gap-sm justify-between">
             <div class="flex items-center gap-md">
                 <a href="{{ route('manager.students.index') }}"
                    class="text-secondary hover:text-on-surface transition-colors">
@@ -31,7 +31,7 @@
                     <p class="text-label-sm text-secondary">{{ $student->user->email }}</p>
                 </div>
             </div>
-            <dl class="grid grid-cols-2 sm:grid-cols-4 gap-md">
+            <dl class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-md">
                 <div class="bg-surface-container-low rounded-xl p-md">
                     <dt class="text-label-sm text-secondary mb-xs">Student ID</dt>
                     <dd class="font-semibold text-body-sm text-on-surface">{{ $student->student_id }}</dd>

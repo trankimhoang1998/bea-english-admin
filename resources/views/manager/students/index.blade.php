@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center justify-between">
+        <div class="flex flex-wrap items-center gap-sm justify-between">
             <div>
                 <h1 class="font-bold text-headline-sm text-on-surface">Students</h1>
                 <p class="text-label-sm text-secondary mt-xs">Manage student accounts and enrollments</p>
