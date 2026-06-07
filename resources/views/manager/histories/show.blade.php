@@ -81,15 +81,15 @@
                     <span class="material-symbols-outlined text-[16px]">arrow_back</span>
                     Back to histories
                 </a>
-                <form method="POST" action="{{ route('manager.histories.destroy', $history) }}"
-                      onsubmit="return confirm('Delete this history record?')">
+                <form id="del-history-show" method="POST" action="{{ route('manager.histories.destroy', $history) }}">
                     @csrf @method('DELETE')
-                    <button type="submit"
-                            class="inline-flex items-center gap-xs text-label-sm text-error hover:text-on-surface px-sm py-xs rounded-lg hover:bg-error-container/30 transition-colors">
-                        <span class="material-symbols-outlined text-[16px]">delete</span>
-                        Delete Record
-                    </button>
                 </form>
+                <button type="button"
+                        @click="$store.confirmModal.show('Delete this teaching history record? Any uploaded video will also be removed.', 'del-history-show')"
+                        class="inline-flex items-center gap-xs text-label-sm text-error hover:text-on-surface px-sm py-xs rounded-lg hover:bg-error-container/30 transition-colors">
+                    <span class="material-symbols-outlined text-[16px]">delete</span>
+                    Delete Record
+                </button>
             </div>
         </div>
     </div>

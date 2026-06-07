@@ -58,15 +58,15 @@
                                         <span class="material-symbols-outlined text-[16px]">edit</span>
                                         Edit
                                     </a>
-                                    <form method="POST" action="{{ route('manager.schedules.destroy', $schedule) }}" class="inline"
-                                          onsubmit="return confirm('Delete this schedule entry?')">
+                                    <form id="del-schedule-{{ $schedule->id }}" method="POST" action="{{ route('manager.schedules.destroy', $schedule) }}">
                                         @csrf @method('DELETE')
-                                        <button type="submit"
-                                                class="inline-flex items-center gap-xs text-label-sm text-error hover:text-on-surface px-sm py-xs rounded-lg hover:bg-error-container/30 transition-colors">
-                                            <span class="material-symbols-outlined text-[16px]">delete</span>
-                                            Delete
-                                        </button>
                                     </form>
+                                    <button type="button"
+                                            @click="$store.confirmModal.show('Delete this schedule entry? This cannot be undone.', 'del-schedule-{{ $schedule->id }}')"
+                                            class="inline-flex items-center gap-xs text-label-sm text-error hover:text-on-surface px-sm py-xs rounded-lg hover:bg-error-container/30 transition-colors">
+                                        <span class="material-symbols-outlined text-[16px]">delete</span>
+                                        Delete
+                                    </button>
                                 </div>
                             </td>
                         </tr>

@@ -87,7 +87,36 @@
             border-left: 4px solid #9d4300;
             padding-left: calc(1.5rem - 4px);
         }
+        [x-cloak] { display: none !important; }
     </style>
+
+    <!-- Alpine.js store (must run before Alpine boots) -->
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.store('confirmModal', {
+                open:         false,
+                title:        'Confirm',
+                message:      '',
+                targetFormId: null,
+
+                show(message, formId, title = 'Confirm Delete') {
+                    this.title        = title;
+                    this.message      = message;
+                    this.targetFormId = formId;
+                    this.open         = true;
+                },
+                confirm() {
+                    if (this.targetFormId) {
+                        document.getElementById(this.targetFormId).submit();
+                    }
+                    this.open = false;
+                },
+                cancel() {
+                    this.open = false;
+                }
+            });
+        });
+    </script>
 
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -133,6 +162,60 @@
             {{ $slot }}
         </div>
     </main>
+
+    {{-- ── Confirm-delete modal (global, triggered via Alpine.store) ── --}}
+    <div x-data
+         x-show="$store.confirmModal.open"
+         x-cloak
+         @keydown.escape.window="$store.confirmModal.cancel()"
+         class="fixed inset-0 z-[200] flex items-end sm:items-center justify-center p-md">
+
+        {{-- Backdrop --}}
+        <div class="absolute inset-0 bg-on-surface/40 backdrop-blur-sm"
+             @click="$store.confirmModal.cancel()"
+             x-transition:enter="transition-opacity ease-out duration-200"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition-opacity ease-in duration-150"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0">
+        </div>
+
+        {{-- Modal card --}}
+        <div class="relative bg-surface-container-lowest rounded-xl shadow-2xl border border-outline-variant w-full max-w-sm p-lg"
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+             x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+             x-transition:leave="transition ease-in duration-150"
+             x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+             x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+
+            {{-- Icon + title --}}
+            <div class="flex items-center gap-md mb-md">
+                <div class="w-10 h-10 rounded-full bg-error-container flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-error text-[22px]">delete_forever</span>
+                </div>
+                <h3 class="font-semibold text-headline-sm text-on-surface" x-text="$store.confirmModal.title"></h3>
+            </div>
+
+            <p class="text-body-sm text-secondary mb-lg" x-text="$store.confirmModal.message"></p>
+
+            {{-- Actions --}}
+            <div class="flex items-center justify-end gap-md">
+                <button @click="$store.confirmModal.cancel()"
+                        type="button"
+                        class="px-lg py-sm border border-outline-variant text-secondary text-label-md rounded-lg hover:bg-surface-container-low transition-all active:scale-95">
+                    Cancel
+                </button>
+                <button @click="$store.confirmModal.confirm()"
+                        type="button"
+                        class="inline-flex items-center gap-xs px-lg py-sm bg-error text-white text-label-md font-semibold rounded-lg hover:brightness-110 transition-all active:scale-95">
+                    <span class="material-symbols-outlined text-[18px]">delete</span>
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
 
 </div>
 </body>

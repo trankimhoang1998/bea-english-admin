@@ -62,15 +62,15 @@
                                             <span class="material-symbols-outlined text-[16px]">download</span>
                                             Download
                                         </a>
-                                        <form method="POST" action="{{ route('manager.materials.destroy', $material) }}" class="inline"
-                                              onsubmit="return confirm('Delete this material?')">
+                                        <form id="del-material-{{ $material->id }}" method="POST" action="{{ route('manager.materials.destroy', $material) }}">
                                             @csrf @method('DELETE')
-                                            <button type="submit"
-                                                    class="inline-flex items-center gap-xs text-label-sm text-error hover:text-on-surface px-sm py-xs rounded-lg hover:bg-error-container/30 transition-colors">
-                                                <span class="material-symbols-outlined text-[16px]">delete</span>
-                                                Delete
-                                            </button>
                                         </form>
+                                        <button type="button"
+                                                @click="$store.confirmModal.show('Delete &quot;{{ addslashes($material->title) }}&quot;? The file will also be removed from storage.', 'del-material-{{ $material->id }}')"
+                                                class="inline-flex items-center gap-xs text-label-sm text-error hover:text-on-surface px-sm py-xs rounded-lg hover:bg-error-container/30 transition-colors">
+                                            <span class="material-symbols-outlined text-[16px]">delete</span>
+                                            Delete
+                                        </button>
                                     </div>
                                 </td>
                             </tr>

@@ -69,15 +69,15 @@
                                         <span class="material-symbols-outlined text-[16px]">edit</span>
                                         Edit
                                     </a>
-                                    <form method="POST" action="{{ route('manager.students.destroy', $student) }}" class="inline"
-                                          onsubmit="return confirm('Delete this student? Their learning history will be preserved.')">
+                                    <form id="del-student-{{ $student->id }}" method="POST" action="{{ route('manager.students.destroy', $student) }}">
                                         @csrf @method('DELETE')
-                                        <button type="submit"
-                                                class="inline-flex items-center gap-xs text-label-sm text-error hover:text-on-surface px-sm py-xs rounded-lg hover:bg-error-container/30 transition-colors">
-                                            <span class="material-symbols-outlined text-[16px]">delete</span>
-                                            Delete
-                                        </button>
                                     </form>
+                                    <button type="button"
+                                            @click="$store.confirmModal.show('Delete this student? Their existing learning history records will be preserved.', 'del-student-{{ $student->id }}')"
+                                            class="inline-flex items-center gap-xs text-label-sm text-error hover:text-on-surface px-sm py-xs rounded-lg hover:bg-error-container/30 transition-colors">
+                                        <span class="material-symbols-outlined text-[16px]">delete</span>
+                                        Delete
+                                    </button>
                                 </div>
                             </td>
                         </tr>
