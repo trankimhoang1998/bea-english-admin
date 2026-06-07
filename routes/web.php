@@ -29,7 +29,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('students', StudentController::class);
 
         // Schedules
-        Route::resource('schedules', ScheduleController::class);
+        Route::resource('schedules', ScheduleController::class)->except(['show']);
 
         // Learning materials
         Route::resource('materials', LearningMaterialController::class)->except(['show', 'edit', 'update']);
@@ -55,6 +55,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [LearningHistoryController::class, 'dashboard'])->name('dashboard');
         Route::get('history', [LearningHistoryController::class, 'index'])->name('history.index');
         Route::get('history/{history}', [LearningHistoryController::class, 'show'])->name('history.show');
+        Route::get('history/{history}/video', [LearningHistoryController::class, 'downloadVideo'])->name('history.video');
         Route::get('materials', [MaterialDownloadController::class, 'index'])->name('materials.index');
         Route::get('materials/{material}/download', [MaterialDownloadController::class, 'download'])
             ->name('materials.download');
