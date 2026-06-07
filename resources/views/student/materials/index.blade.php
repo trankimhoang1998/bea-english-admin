@@ -1,46 +1,58 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">Learning Materials</h2>
+        <div>
+            <h1 class="font-bold text-headline-sm text-on-surface">Learning Materials</h1>
+            <p class="text-label-sm text-secondary mt-xs">Download resources uploaded by your teachers</p>
+        </div>
     </x-slot>
 
-    <div class="py-8">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                @if($materials->isEmpty())
-                    <div class="px-6 py-12 text-center text-gray-400">
-                        No learning materials available yet.
-                    </div>
-                @else
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Title</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Uploaded</th>
-                                <th class="px-6 py-3"></th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            @foreach($materials as $material)
-                                <tr>
-                                    <td class="px-6 py-4 font-medium text-gray-900">
-                                        {{ $material->title }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-gray-600">
-                                        {{ \Carbon\Carbon::parse($material->created_at)->format('d/m/Y') }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
-                                        <a href="{{ route('student.materials.download', $material) }}"
-                                           class="inline-block px-3 py-1 bg-indigo-600 text-white rounded-md text-xs hover:bg-indigo-700">
-                                            Download
-                                        </a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    <div class="px-6 py-3">{{ $materials->links() }}</div>
-                @endif
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden">
+        @if($materials->isEmpty())
+            <div class="flex flex-col items-center py-2xl text-secondary">
+                <span class="material-symbols-outlined text-[48px] mb-md opacity-30">folder_open</span>
+                <p class="text-body-md">No learning materials available yet.</p>
             </div>
-        </div>
+        @else
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b border-outline-variant bg-surface-container-low">
+                            <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Title</th>
+                            <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Uploaded</th>
+                            <th class="px-lg py-md text-right text-label-sm font-semibold text-secondary uppercase tracking-wide">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-outline-variant">
+                        @foreach($materials as $material)
+                            <tr class="hover:bg-surface-container-low transition-colors">
+                                <td class="px-lg py-md">
+                                    <div class="flex items-center gap-md">
+                                        <div class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center shrink-0">
+                                            <span class="material-symbols-outlined text-[18px] text-secondary">description</span>
+                                        </div>
+                                        <span class="font-semibold text-body-sm text-on-surface">{{ $material->title }}</span>
+                                    </div>
+                                </td>
+                                <td class="px-lg py-md text-body-sm text-secondary whitespace-nowrap">
+                                    {{ \Carbon\Carbon::parse($material->created_at)->format('d/m/Y') }}
+                                </td>
+                                <td class="px-lg py-md text-right">
+                                    <a href="{{ route('student.materials.download', $material) }}"
+                                       class="inline-flex items-center gap-sm bg-primary-container text-on-primary font-label-md px-md py-sm rounded-lg hover:brightness-110 transition-all active:scale-95">
+                                        <span class="material-symbols-outlined text-[16px]">download</span>
+                                        Download
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            @if($materials->hasPages())
+                <div class="px-lg py-md border-t border-outline-variant">
+                    {{ $materials->links() }}
+                </div>
+            @endif
+        @endif
     </div>
 </x-app-layout>

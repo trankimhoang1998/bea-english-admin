@@ -1,80 +1,125 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">Edit Schedule</h2>
+        <div class="flex items-center gap-md">
+            <a href="{{ route('manager.schedules.index') }}"
+               class="text-secondary hover:text-on-surface transition-colors">
+                <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+            </a>
+            <div>
+                <h1 class="font-bold text-headline-sm text-on-surface">Edit Schedule</h1>
+                <p class="text-label-sm text-secondary mt-xs">
+                    {{ $schedule->teacher->user->name }} &rarr; {{ $schedule->student->user->name }}
+                </p>
+            </div>
+        </div>
     </x-slot>
 
-    <div class="py-8">
-        <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                <form method="POST" action="{{ route('manager.schedules.update', $schedule) }}" class="space-y-4">
-                    @csrf
-                    @method('PUT')
-
+    <div class="max-w-2xl">
+        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm p-lg">
+            @if($errors->any())
+                <div class="flex items-start gap-sm p-md bg-error-container border border-error/20 rounded-xl mb-lg">
+                    <span class="material-symbols-outlined text-error text-[20px] shrink-0 mt-xs">error</span>
                     <div>
-                        <x-input-label for="teacher_id" value="Teacher" />
-                        <select id="teacher_id" name="teacher_id"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
-                            <option value="">-- Select Teacher --</option>
-                            @foreach($teachers as $teacher)
-                                <option value="{{ $teacher->id }}"
-                                    {{ old('teacher_id', $schedule->teacher_id) == $teacher->id ? 'selected' : '' }}>
-                                    {{ $teacher->user->name }} ({{ $teacher->teacher_id }})
-                                </option>
+                        <p class="text-label-md font-semibold text-on-error-container mb-xs">Please fix the following errors:</p>
+                        <ul class="list-disc list-inside text-label-sm text-on-error-container space-y-xs">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
                             @endforeach
-                        </select>
-                        <x-input-error :messages="$errors->get('teacher_id')" class="mt-2" />
+                        </ul>
                     </div>
+                </div>
+            @endif
 
-                    <div>
-                        <x-input-label for="student_id" value="Student" />
-                        <select id="student_id" name="student_id"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
-                            <option value="">-- Select Student --</option>
-                            @foreach($students as $student)
-                                <option value="{{ $student->id }}"
-                                    {{ old('student_id', $schedule->student_id) == $student->id ? 'selected' : '' }}>
-                                    {{ $student->user->name }} ({{ $student->student_id }})
-                                </option>
-                            @endforeach
-                        </select>
-                        <x-input-error :messages="$errors->get('student_id')" class="mt-2" />
-                    </div>
+            <form method="POST" action="{{ route('manager.schedules.update', $schedule) }}" class="space-y-lg">
+                @csrf @method('PUT')
 
-                    <div>
-                        <x-input-label for="day_of_week" value="Day of Week" />
-                        <select id="day_of_week" name="day_of_week"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
-                            @foreach(['mon' => 'Monday', 'tue' => 'Tuesday', 'wed' => 'Wednesday', 'thu' => 'Thursday', 'fri' => 'Friday', 'sat' => 'Saturday', 'sun' => 'Sunday'] as $val => $label)
-                                <option value="{{ $val }}"
-                                    {{ old('day_of_week', $schedule->day_of_week) === $val ? 'selected' : '' }}>
-                                    {{ $label }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <x-input-error :messages="$errors->get('day_of_week')" class="mt-2" />
-                    </div>
+                {{-- Teacher --}}
+                <div class="space-y-xs">
+                    <label for="teacher_id" class="block text-label-md font-semibold text-on-surface">Teacher</label>
+                    <select id="teacher_id" name="teacher_id" required
+                            class="w-full border border-outline-variant rounded-lg px-md py-sm focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all text-body-sm text-on-surface bg-surface-container-lowest">
+                        <option value="">— Select Teacher —</option>
+                        @foreach($teachers as $teacher)
+                            <option value="{{ $teacher->id }}"
+                                {{ old('teacher_id', $schedule->teacher_id) == $teacher->id ? 'selected' : '' }}>
+                                {{ $teacher->user->name }} ({{ $teacher->teacher_id }})
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('teacher_id')
+                        <p class="text-label-sm text-error">{{ $message }}</p>
+                    @enderror
+                </div>
 
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <x-input-label for="start_time" value="Start Time" />
-                            <x-text-input id="start_time" name="start_time" type="time" class="mt-1 block w-full"
-                                          :value="old('start_time', substr($schedule->start_time, 0, 5))" required />
-                            <x-input-error :messages="$errors->get('start_time')" class="mt-2" />
-                        </div>
-                        <div>
-                            <x-input-label for="end_time" value="End Time" />
-                            <x-text-input id="end_time" name="end_time" type="time" class="mt-1 block w-full"
-                                          :value="old('end_time', substr($schedule->end_time, 0, 5))" required />
-                            <x-input-error :messages="$errors->get('end_time')" class="mt-2" />
-                        </div>
-                    </div>
+                {{-- Student --}}
+                <div class="space-y-xs">
+                    <label for="student_id" class="block text-label-md font-semibold text-on-surface">Student</label>
+                    <select id="student_id" name="student_id" required
+                            class="w-full border border-outline-variant rounded-lg px-md py-sm focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all text-body-sm text-on-surface bg-surface-container-lowest">
+                        <option value="">— Select Student —</option>
+                        @foreach($students as $student)
+                            <option value="{{ $student->id }}"
+                                {{ old('student_id', $schedule->student_id) == $student->id ? 'selected' : '' }}>
+                                {{ $student->user->name }} ({{ $student->student_id }})
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('student_id')
+                        <p class="text-label-sm text-error">{{ $message }}</p>
+                    @enderror
+                </div>
 
-                    <div class="flex items-center gap-4 pt-2">
-                        <x-primary-button>Update</x-primary-button>
-                        <a href="{{ route('manager.schedules.index') }}" class="text-sm text-gray-600 hover:underline">Cancel</a>
+                {{-- Day of Week --}}
+                <div class="space-y-xs">
+                    <label for="day_of_week" class="block text-label-md font-semibold text-on-surface">Day of Week</label>
+                    <select id="day_of_week" name="day_of_week" required
+                            class="w-full border border-outline-variant rounded-lg px-md py-sm focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all text-body-sm text-on-surface bg-surface-container-lowest">
+                        @foreach(['mon' => 'Monday', 'tue' => 'Tuesday', 'wed' => 'Wednesday', 'thu' => 'Thursday', 'fri' => 'Friday', 'sat' => 'Saturday', 'sun' => 'Sunday'] as $val => $label)
+                            <option value="{{ $val }}"
+                                {{ old('day_of_week', $schedule->day_of_week) === $val ? 'selected' : '' }}>
+                                {{ $label }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('day_of_week')
+                        <p class="text-label-sm text-error">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                {{-- Time --}}
+                <div class="grid grid-cols-2 gap-md">
+                    <div class="space-y-xs">
+                        <label for="start_time" class="block text-label-md font-semibold text-on-surface">Start Time</label>
+                        <input id="start_time" name="start_time" type="time"
+                               value="{{ old('start_time', substr($schedule->start_time, 0, 5)) }}" required
+                               class="w-full border border-outline-variant rounded-lg px-md py-sm focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all text-body-sm text-on-surface bg-surface-container-lowest">
+                        @error('start_time')
+                            <p class="text-label-sm text-error">{{ $message }}</p>
+                        @enderror
                     </div>
-                </form>
-            </div>
+                    <div class="space-y-xs">
+                        <label for="end_time" class="block text-label-md font-semibold text-on-surface">End Time</label>
+                        <input id="end_time" name="end_time" type="time"
+                               value="{{ old('end_time', substr($schedule->end_time, 0, 5)) }}" required
+                               class="w-full border border-outline-variant rounded-lg px-md py-sm focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all text-body-sm text-on-surface bg-surface-container-lowest">
+                        @error('end_time')
+                            <p class="text-label-sm text-error">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-md pt-sm border-t border-outline-variant">
+                    <button type="submit"
+                            class="inline-flex items-center gap-sm bg-primary-container text-on-primary font-label-md px-lg py-sm rounded-lg hover:brightness-110 transition-all active:scale-95">
+                        <span class="material-symbols-outlined text-[18px]">save</span>
+                        Update Schedule
+                    </button>
+                    <a href="{{ route('manager.schedules.index') }}"
+                       class="text-label-md text-secondary hover:text-on-surface transition-colors">
+                        Cancel
+                    </a>
+                </div>
+            </form>
         </div>
     </div>
 </x-app-layout>

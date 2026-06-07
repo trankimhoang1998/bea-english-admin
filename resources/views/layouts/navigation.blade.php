@@ -1,121 +1,105 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
-    <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex">
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}" class="text-lg font-bold text-indigo-600">BEA English</a>
-                </div>
-
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-
-                    @if(Auth::user()->isManager())
-                        <x-nav-link :href="route('manager.teachers.index')" :active="request()->routeIs('manager.teachers*')">
-                            Teachers
-                        </x-nav-link>
-                        <x-nav-link :href="route('manager.students.index')" :active="request()->routeIs('manager.students*')">
-                            Students
-                        </x-nav-link>
-                        <x-nav-link :href="route('manager.schedules.index')" :active="request()->routeIs('manager.schedules*')">
-                            Schedules
-                        </x-nav-link>
-                        <x-nav-link :href="route('manager.materials.index')" :active="request()->routeIs('manager.materials*')">
-                            Materials
-                        </x-nav-link>
-                        <x-nav-link :href="route('manager.histories.index')" :active="request()->routeIs('manager.histories*')">
-                            Histories
-                        </x-nav-link>
-                    @elseif(Auth::user()->isTeacher())
-                        <x-nav-link :href="route('teacher.dashboard')" :active="request()->routeIs('teacher.dashboard')">
-                            My Schedule
-                        </x-nav-link>
-                        <x-nav-link :href="route('teacher.histories.index')" :active="request()->routeIs('teacher.histories*')">
-                            Teaching History
-                        </x-nav-link>
-                    @elseif(Auth::user()->isStudent())
-                        <x-nav-link :href="route('student.dashboard')" :active="request()->routeIs('student.dashboard')">
-                            My Schedule
-                        </x-nav-link>
-                        <x-nav-link :href="route('student.history.index')" :active="request()->routeIs('student.history*')">
-                            Learning History
-                        </x-nav-link>
-                        <x-nav-link :href="route('student.materials.index')" :active="request()->routeIs('student.materials*')">
-                            Materials
-                        </x-nav-link>
+<aside class="fixed left-0 top-0 h-full w-[280px] bg-surface-container-lowest border-r border-outline-variant flex flex-col z-40">
+    {{-- Branding --}}
+    <div class="px-lg py-xl">
+        <div class="flex items-center gap-md">
+            <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white shrink-0">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;">school</span>
+            </div>
+            <div>
+                <h1 class="font-black text-headline-sm text-primary leading-none">BEA English</h1>
+                <p class="text-label-sm text-secondary mt-xs">
+                    @if(Auth::user()->isManager()) Management Portal
+                    @elseif(Auth::user()->isTeacher()) Teacher Portal
+                    @else Student Portal
                     @endif
-                </div>
-            </div>
-
-            <!-- User info + Logout -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6 gap-3">
-                <div class="text-right">
-                    <div class="text-sm font-medium text-gray-700">{{ Auth::user()->name }}</div>
-                    <div class="text-xs text-gray-400 capitalize">{{ Auth::user()->role }}</div>
-                </div>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit"
-                            class="px-3 py-1.5 text-sm text-red-600 border border-red-200 rounded-md hover:bg-red-50 transition">
-                        Log out
-                    </button>
-                </form>
-            </div>
-
-            <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
+                </p>
             </div>
         </div>
     </div>
 
-    <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
+    {{-- Navigation links --}}
+    <nav class="flex-1 overflow-y-auto px-md space-y-xs">
+        @if(Auth::user()->isManager())
+            <a href="{{ route('dashboard') }}"
+               class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('dashboard') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
+                <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('dashboard')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>dashboard</span>
+                <span class="text-label-md">Dashboard</span>
+            </a>
+            <a href="{{ route('manager.teachers.index') }}"
+               class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('manager.teachers*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
+                <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('manager.teachers*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>person</span>
+                <span class="text-label-md">Teachers</span>
+            </a>
+            <a href="{{ route('manager.students.index') }}"
+               class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('manager.students*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
+                <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('manager.students*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>group</span>
+                <span class="text-label-md">Students</span>
+            </a>
+            <a href="{{ route('manager.schedules.index') }}"
+               class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('manager.schedules*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
+                <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('manager.schedules*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>calendar_month</span>
+                <span class="text-label-md">Schedules</span>
+            </a>
+            <a href="{{ route('manager.materials.index') }}"
+               class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('manager.materials*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
+                <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('manager.materials*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>folder_open</span>
+                <span class="text-label-md">Materials</span>
+            </a>
+            <a href="{{ route('manager.histories.index') }}"
+               class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('manager.histories*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
+                <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('manager.histories*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>history_edu</span>
+                <span class="text-label-md">Teaching History</span>
+            </a>
 
-            @if(Auth::user()->isManager())
-                <x-responsive-nav-link :href="route('manager.teachers.index')" :active="request()->routeIs('manager.teachers*')">Teachers</x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('manager.students.index')" :active="request()->routeIs('manager.students*')">Students</x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('manager.schedules.index')" :active="request()->routeIs('manager.schedules*')">Schedules</x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('manager.materials.index')" :active="request()->routeIs('manager.materials*')">Materials</x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('manager.histories.index')" :active="request()->routeIs('manager.histories*')">Histories</x-responsive-nav-link>
-            @elseif(Auth::user()->isTeacher())
-                <x-responsive-nav-link :href="route('teacher.dashboard')">My Schedule</x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('teacher.histories.index')">Teaching History</x-responsive-nav-link>
-            @elseif(Auth::user()->isStudent())
-                <x-responsive-nav-link :href="route('student.dashboard')">My Schedule</x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('student.history.index')">Learning History</x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('student.materials.index')">Materials</x-responsive-nav-link>
-            @endif
-        </div>
+        @elseif(Auth::user()->isTeacher())
+            <a href="{{ route('teacher.dashboard') }}"
+               class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('teacher.dashboard') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
+                <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('teacher.dashboard')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>calendar_today</span>
+                <span class="text-label-md">My Schedule</span>
+            </a>
+            <a href="{{ route('teacher.histories.index') }}"
+               class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('teacher.histories*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
+                <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('teacher.histories*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>history_edu</span>
+                <span class="text-label-md">Teaching History</span>
+            </a>
 
-        <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+        @elseif(Auth::user()->isStudent())
+            <a href="{{ route('student.dashboard') }}"
+               class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('student.dashboard') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
+                <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('student.dashboard')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>calendar_today</span>
+                <span class="text-label-md">My Schedule</span>
+            </a>
+            <a href="{{ route('student.history.index') }}"
+               class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('student.history*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
+                <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('student.history*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>history_edu</span>
+                <span class="text-label-md">Learning History</span>
+            </a>
+            <a href="{{ route('student.materials.index') }}"
+               class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('student.materials*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
+                <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('student.materials*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>folder_open</span>
+                <span class="text-label-md">Materials</span>
+            </a>
+        @endif
+    </nav>
+
+    {{-- User info + logout --}}
+    <div class="border-t border-outline-variant p-md space-y-xs">
+        <div class="flex items-center gap-sm px-md py-sm">
+            <div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-[18px] text-on-surface-variant">person</span>
             </div>
-            <div class="mt-3 space-y-1">
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault(); this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                    </x-responsive-nav-link>
-                </form>
+            <div class="min-w-0">
+                <p class="text-label-md font-semibold text-on-surface truncate">{{ Auth::user()->name }}</p>
+                <p class="text-label-sm text-secondary capitalize">{{ Auth::user()->role }}</p>
             </div>
         </div>
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit"
+                    class="w-full flex items-center gap-sm text-error px-md py-sm hover:bg-error-container/20 transition-all rounded-lg">
+                <span class="material-symbols-outlined text-[20px]">logout</span>
+                <span class="text-label-md">Logout</span>
+            </button>
+        </form>
     </div>
-</nav>
+</aside>

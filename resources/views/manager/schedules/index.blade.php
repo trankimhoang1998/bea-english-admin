@@ -1,64 +1,97 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Schedules</h2>
+            <div>
+                <h1 class="font-bold text-headline-sm text-on-surface">Schedules</h1>
+                <p class="text-label-sm text-secondary mt-xs">Manage all teaching schedules</p>
+            </div>
             <a href="{{ route('manager.schedules.create') }}"
-               class="px-4 py-2 bg-indigo-600 text-white rounded-md text-sm hover:bg-indigo-700">
-                + Add Schedule
+               class="inline-flex items-center gap-sm bg-primary-container text-on-primary font-label-md px-md py-sm rounded-lg hover:brightness-110 transition-all active:scale-95">
+                <span class="material-symbols-outlined text-[18px]">event_note</span>
+                Add Schedule
             </a>
         </div>
     </x-slot>
 
-    <div class="py-8">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            @if(session('success'))
-                <div class="mb-4 px-4 py-3 bg-green-100 text-green-800 rounded">{{ session('success') }}</div>
-            @endif
-
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Teacher</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Student</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Day</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Time</th>
-                            <th class="px-6 py-3"></th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        @forelse($schedules as $schedule)
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
-                                    {{ $schedule->teacher->user->name }}
-                                    <span class="text-xs text-gray-400">({{ $schedule->teacher->teacher_id }})</span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-gray-700">
-                                    {{ $schedule->student->user->name }}
-                                    <span class="text-xs text-gray-400">({{ $schedule->student->student_id }})</span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-gray-600 uppercase">{{ $schedule->day_of_week }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-gray-600 font-mono">
-                                    {{ substr($schedule->start_time, 0, 5) }}–{{ substr($schedule->end_time, 0, 5) }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
-                                    <a href="{{ route('manager.schedules.edit', $schedule) }}" class="text-yellow-600 hover:underline me-3">Edit</a>
-                                    <form method="POST" action="{{ route('manager.schedules.destroy', $schedule) }}" class="inline"
-                                          onsubmit="return confirm('Delete this schedule?')">
-                                        @csrf @method('DELETE')
-                                        <button class="text-red-600 hover:underline">Delete</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="5" class="px-6 py-4 text-center text-gray-400">No schedules found.</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-                <div class="px-6 py-3">{{ $schedules->links() }}</div>
-            </div>
+    @if(session('success'))
+        <div class="flex items-center gap-sm p-md bg-secondary-container/50 border border-secondary-container rounded-xl mb-lg">
+            <span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+            <p class="text-body-sm text-on-surface">{{ session('success') }}</p>
         </div>
+    @endif
+
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead>
+                    <tr class="border-b border-outline-variant bg-surface-container-low">
+                        <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Teacher</th>
+                        <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Student</th>
+                        <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Day</th>
+                        <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Time</th>
+                        <th class="px-lg py-md text-right text-label-sm font-semibold text-secondary uppercase tracking-wide">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-outline-variant">
+                    @forelse($schedules as $schedule)
+                        <tr class="hover:bg-surface-container-low transition-colors">
+                            <td class="px-lg py-md">
+                                <p class="font-semibold text-body-sm text-on-surface">{{ $schedule->teacher->user->name }}</p>
+                                <p class="text-label-sm text-secondary">{{ $schedule->teacher->teacher_id }}</p>
+                            </td>
+                            <td class="px-lg py-md">
+                                <p class="font-medium text-body-sm text-on-surface">{{ $schedule->student->user->name }}</p>
+                                <p class="text-label-sm text-secondary">{{ $schedule->student->student_id }}</p>
+                            </td>
+                            <td class="px-lg py-md">
+                                <span class="inline-flex items-center px-sm py-xs bg-surface-container text-secondary font-label-sm rounded-full uppercase">
+                                    {{ $schedule->day_of_week }}
+                                </span>
+                            </td>
+                            <td class="px-lg py-md font-mono text-body-sm text-on-surface whitespace-nowrap">
+                                {{ substr($schedule->start_time, 0, 5) }}–{{ substr($schedule->end_time, 0, 5) }}
+                            </td>
+                            <td class="px-lg py-md">
+                                <div class="flex items-center justify-end gap-sm">
+                                    <a href="{{ route('manager.schedules.edit', $schedule) }}"
+                                       class="inline-flex items-center gap-xs text-label-sm text-primary hover:text-on-surface px-sm py-xs rounded-lg hover:bg-surface-container transition-colors">
+                                        <span class="material-symbols-outlined text-[16px]">edit</span>
+                                        Edit
+                                    </a>
+                                    <form method="POST" action="{{ route('manager.schedules.destroy', $schedule) }}" class="inline"
+                                          onsubmit="return confirm('Delete this schedule entry?')">
+                                        @csrf @method('DELETE')
+                                        <button type="submit"
+                                                class="inline-flex items-center gap-xs text-label-sm text-error hover:text-on-surface px-sm py-xs rounded-lg hover:bg-error-container/30 transition-colors">
+                                            <span class="material-symbols-outlined text-[16px]">delete</span>
+                                            Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="px-lg py-2xl text-center">
+                                <div class="flex flex-col items-center gap-md text-secondary">
+                                    <span class="material-symbols-outlined text-[48px] opacity-30">calendar_off</span>
+                                    <p class="text-body-md">No schedules found.</p>
+                                    <a href="{{ route('manager.schedules.create') }}"
+                                       class="inline-flex items-center gap-sm bg-primary-container text-on-primary font-label-md px-md py-sm rounded-lg hover:brightness-110 transition-all">
+                                        <span class="material-symbols-outlined text-[16px]">add</span>
+                                        Create first schedule
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+        @if($schedules->hasPages())
+            <div class="px-lg py-md border-t border-outline-variant">
+                {{ $schedules->links() }}
+            </div>
+        @endif
     </div>
 </x-app-layout>

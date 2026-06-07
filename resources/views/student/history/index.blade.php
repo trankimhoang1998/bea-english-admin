@@ -1,54 +1,62 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">My Learning History</h2>
+        <div>
+            <h1 class="font-bold text-headline-sm text-on-surface">My Learning History</h1>
+            <p class="text-label-sm text-secondary mt-xs">All your completed lesson sessions</p>
+        </div>
     </x-slot>
 
-    <div class="py-8">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Teacher</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Teacher ID</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Lesson</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Duration</th>
-                            <th class="px-6 py-3"></th>
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead>
+                    <tr class="border-b border-outline-variant bg-surface-container-low">
+                        <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Teacher</th>
+                        <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Lesson</th>
+                        <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Date</th>
+                        <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Duration</th>
+                        <th class="px-lg py-md text-right text-label-sm font-semibold text-secondary uppercase tracking-wide">Details</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-outline-variant">
+                    @forelse($histories as $history)
+                        <tr class="hover:bg-surface-container-low transition-colors">
+                            <td class="px-lg py-md">
+                                <p class="font-semibold text-body-sm text-on-surface">{{ $history->teacher->user->name }}</p>
+                                <p class="text-label-sm text-secondary">{{ $history->teacher->teacher_id }}</p>
+                            </td>
+                            <td class="px-lg py-md text-body-sm text-on-surface max-w-[200px] truncate">{{ $history->lesson }}</td>
+                            <td class="px-lg py-md text-body-sm text-secondary whitespace-nowrap">
+                                {{ \Carbon\Carbon::parse($history->taught_at)->format('d/m/Y H:i') }}
+                            </td>
+                            <td class="px-lg py-md">
+                                <span class="text-label-sm bg-surface-container px-sm py-xs rounded-full text-secondary">{{ $history->duration }} min</span>
+                            </td>
+                            <td class="px-lg py-md text-right">
+                                <a href="{{ route('student.history.show', $history) }}"
+                                   class="inline-flex items-center gap-xs text-label-sm text-primary hover:text-on-surface px-sm py-xs rounded-lg hover:bg-surface-container transition-colors">
+                                    <span class="material-symbols-outlined text-[16px]">visibility</span>
+                                    View
+                                </a>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        @forelse($histories as $history)
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
-                                    {{ $history->teacher->user->name }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">
-                                    {{ $history->teacher->teacher_id }}
-                                </td>
-                                <td class="px-6 py-4 text-gray-800">
-                                    {{ $history->lesson }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">
-                                    {{ \Carbon\Carbon::parse($history->taught_at)->format('d/m/Y H:i') }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">
-                                    {{ $history->duration }} min
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
-                                    <a href="{{ route('student.history.show', $history) }}"
-                                       class="text-indigo-600 hover:underline">View</a>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="6" class="px-6 py-4 text-center text-gray-400">No learning history found.</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-                <div class="px-6 py-3">{{ $histories->links() }}</div>
-            </div>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="px-lg py-2xl text-center">
+                                <div class="flex flex-col items-center gap-md text-secondary">
+                                    <span class="material-symbols-outlined text-[48px] opacity-30">history_edu</span>
+                                    <p class="text-body-md">No learning history found.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
+        @if($histories->hasPages())
+            <div class="px-lg py-md border-t border-outline-variant">
+                {{ $histories->links() }}
+            </div>
+        @endif
     </div>
 </x-app-layout>
