@@ -38,16 +38,30 @@ class TeachingHistoryController extends Controller
         return view('teacher.dashboard', compact('teacher', 'days'));
     }
 
-    public function index(): View
+    public function index(Request $request): View
     {
         $teacher = $this->teacher();
 
-        $histories = TeachingHistory::where('teacher_id', $teacher->id)
-            ->with('student.user')
-            ->latest('taught_at')
-            ->paginate(10);
+        $query = TeachingHistory::where('teacher_id', $teacher->id)->with('student.user');
 
-        return view('teacher.histories.index', compact('histories'));
+        if ($request->filled('student_id')) {
+            $query->where('student_id', $request->student_id);
+        }
+        if ($request->filled('date_from')) {
+            $query->whereDate('taught_at', '>=', $request->date_from);
+        }
+        if ($request->filled('date_to')) {
+            $query->whereDate('taught_at', '<=', $request->date_to);
+        }
+        if ($request->filled('duration')) {
+            $query->where('duration', $request->duration);
+        }
+
+        $histories = $query->latest('taught_at')->paginate(10)->withQueryString();
+        $students  = Student::whereHas('schedules', fn($q) => $q->where('teacher_id', $teacher->id))
+            ->with('user')->get();
+
+        return view('teacher.histories.index', compact('histories', 'students'));
     }
 
     public function create(): View
@@ -67,12 +81,13 @@ class TeachingHistoryController extends Controller
 
         $data = $request->validate([
             'student_id' => ['required', Rule::exists('schedules', 'student_id')->where('teacher_id', $this->teacher()->id)],
-            'lesson'     => ['required', 'string', 'max:255'],
             'taught_at'  => ['required', 'date'],
             'duration'   => ['required', 'in:25,50'],
             'note'       => ['nullable', 'string', 'max:2000'],
             'video'      => ['nullable', 'file', 'mimetypes:video/mp4,video/webm,video/quicktime', 'max:512000'],
         ]);
+
+        $lessonNumber = TeachingHistory::where('student_id', $data['student_id'])->count() + 1;
 
         $videoPath = null;
         if ($request->hasFile('video')) {
@@ -80,13 +95,13 @@ class TeachingHistoryController extends Controller
         }
 
         TeachingHistory::create([
-            'teacher_id' => $teacher->id,
-            'student_id' => $data['student_id'],
-            'lesson'     => $data['lesson'],
-            'taught_at'  => $data['taught_at'],
-            'duration'   => $data['duration'],
-            'note'       => $data['note'] ?? null,
-            'video_path' => $videoPath,
+            'teacher_id'    => $teacher->id,
+            'student_id'    => $data['student_id'],
+            'lesson_number' => $lessonNumber,
+            'taught_at'     => $data['taught_at'],
+            'duration'      => $data['duration'],
+            'note'          => $data['note'] ?? null,
+            'video_path'    => $videoPath,
         ]);
 
         return redirect()->route('teacher.histories.index')
@@ -129,7 +144,6 @@ class TeachingHistoryController extends Controller
 
         $data = $request->validate([
             'student_id' => ['required', Rule::exists('schedules', 'student_id')->where('teacher_id', $this->teacher()->id)],
-            'lesson'     => ['required', 'string', 'max:255'],
             'taught_at'  => ['required', 'date'],
             'duration'   => ['required', 'in:25,50'],
             'note'       => ['nullable', 'string', 'max:2000'],
@@ -146,7 +160,6 @@ class TeachingHistoryController extends Controller
 
         $history->update([
             'student_id' => $data['student_id'],
-            'lesson'     => $data['lesson'],
             'taught_at'  => $data['taught_at'],
             'duration'   => $data['duration'],
             'note'       => $data['note'] ?? null,

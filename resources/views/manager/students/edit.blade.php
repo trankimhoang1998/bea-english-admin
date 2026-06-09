@@ -39,6 +39,19 @@
                     @enderror
                 </div>
 
+                {{-- Password --}}
+                <div class="space-y-xs">
+                    <label for="password" class="block text-label-md font-semibold text-on-surface">
+                        New Password <span class="text-secondary font-normal">(leave blank to keep current)</span>
+                    </label>
+                    <input id="password" name="password" type="password"
+                           autocomplete="new-password"
+                           class="w-full border border-outline-variant rounded-lg px-md py-sm focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all text-body-sm text-on-surface bg-surface-container-lowest">
+                    @error('password')
+                        <p class="text-label-sm text-error">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 {{-- Student ID --}}
                 <div class="space-y-xs">
                     <label for="student_id" class="block text-label-md font-semibold text-on-surface">Student ID</label>

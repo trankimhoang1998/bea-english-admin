@@ -75,15 +75,17 @@ class StudentController extends Controller
         $data = $request->validate([
             'name'       => ['required', 'string', 'max:255'],
             'email'      => ['required', 'email', Rule::unique('users', 'email')->ignore($student->user_id)],
+            'password'   => ['nullable', 'string', 'min:8'],
             'student_id' => ['required', 'string', 'max:50', Rule::unique('students', 'student_id')->ignore($student->id)],
             'age'        => ['required', 'integer', 'min:5', 'max:99'],
             'course'     => ['required', 'string', 'max:100'],
         ]);
 
-        $student->user->update([
-            'name'  => $data['name'],
-            'email' => $data['email'],
-        ]);
+        $userUpdate = ['name' => $data['name'], 'email' => $data['email']];
+        if (!empty($data['password'])) {
+            $userUpdate['password'] = Hash::make($data['password']);
+        }
+        $student->user->update($userUpdate);
 
         $student->update([
             'student_id' => $data['student_id'],

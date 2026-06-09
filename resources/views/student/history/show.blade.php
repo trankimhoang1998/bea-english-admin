@@ -20,7 +20,7 @@
                         <span class="material-symbols-outlined text-[20px] text-on-surface-variant">history_edu</span>
                     </div>
                     <div>
-                        <p class="font-semibold text-body-sm text-on-surface">{{ $history->lesson }}</p>
+                        <p class="font-semibold text-body-sm text-on-surface">{{ 'Lesson: ' . str_pad($history->lesson_number, 2, '0', STR_PAD_LEFT) }}</p>
                         <p class="text-label-sm text-secondary">{{ $history->taught_at->format('d/m/Y H:i') }}</p>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                 </div>
                 <div class="px-lg py-md grid grid-cols-1 sm:grid-cols-3 gap-md">
                     <dt class="text-label-sm text-secondary font-medium">Lesson</dt>
-                    <dd class="col-span-2 text-body-sm text-on-surface">{{ $history->lesson }}</dd>
+                    <dd class="col-span-2 text-body-sm text-on-surface">{{ 'Lesson: ' . str_pad($history->lesson_number, 2, '0', STR_PAD_LEFT) }}</dd>
                 </div>
                 <div class="px-lg py-md grid grid-cols-1 sm:grid-cols-3 gap-md">
                     <dt class="text-label-sm text-secondary font-medium">Date</dt>

@@ -38,6 +38,7 @@ class LearningMaterialSeeder extends Seeder
         foreach ($materials as $row) {
             LearningMaterial::create([
                 'title'       => $row['title'],
+                'description' => null,
                 'file_path'   => $row['file_path'],
                 'uploaded_by' => $managerId,
             ]);

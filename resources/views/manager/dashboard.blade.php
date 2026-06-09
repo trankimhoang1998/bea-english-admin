@@ -96,9 +96,11 @@
                             <span class="material-symbols-outlined text-[18px] text-on-surface-variant">person</span>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <p class="text-body-sm font-semibold text-on-surface truncate">{{ $history->lesson }}</p>
-                            <p class="text-label-sm text-secondary">
+                            <p class="text-body-sm font-semibold text-on-surface truncate">
                                 {{ $history->teacher->user->name }} → {{ $history->student->user->name }}
+                            </p>
+                            <p class="text-label-sm text-secondary">
+                                {{ 'Lesson: ' . str_pad($history->lesson_number, 2, '0', STR_PAD_LEFT) }}
                             </p>
                         </div>
                         <div class="text-right shrink-0">

@@ -34,18 +34,6 @@
                     @enderror
                 </div>
 
-                {{-- Lesson --}}
-                <div class="space-y-xs">
-                    <label for="lesson" class="block text-label-md font-semibold text-on-surface">Lesson</label>
-                    <input id="lesson" name="lesson" type="text"
-                           value="{{ old('lesson') }}" required
-                           placeholder="e.g. Unit 3 – Present Perfect"
-                           class="w-full border border-outline-variant rounded-lg px-md py-sm focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all text-body-sm text-on-surface bg-surface-container-lowest">
-                    @error('lesson')
-                        <p class="text-label-sm text-error">{{ $message }}</p>
-                    @enderror
-                </div>
-
                 {{-- Date & Time --}}
                 <div class="space-y-xs">
                     <label for="taught_at" class="block text-label-md font-semibold text-on-surface">Date &amp; Time</label>

@@ -66,6 +66,8 @@ class LearningHistoryController extends Controller
             abort(404);
         }
 
-        return Storage::disk('local')->download($history->video_path, $history->lesson . '.mp4');
+        $filename = 'Lesson-' . str_pad($history->lesson_number, 2, '0', STR_PAD_LEFT) . '.mp4';
+
+        return Storage::disk('local')->download($history->video_path, $filename);
     }
 }

@@ -25,7 +25,7 @@
                                 <p class="font-semibold text-body-sm text-on-surface">{{ $history->teacher->user->name }}</p>
                                 <p class="text-label-sm text-secondary">{{ $history->teacher->teacher_id }}</p>
                             </td>
-                            <td class="px-lg py-md text-body-sm text-on-surface max-w-[200px] truncate">{{ $history->lesson }}</td>
+                            <td class="px-lg py-md text-body-sm text-on-surface max-w-[200px] truncate">{{ 'Lesson: ' . str_pad($history->lesson_number, 2, '0', STR_PAD_LEFT) }}</td>
                             <td class="px-lg py-md text-body-sm text-secondary whitespace-nowrap">
                                 {{ \Carbon\Carbon::parse($history->taught_at)->format('d/m/Y H:i') }}
                             </td>

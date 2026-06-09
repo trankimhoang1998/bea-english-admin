@@ -73,14 +73,16 @@ class TeacherController extends Controller
         $data = $request->validate([
             'name'       => ['required', 'string', 'max:255'],
             'email'      => ['required', 'email', Rule::unique('users', 'email')->ignore($teacher->user_id)],
+            'password'   => ['nullable', 'string', 'min:8'],
             'teacher_id' => ['required', 'string', 'max:50', Rule::unique('teachers', 'teacher_id')->ignore($teacher->id)],
             'experience' => ['required', 'string', 'max:100'],
         ]);
 
-        $teacher->user->update([
-            'name'  => $data['name'],
-            'email' => $data['email'],
-        ]);
+        $userUpdate = ['name' => $data['name'], 'email' => $data['email']];
+        if (!empty($data['password'])) {
+            $userUpdate['password'] = Hash::make($data['password']);
+        }
+        $teacher->user->update($userUpdate);
 
         $teacher->update([
             'teacher_id' => $data['teacher_id'],

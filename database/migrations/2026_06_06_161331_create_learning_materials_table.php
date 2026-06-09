@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('learning_materials', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->text('description')->nullable();
             $table->string('file_path');
             $table->foreignId('uploaded_by')->constrained('users')->restrictOnDelete();
             $table->timestamps();
