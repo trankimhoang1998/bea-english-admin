@@ -1,4 +1,5 @@
 <x-guest-layout>
+    <x-slot name="title">Sign In | BEA English</x-slot>
     <header class="mb-xl text-center lg:text-left">
         <h2 class="font-bold text-headline-lg text-on-surface">Welcome back</h2>
         <p class="text-body-md text-secondary mt-xs">Sign in to your BEA English account.</p>

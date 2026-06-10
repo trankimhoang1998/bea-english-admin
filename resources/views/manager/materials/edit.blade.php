@@ -1,4 +1,5 @@
 <x-app-layout>
+    <x-slot name="title">{{ $material->title }} | BEA English</x-slot>
     <x-slot name="header">
         <div class="flex items-center gap-md">
             <a href="{{ route('manager.materials.index') }}"

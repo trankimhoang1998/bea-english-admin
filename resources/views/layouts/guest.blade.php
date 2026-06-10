@@ -4,7 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'BEA English') }}</title>
+    <title>{{ $title ?? config('app.name', 'BEA English') }}</title>
+    <meta name="description" content="{{ $description ?? 'BEA English – Learning Management System for teachers, students, and schedules.' }}">
+    <meta name="robots" content="noindex, nofollow">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

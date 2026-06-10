@@ -1,4 +1,5 @@
 <x-app-layout>
+    <x-slot name="title">Dashboard | BEA English</x-slot>
     <x-slot name="header">
         <div>
             <h1 class="font-bold text-headline-sm text-on-surface">My Dashboard</h1>

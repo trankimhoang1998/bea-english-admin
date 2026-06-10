@@ -1,4 +1,5 @@
 <x-app-layout>
+    <x-slot name="title">Edit Teacher | BEA English</x-slot>
     <x-slot name="header">
         <div class="flex items-center gap-md">
             <a href="{{ route('manager.teachers.index') }}"

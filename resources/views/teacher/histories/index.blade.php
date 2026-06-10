@@ -1,4 +1,5 @@
 <x-app-layout>
+    <x-slot name="title">Teaching History | BEA English</x-slot>
     <x-slot name="header">
         <div class="flex flex-wrap items-center gap-sm justify-between">
             <div>
