@@ -33,6 +33,16 @@
                 <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('dashboard')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>dashboard</span>
                 <span class="text-label-md">Dashboard</span>
             </a>
+            <a href="{{ route('manager.schedules.index') }}" @click="sidebarOpen = false"
+               class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('manager.schedules*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
+                <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('manager.schedules*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>calendar_month</span>
+                <span class="text-label-md">Schedules</span>
+            </a>
+            <a href="{{ route('manager.histories.index') }}" @click="sidebarOpen = false"
+               class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('manager.histories*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
+                <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('manager.histories*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>history_edu</span>
+                <span class="text-label-md">Teaching History</span>
+            </a>
             <a href="{{ route('manager.teachers.index') }}" @click="sidebarOpen = false"
                class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('manager.teachers*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
                 <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('manager.teachers*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>person</span>
@@ -43,20 +53,10 @@
                 <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('manager.students*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>group</span>
                 <span class="text-label-md">Students</span>
             </a>
-            <a href="{{ route('manager.schedules.index') }}" @click="sidebarOpen = false"
-               class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('manager.schedules*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
-                <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('manager.schedules*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>calendar_month</span>
-                <span class="text-label-md">Schedules</span>
-            </a>
             <a href="{{ route('manager.materials.index') }}" @click="sidebarOpen = false"
                class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('manager.materials*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
                 <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('manager.materials*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>folder_open</span>
                 <span class="text-label-md">Materials</span>
-            </a>
-            <a href="{{ route('manager.histories.index') }}" @click="sidebarOpen = false"
-               class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('manager.histories*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
-                <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('manager.histories*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>history_edu</span>
-                <span class="text-label-md">Teaching History</span>
             </a>
 
         @elseif(Auth::user()->isTeacher())

@@ -13,7 +13,7 @@ class TeachingHistory extends Model
     protected $fillable = [
         'teacher_id',
         'student_id',
-        'lesson',
+        'lesson_number',
         'taught_at',
         'duration',
         'video_path',

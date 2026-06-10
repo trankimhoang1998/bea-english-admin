@@ -21,7 +21,7 @@
                         <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Name</th>
                         <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Teacher ID</th>
                         <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Experience</th>
-                        <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Email</th>
+                        <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Account</th>
                         <th class="px-lg py-md text-right text-label-sm font-semibold text-secondary uppercase tracking-wide">Actions</th>
                     </tr>
                 </thead>
@@ -40,7 +40,7 @@
                                 <span class="inline-flex items-center px-sm py-xs bg-primary/10 text-primary font-label-sm rounded-full">{{ $teacher->teacher_id }}</span>
                             </td>
                             <td class="px-lg py-md text-body-sm text-secondary">{{ $teacher->experience }}</td>
-                            <td class="px-lg py-md text-body-sm text-secondary">{{ $teacher->user->email }}</td>
+                            <td class="px-lg py-md text-body-sm text-secondary">{{ $teacher->user->username }}</td>
                             <td class="px-lg py-md">
                                 <div class="flex items-center justify-end gap-sm">
                                     <a href="{{ route('manager.teachers.show', $teacher) }}"

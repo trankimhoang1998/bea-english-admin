@@ -32,7 +32,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('schedules', ScheduleController::class)->except(['show']);
 
         // Learning materials
-        Route::resource('materials', LearningMaterialController::class)->except(['show', 'edit', 'update']);
+        Route::resource('materials', LearningMaterialController::class)->except(['show']);
         Route::get('materials/{material}/download', [LearningMaterialController::class, 'download'])
             ->name('materials.download');
 

@@ -22,7 +22,7 @@
                         <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Student ID</th>
                         <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Age</th>
                         <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Course</th>
-                        <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Email</th>
+                        <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Account</th>
                         <th class="px-lg py-md text-right text-label-sm font-semibold text-secondary uppercase tracking-wide">Actions</th>
                     </tr>
                 </thead>
@@ -42,7 +42,7 @@
                             </td>
                             <td class="px-lg py-md text-body-sm text-secondary">{{ $student->age }}</td>
                             <td class="px-lg py-md text-body-sm text-secondary">{{ $student->course }}</td>
-                            <td class="px-lg py-md text-body-sm text-secondary">{{ $student->user->email }}</td>
+                            <td class="px-lg py-md text-body-sm text-secondary">{{ $student->user->username }}</td>
                             <td class="px-lg py-md">
                                 <div class="flex items-center justify-end gap-sm">
                                     <a href="{{ route('manager.students.show', $student) }}"

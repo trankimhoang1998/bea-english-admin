@@ -29,7 +29,7 @@ class TeacherController extends Controller
     {
         $data = $request->validate([
             'name'        => ['required', 'string', 'max:255'],
-            'email'       => ['required', 'email', 'unique:users,email'],
+            'username'    => ['required', 'string', 'max:50', 'unique:users,username'],
             'password'    => ['required', 'string', 'min:8'],
             'teacher_id'  => ['required', 'string', 'max:50', 'unique:teachers,teacher_id'],
             'experience'  => ['required', 'string', 'max:100'],
@@ -37,7 +37,7 @@ class TeacherController extends Controller
 
         $user = User::create([
             'name'     => $data['name'],
-            'email'    => $data['email'],
+            'username' => $data['username'],
             'password' => Hash::make($data['password']),
             'role'     => 'teacher',
         ]);
@@ -72,15 +72,17 @@ class TeacherController extends Controller
 
         $data = $request->validate([
             'name'       => ['required', 'string', 'max:255'],
-            'email'      => ['required', 'email', Rule::unique('users', 'email')->ignore($teacher->user_id)],
+            'username'   => ['required', 'string', 'max:50', Rule::unique('users', 'username')->ignore($teacher->user_id)],
+            'password'   => ['nullable', 'string', 'min:8'],
             'teacher_id' => ['required', 'string', 'max:50', Rule::unique('teachers', 'teacher_id')->ignore($teacher->id)],
             'experience' => ['required', 'string', 'max:100'],
         ]);
 
-        $teacher->user->update([
-            'name'  => $data['name'],
-            'email' => $data['email'],
-        ]);
+        $userUpdate = ['name' => $data['name'], 'username' => $data['username']];
+        if (!empty($data['password'])) {
+            $userUpdate['password'] = Hash::make($data['password']);
+        }
+        $teacher->user->update($userUpdate);
 
         $teacher->update([
             'teacher_id' => $data['teacher_id'],

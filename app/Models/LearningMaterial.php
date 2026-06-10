@@ -11,6 +11,7 @@ class LearningMaterial extends Model
     use HasFactory;
     protected $fillable = [
         'title',
+        'description',
         'file_path',
         'uploaded_by',
     ];

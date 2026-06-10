@@ -43,13 +43,23 @@
                                         <div class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center shrink-0">
                                             <span class="material-symbols-outlined text-[18px] text-secondary">description</span>
                                         </div>
-                                        <span class="font-semibold text-body-sm text-on-surface">{{ $material->title }}</span>
+                                        <div>
+                                            <span class="font-semibold text-body-sm text-on-surface">{{ $material->title }}</span>
+                                            @if($material->description)
+                                                <p class="text-label-sm text-secondary mt-xs">{{ $material->description }}</p>
+                                            @endif
+                                        </div>
                                     </div>
                                 </td>
                                 <td class="px-lg py-md text-body-sm text-secondary">{{ $material->uploader->name ?? '—' }}</td>
                                 <td class="px-lg py-md text-body-sm text-secondary whitespace-nowrap">{{ $material->created_at->format('d/m/Y') }}</td>
                                 <td class="px-lg py-md">
                                     <div class="flex items-center justify-end gap-sm">
+                                        <a href="{{ route('manager.materials.edit', $material) }}"
+                                           class="inline-flex items-center gap-xs text-label-sm text-primary hover:text-on-surface px-sm py-xs rounded-lg hover:bg-surface-container transition-colors">
+                                            <span class="material-symbols-outlined text-[16px]">edit</span>
+                                            Edit
+                                        </a>
                                         <a href="{{ route('manager.materials.download', $material) }}"
                                            class="inline-flex items-center gap-xs text-label-sm text-primary hover:text-on-surface px-sm py-xs rounded-lg hover:bg-surface-container transition-colors">
                                             <span class="material-symbols-outlined text-[16px]">download</span>

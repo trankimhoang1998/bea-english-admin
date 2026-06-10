@@ -10,32 +10,28 @@
     <form method="POST" action="{{ route('login') }}" class="space-y-lg">
         @csrf
 
-        {{-- Email --}}
+        {{-- Username --}}
         <div class="space-y-xs">
-            <label for="email" class="block text-label-md font-semibold text-secondary">Email Address</label>
+            <label for="username" class="block text-label-md font-semibold text-secondary">Account</label>
             <div class="relative group">
                 <span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-secondary group-focus-within:text-primary-container transition-colors">person</span>
-                <input id="email"
-                       name="email"
-                       type="email"
-                       value="{{ old('email') }}"
+                <input id="username"
+                       name="username"
+                       type="text"
+                       value="{{ old('username') }}"
                        required
                        autofocus
                        autocomplete="username"
-                       placeholder="admin@bea.test"
+                       placeholder="e.g. kimhoang1014"
                        class="w-full pl-xl pr-md py-md bg-surface-container-lowest border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary-container/30 focus:border-primary-container outline-none transition-all text-body-md text-on-surface">
             </div>
-            <x-input-error :messages="$errors->get('email')" class="mt-xs" />
+            <x-input-error :messages="$errors->get('username')" class="mt-xs" />
         </div>
 
         {{-- Password --}}
         <div class="space-y-xs" x-data="{ show: false }">
             <div class="flex justify-between items-center">
                 <label for="password" class="block text-label-md font-semibold text-secondary">Password</label>
-                @if (Route::has('password.request'))
-                    <a href="{{ route('password.request') }}"
-                       class="text-label-sm text-primary hover:underline">Forgot password?</a>
-                @endif
             </div>
             <div class="relative group">
                 <span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-secondary group-focus-within:text-primary-container transition-colors">lock</span>
@@ -78,9 +74,9 @@
     <div class="mt-xl p-md bg-surface-container-low rounded-lg border border-outline-variant">
         <p class="text-label-sm font-semibold text-secondary mb-xs">Demo accounts</p>
         <div class="space-y-xs text-label-sm text-on-surface-variant">
-            <p><span class="text-primary font-medium">Manager:</span> manager@bea.test / password</p>
-            <p><span class="text-tertiary font-medium">Teacher:</span> ann@bea.test / password</p>
-            <p><span class="text-secondary font-medium">Student:</span> mai@bea.test / password</p>
+            <p><span class="text-primary font-medium">Manager:</span> manager / password</p>
+            <p><span class="text-tertiary font-medium">Teacher:</span> annoliver101 / password</p>
+            <p><span class="text-secondary font-medium">Student:</span> maihuong1011 / password</p>
         </div>
     </div>
 </x-guest-layout>

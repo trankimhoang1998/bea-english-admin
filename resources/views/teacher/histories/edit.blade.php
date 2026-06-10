@@ -7,7 +7,7 @@
             </a>
             <div>
                 <h1 class="font-bold text-headline-sm text-on-surface">Edit Teaching Record</h1>
-                <p class="text-label-sm text-secondary mt-xs">{{ $history->lesson }}</p>
+                <p class="text-label-sm text-secondary mt-xs">{{ 'Lesson: ' . str_pad($history->lesson_number, 2, '0', STR_PAD_LEFT) }}</p>
             </div>
         </div>
     </x-slot>
@@ -35,15 +35,12 @@
                     @enderror
                 </div>
 
-                {{-- Lesson --}}
+                {{-- Lesson number (read-only) --}}
                 <div class="space-y-xs">
-                    <label for="lesson" class="block text-label-md font-semibold text-on-surface">Lesson</label>
-                    <input id="lesson" name="lesson" type="text"
-                           value="{{ old('lesson', $history->lesson) }}" required
-                           class="w-full border border-outline-variant rounded-lg px-md py-sm focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all text-body-sm text-on-surface bg-surface-container-lowest">
-                    @error('lesson')
-                        <p class="text-label-sm text-error">{{ $message }}</p>
-                    @enderror
+                    <label class="block text-label-md font-semibold text-on-surface">Lesson Number</label>
+                    <div class="px-md py-sm bg-surface-container border border-outline-variant rounded-lg text-body-sm text-secondary">
+                        {{ 'Lesson: ' . str_pad($history->lesson_number, 2, '0', STR_PAD_LEFT) }}
+                    </div>
                 </div>
 
                 {{-- Date & Time --}}
