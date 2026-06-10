@@ -29,7 +29,7 @@ class StudentController extends Controller
     {
         $data = $request->validate([
             'name'       => ['required', 'string', 'max:255'],
-            'email'      => ['required', 'email', 'unique:users,email'],
+            'username'   => ['required', 'string', 'max:50', 'unique:users,username'],
             'password'   => ['required', 'string', 'min:8'],
             'student_id' => ['required', 'string', 'max:50', 'unique:students,student_id'],
             'age'        => ['required', 'integer', 'min:5', 'max:99'],
@@ -38,7 +38,7 @@ class StudentController extends Controller
 
         $user = User::create([
             'name'     => $data['name'],
-            'email'    => $data['email'],
+            'username' => $data['username'],
             'password' => Hash::make($data['password']),
             'role'     => 'student',
         ]);
@@ -74,14 +74,14 @@ class StudentController extends Controller
 
         $data = $request->validate([
             'name'       => ['required', 'string', 'max:255'],
-            'email'      => ['required', 'email', Rule::unique('users', 'email')->ignore($student->user_id)],
+            'username'   => ['required', 'string', 'max:50', Rule::unique('users', 'username')->ignore($student->user_id)],
             'password'   => ['nullable', 'string', 'min:8'],
             'student_id' => ['required', 'string', 'max:50', Rule::unique('students', 'student_id')->ignore($student->id)],
             'age'        => ['required', 'integer', 'min:5', 'max:99'],
             'course'     => ['required', 'string', 'max:100'],
         ]);
 
-        $userUpdate = ['name' => $data['name'], 'email' => $data['email']];
+        $userUpdate = ['name' => $data['name'], 'username' => $data['username']];
         if (!empty($data['password'])) {
             $userUpdate['password'] = Hash::make($data['password']);
         }

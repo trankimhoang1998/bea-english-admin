@@ -28,7 +28,7 @@
                 </div>
                 <div>
                     <h2 class="font-bold text-headline-sm text-on-surface">{{ $student->user->name }}</h2>
-                    <p class="text-label-sm text-secondary">{{ $student->user->email }}</p>
+                    <p class="text-label-sm text-secondary">{{ $student->user->username }}</p>
                 </div>
             </div>
             <dl class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-md">
@@ -118,6 +118,7 @@
                 <table class="w-full text-body-sm">
                     <thead class="bg-surface-container-low border-b border-outline-variant">
                         <tr>
+                            <th class="px-lg py-sm text-left text-label-sm font-semibold text-secondary">Teacher</th>
                             <th class="px-lg py-sm text-left text-label-sm font-semibold text-secondary">Lesson</th>
                             <th class="px-lg py-sm text-left text-label-sm font-semibold text-secondary">Date</th>
                             <th class="px-lg py-sm text-left text-label-sm font-semibold text-secondary">Duration</th>
@@ -127,7 +128,11 @@
                     <tbody class="divide-y divide-outline-variant">
                         @forelse($student->teachingHistories->sortByDesc('taught_at') as $h)
                             <tr class="hover:bg-surface-container-low transition-colors">
-                                <td class="px-lg py-md font-medium text-on-surface">{{ $h->lesson }}</td>
+                                <td class="px-lg py-md">
+                                    <p class="font-semibold text-body-sm text-on-surface">{{ $h->teacher->user->name }}</p>
+                                    <p class="text-label-sm text-secondary">{{ $h->teacher->teacher_id }}</p>
+                                </td>
+                                <td class="px-lg py-md font-medium text-on-surface">{{ 'Lesson: ' . str_pad($h->lesson_number, 2, '0', STR_PAD_LEFT) }}</td>
                                 <td class="px-lg py-md text-secondary whitespace-nowrap">{{ $h->taught_at->format('d/m/Y H:i') }}</td>
                                 <td class="px-lg py-md">
                                     <span class="text-label-sm bg-surface-container px-sm py-xs rounded-full text-secondary">{{ $h->duration }} min</span>
@@ -136,7 +141,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="px-lg py-xl text-center text-secondary">
+                                <td colspan="5" class="px-lg py-xl text-center text-secondary">
                                     <span class="material-symbols-outlined text-[32px] opacity-30 mb-sm block">history_edu</span>
                                     No history yet.
                                 </td>

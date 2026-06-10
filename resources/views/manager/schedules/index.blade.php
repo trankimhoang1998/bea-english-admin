@@ -73,10 +73,10 @@
             <table class="w-full">
                 <thead>
                     <tr class="border-b border-outline-variant bg-surface-container-low">
-                        <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Teacher</th>
-                        <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Student</th>
                         <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Day</th>
                         <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Time</th>
+                        <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Teacher</th>
+                        <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Student</th>
                         <th class="px-lg py-md text-right text-label-sm font-semibold text-secondary uppercase tracking-wide">Actions</th>
                     </tr>
                 </thead>
@@ -84,20 +84,20 @@
                     @forelse($schedules as $schedule)
                         <tr class="hover:bg-surface-container-low transition-colors">
                             <td class="px-lg py-md">
-                                <p class="font-semibold text-body-sm text-on-surface">{{ $schedule->teacher->user->name }}</p>
-                                <p class="text-label-sm text-secondary">{{ $schedule->teacher->teacher_id }}</p>
-                            </td>
-                            <td class="px-lg py-md">
-                                <p class="font-medium text-body-sm text-on-surface">{{ $schedule->student->user->name }}</p>
-                                <p class="text-label-sm text-secondary">{{ $schedule->student->student_id }}</p>
-                            </td>
-                            <td class="px-lg py-md">
                                 <span class="inline-flex items-center px-sm py-xs bg-surface-container text-secondary font-label-sm rounded-full uppercase">
                                     {{ $schedule->day_of_week }}
                                 </span>
                             </td>
                             <td class="px-lg py-md font-mono text-body-sm text-on-surface whitespace-nowrap">
                                 {{ substr($schedule->start_time, 0, 5) }}–{{ substr($schedule->end_time, 0, 5) }}
+                            </td>
+                            <td class="px-lg py-md">
+                                <p class="font-semibold text-body-sm text-on-surface">{{ $schedule->teacher->user->name }}</p>
+                                <p class="text-label-sm text-secondary">{{ $schedule->teacher->teacher_id }}</p>
+                            </td>
+                            <td class="px-lg py-md">
+                                <p class="font-medium text-body-sm text-on-surface">{{ $schedule->student->user->name }}</p>
+                                <p class="text-label-sm text-secondary">{{ $schedule->student->student_id }}</p>
                             </td>
                             <td class="px-lg py-md">
                                 <div class="flex items-center justify-end gap-sm">

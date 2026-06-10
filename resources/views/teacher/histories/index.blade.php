@@ -70,9 +70,9 @@
             <table class="w-full">
                 <thead>
                     <tr class="border-b border-outline-variant bg-surface-container-low">
+                        <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Date</th>
                         <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Student</th>
                         <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Lesson</th>
-                        <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Date</th>
                         <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Duration</th>
                         <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Video</th>
                         <th class="px-lg py-md text-right text-label-sm font-semibold text-secondary uppercase tracking-wide">Actions</th>
@@ -81,14 +81,14 @@
                 <tbody class="divide-y divide-outline-variant">
                     @forelse($histories as $history)
                         <tr class="hover:bg-surface-container-low transition-colors">
+                            <td class="px-lg py-md text-body-sm text-secondary whitespace-nowrap">
+                                {{ $history->taught_at->format('d/m/Y H:i') }}
+                            </td>
                             <td class="px-lg py-md">
                                 <p class="font-semibold text-body-sm text-on-surface">{{ $history->student->user->name }}</p>
                                 <p class="text-label-sm text-secondary">{{ $history->student->student_id }}</p>
                             </td>
                             <td class="px-lg py-md text-body-sm text-on-surface">{{ 'Lesson: ' . str_pad($history->lesson_number, 2, '0', STR_PAD_LEFT) }}</td>
-                            <td class="px-lg py-md text-body-sm text-secondary whitespace-nowrap">
-                                {{ $history->taught_at->format('d/m/Y H:i') }}
-                            </td>
                             <td class="px-lg py-md">
                                 <span class="text-label-sm bg-surface-container px-sm py-xs rounded-full text-secondary">{{ $history->duration }} min</span>
                             </td>

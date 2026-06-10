@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
         // Manager account
         User::create([
             'name'     => 'Admin Manager',
-            'email'    => 'manager@bea.test',
+            'username' => 'manager',
             'password' => Hash::make('password'),
             'role'     => 'manager',
         ]);

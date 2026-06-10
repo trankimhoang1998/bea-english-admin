@@ -28,13 +28,13 @@
                     @enderror
                 </div>
 
-                {{-- Email --}}
+                {{-- Username --}}
                 <div class="space-y-xs">
-                    <label for="email" class="block text-label-md font-semibold text-on-surface">Email Address</label>
-                    <input id="email" name="email" type="email"
-                           value="{{ old('email', $teacher->user->email) }}" required
+                    <label for="username" class="block text-label-md font-semibold text-on-surface">Account</label>
+                    <input id="username" name="username" type="text"
+                           value="{{ old('username', $teacher->user->username) }}" required
                            class="w-full border border-outline-variant rounded-lg px-md py-sm focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all text-body-sm text-on-surface bg-surface-container-lowest">
-                    @error('email')
+                    @error('username')
                         <p class="text-label-sm text-error">{{ $message }}</p>
                     @enderror
                 </div>

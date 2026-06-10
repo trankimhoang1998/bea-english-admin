@@ -40,7 +40,7 @@
                                 <span class="inline-flex items-center px-sm py-xs bg-primary/10 text-primary font-label-sm rounded-full">{{ $teacher->teacher_id }}</span>
                             </td>
                             <td class="px-lg py-md text-body-sm text-secondary">{{ $teacher->experience }}</td>
-                            <td class="px-lg py-md text-body-sm text-secondary">{{ $teacher->user->email }}</td>
+                            <td class="px-lg py-md text-body-sm text-secondary">{{ $teacher->user->username }}</td>
                             <td class="px-lg py-md">
                                 <div class="flex items-center justify-end gap-sm">
                                     <a href="{{ route('manager.teachers.show', $teacher) }}"

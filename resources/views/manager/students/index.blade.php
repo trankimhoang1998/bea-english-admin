@@ -42,7 +42,7 @@
                             </td>
                             <td class="px-lg py-md text-body-sm text-secondary">{{ $student->age }}</td>
                             <td class="px-lg py-md text-body-sm text-secondary">{{ $student->course }}</td>
-                            <td class="px-lg py-md text-body-sm text-secondary">{{ $student->user->email }}</td>
+                            <td class="px-lg py-md text-body-sm text-secondary">{{ $student->user->username }}</td>
                             <td class="px-lg py-md">
                                 <div class="flex items-center justify-end gap-sm">
                                     <a href="{{ route('manager.students.show', $student) }}"
