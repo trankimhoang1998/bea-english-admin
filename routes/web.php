@@ -12,8 +12,8 @@ use App\Http\Controllers\Teacher\TeachingHistoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return auth()->check() ? redirect()->route('dashboard') : view('home');
-})->name('home');
+    return redirect()->route('dashboard');
+});
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
