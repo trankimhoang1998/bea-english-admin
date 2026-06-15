@@ -191,14 +191,24 @@
 
                             {{-- Teacher --}}
                             <td class="px-md py-md align-top whitespace-nowrap">
-                                <p class="text-body-sm font-semibold text-on-surface">{{ $history->teacher->user->name }}</p>
-                                <p class="text-label-sm text-secondary">{{ $history->teacher->teacher_id }}</p>
+                                <div class="flex items-start gap-xs">
+                                    <span class="material-symbols-outlined text-[14px] text-secondary mt-[3px] shrink-0">school</span>
+                                    <div>
+                                        <p class="text-body-sm font-semibold text-on-surface">{{ $history->teacher->user->name }}</p>
+                                        <p class="text-label-sm text-secondary">{{ $history->teacher->teacher_id }}</p>
+                                    </div>
+                                </div>
                             </td>
 
                             {{-- Student --}}
                             <td class="px-md py-md align-top whitespace-nowrap">
-                                <p class="text-body-sm text-on-surface">{{ $history->student->user->name }}</p>
-                                <p class="text-label-sm text-secondary">{{ $history->student->student_id }}</p>
+                                <div class="flex items-start gap-xs">
+                                    <span class="material-symbols-outlined text-[14px] text-secondary mt-[3px] shrink-0">person</span>
+                                    <div>
+                                        <p class="text-body-sm text-on-surface">{{ $history->student->user->name }}</p>
+                                        <p class="text-label-sm text-secondary">{{ $history->student->student_id }}</p>
+                                    </div>
+                                </div>
                             </td>
 
                             {{-- Details: lesson, duration, video, note --}}
