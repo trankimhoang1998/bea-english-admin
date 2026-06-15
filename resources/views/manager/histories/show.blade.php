@@ -71,15 +71,12 @@
                 <div class="px-lg py-md grid grid-cols-1 sm:grid-cols-3 gap-md">
                     <dt class="text-label-sm text-secondary font-medium">Video Log</dt>
                     <dd class="col-span-2">
-                        @if($history->video_path)
-                            <a href="{{ route('manager.histories.video', $history) }}"
-                               class="inline-flex items-center gap-xs text-label-sm text-primary font-medium hover:underline">
-                                <span class="material-symbols-outlined text-[16px]">download</span>
-                                Download video
-                            </a>
-                        @else
-                            <span class="text-label-sm text-secondary">(none)</span>
-                        @endif
+                        <x-video-player
+                            :video-path="$history->video_path"
+                            :video-link="$history->video_link"
+                            :stream-url="route('manager.histories.stream', $history)"
+                            :download-url="route('manager.histories.video', $history)"
+                        />
                     </dd>
                 </div>
             </dl>

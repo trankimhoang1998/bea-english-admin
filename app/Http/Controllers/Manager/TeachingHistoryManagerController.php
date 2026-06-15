@@ -65,7 +65,7 @@ class TeachingHistoryManagerController extends Controller
 
     public function update(Request $request, TeachingHistory $history): RedirectResponse
     {
-        $data = $request->validate([
+        $rules = [
             'teacher_id'  => ['required', 'exists:teachers,id'],
             'student_id'  => ['required', 'exists:students,id'],
             'taught_date' => ['required', 'date'],
@@ -73,15 +73,29 @@ class TeachingHistoryManagerController extends Controller
             'time_to'     => ['required', 'date_format:H:i', 'after:time_from'],
             'duration'    => ['required', 'in:25,50'],
             'note'        => ['nullable', 'string', 'max:2000'],
-            'video'       => ['nullable', 'file', 'mimetypes:video/mp4,video/webm,video/quicktime', 'max:512000'],
-        ]);
+            'video_type'  => ['required', 'in:file,link'],
+        ];
+        if ($request->input('video_type') === 'link') {
+            $rules['video_link'] = ['required', 'url', 'max:500'];
+        } else {
+            $rules['video'] = ['nullable', 'file', 'mimetypes:video/mp4,video/webm,video/quicktime', 'max:512000'];
+        }
+        $data = $request->validate($rules);
 
         $videoPath = $history->video_path;
-        if ($request->hasFile('video')) {
+        $videoLink = $history->video_link;
+        if ($request->input('video_type') === 'link') {
+            if ($videoPath) {
+                Storage::disk('local')->delete($videoPath);
+                $videoPath = null;
+            }
+            $videoLink = $request->input('video_link');
+        } elseif ($request->hasFile('video')) {
             if ($videoPath) {
                 Storage::disk('local')->delete($videoPath);
             }
             $videoPath = $request->file('video')->store('videos');
+            $videoLink = null;
         }
 
         $history->update([
@@ -93,10 +107,20 @@ class TeachingHistoryManagerController extends Controller
             'duration'    => $data['duration'],
             'note'        => $data['note'] ?? null,
             'video_path'  => $videoPath,
+            'video_link'  => $videoLink,
         ]);
 
         return redirect()->route('manager.histories.show', $history)
             ->with('success', 'Teaching history updated successfully.');
+    }
+
+    public function streamVideo(TeachingHistory $history)
+    {
+        if (!$history->video_path) {
+            abort(404);
+        }
+
+        return Storage::disk('local')->response($history->video_path);
     }
 
     public function downloadVideo(TeachingHistory $history)

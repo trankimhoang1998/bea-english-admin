@@ -39,14 +39,21 @@ class LearningMaterialSeeder extends Seeder
             ['title' => 'Unit 18 – Modal Verbs Reference Sheet', 'description' => 'Quick-reference card for can, could, must, should, may, might with example sentences.',        'file_path' => 'materials/unit18-modals.pdf',        'students' => ['STU1015', 'STU1016', 'STU1023', 'STU1024', 'STU1027', 'STU1029', 'STU1030']],
             ['title' => 'Unit 19 – Listening Practice MP3',      'description' => 'Audio recording of native-speaker dialogues; students answer comprehension questions.',         'file_path' => 'materials/unit19-listening.mp3',     'students' => ['STU1011', 'STU1014', 'STU1015', 'STU1016', 'STU1017', 'STU1018', 'STU1023', 'STU1027', 'STU1029', 'STU1030', 'STU1032']],
             ['title' => 'Unit 20 – Final Review Test',           'description' => 'Comprehensive test covering all units: vocabulary, grammar, reading, and writing sections.',    'file_path' => 'materials/unit20-review.pdf',        'students' => ['STU1011', 'STU1014', 'STU1015', 'STU1016', 'STU1017', 'STU1018', 'STU1019', 'STU1020', 'STU1021', 'STU1023', 'STU1024']],
+
+            // Link-based materials
+            ['title' => 'Oxford Learner\'s Dictionary',        'description' => 'Free online dictionary with pronunciation audio, example sentences, and word families.',              'material_link' => 'https://www.oxfordlearnersdictionaries.com',                     'students' => []],
+            ['title' => 'BBC Learning English',                'description' => 'Short video and audio lessons on grammar, vocabulary, and everyday English from BBC.',                'material_link' => 'https://www.bbc.co.uk/learningenglish',                         'students' => ['STU1011', 'STU1014', 'STU1016', 'STU1022', 'STU1025']],
+            ['title' => 'Cambridge Dictionary Online',        'description' => 'Trusted English dictionary and thesaurus with clear definitions and real usage examples.',            'material_link' => 'https://dictionary.cambridge.org',                              'students' => []],
+            ['title' => 'English Grammar in Use (Supplement)', 'description' => 'Extra practice exercises that accompany the Murphy Grammar in Use series.',                         'material_link' => 'https://www.cambridge.org/elt/grammar-in-use',                  'students' => ['STU1023', 'STU1027', 'STU1028', 'STU1030', 'STU1031']],
         ];
 
         foreach ($materials as $row) {
             $material = LearningMaterial::create([
-                'title'       => $row['title'],
-                'description' => $row['description'],
-                'file_path'   => $row['file_path'],
-                'uploaded_by' => $managerId,
+                'title'         => $row['title'],
+                'description'   => $row['description'],
+                'file_path'     => $row['file_path'] ?? null,
+                'material_link' => $row['material_link'] ?? null,
+                'uploaded_by'   => $managerId,
             ]);
 
             if (!empty($row['students'])) {

@@ -105,6 +105,7 @@
                 {{-- Video --}}
                 <div class="space-y-xs">
                     <label for="video" class="block text-label-md font-semibold text-on-surface">Video Log</label>
+                    <input type="hidden" name="video_type" value="file">
                     @if($history->video_path)
                         <div class="flex items-center gap-sm p-sm bg-secondary-container/30 border border-secondary-container rounded-lg mb-sm">
                             <span class="material-symbols-outlined text-primary text-[18px]">videocam</span>
@@ -113,6 +114,19 @@
                                class="inline-flex items-center gap-xs text-label-sm text-primary font-medium hover:underline shrink-0">
                                 <span class="material-symbols-outlined text-[15px]">download</span>
                                 Download
+                            </a>
+                        </div>
+                    @elseif($history->video_link)
+                        <div class="flex items-center gap-sm p-sm bg-surface-container border border-outline-variant rounded-lg mb-sm">
+                            <span class="material-symbols-outlined text-sky-600 text-[18px]">link</span>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-label-sm text-secondary mb-xs">Current video link (set by manager)</p>
+                                <p class="text-label-sm text-on-surface truncate">{{ $history->video_link }}</p>
+                            </div>
+                            <a href="{{ $history->video_link }}" target="_blank" rel="noopener"
+                               class="inline-flex items-center gap-xs text-label-sm text-sky-600 font-medium hover:underline shrink-0">
+                                <span class="material-symbols-outlined text-[15px]">open_in_new</span>
+                                Open
                             </a>
                         </div>
                     @endif
@@ -124,7 +138,13 @@
                                       file:text-label-sm file:font-semibold
                                       file:bg-surface-container file:text-secondary
                                       hover:file:bg-surface-container-high cursor-pointer">
-                        <p class="mt-xs text-label-sm text-secondary">Accepted: MP4, WebM, MOV &mdash; max 500 MB</p>
+                        <p class="mt-xs text-label-sm text-secondary">
+                            @if($history->video_link)
+                                Upload a file to replace the current link.
+                            @else
+                                Accepted: MP4, WebM, MOV &mdash; max 500 MB
+                            @endif
+                        </p>
                     </div>
                     @error('video')
                         <p class="text-label-sm text-error">{{ $message }}</p>

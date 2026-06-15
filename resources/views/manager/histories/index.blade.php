@@ -210,6 +210,12 @@
                                         <span class="material-symbols-outlined text-[16px]">download</span>
                                         Download
                                     </a>
+                                @elseif($history->video_link)
+                                    <a href="{{ $history->video_link }}" target="_blank" rel="noopener"
+                                       class="inline-flex items-center gap-xs text-label-sm text-sky-600 hover:underline">
+                                        <span class="material-symbols-outlined text-[16px]">play_circle</span>
+                                        Watch
+                                    </a>
                                 @else
                                     <span class="inline-flex items-center gap-xs text-label-sm text-secondary/50">
                                         <span class="material-symbols-outlined text-[14px]">close</span>

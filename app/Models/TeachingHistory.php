@@ -20,6 +20,7 @@ class TeachingHistory extends Model
         'time_to',
         'duration',
         'video_path',
+        'video_link',
         'note',
     ];
 

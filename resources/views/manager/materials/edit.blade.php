@@ -41,28 +41,65 @@
                     @enderror
                 </div>
 
-                {{-- File --}}
-                <div class="space-y-xs">
-                    <label for="file" class="block text-label-md font-semibold text-on-surface">
-                        Replace File <span class="text-secondary font-normal">(leave blank to keep current)</span>
-                    </label>
-                    <div class="flex items-center gap-sm p-sm bg-surface-container border border-outline-variant rounded-lg mb-sm">
-                        <span class="material-symbols-outlined text-secondary text-[18px]">description</span>
-                        <p class="text-label-sm text-on-surface truncate">{{ basename($material->file_path) }}</p>
+                {{-- Material (Upload File or Paste Link) --}}
+                @php $initMaterialType = old('material_type', $material->material_link ? 'link' : 'file'); @endphp
+                <div class="space-y-sm" x-data="{ tab: '{{ $initMaterialType }}' }">
+                    <label class="block text-label-md font-semibold text-on-surface">Material</label>
+                    <input type="hidden" name="material_type" :value="tab">
+
+                    {{-- Tab buttons --}}
+                    <div class="flex gap-xs bg-surface-container rounded-lg p-xs w-fit">
+                        <button type="button"
+                                @click="tab = 'file'"
+                                :class="tab === 'file' ? 'bg-surface-container-highest text-on-surface shadow-sm' : 'text-secondary hover:text-on-surface'"
+                                class="inline-flex items-center gap-xs px-md py-sm rounded-md text-label-md font-medium transition-all">
+                            <span class="material-symbols-outlined text-[16px]">upload_file</span>
+                            Upload File
+                        </button>
+                        <button type="button"
+                                @click="tab = 'link'"
+                                :class="tab === 'link' ? 'bg-surface-container-highest text-on-surface shadow-sm' : 'text-secondary hover:text-on-surface'"
+                                class="inline-flex items-center gap-xs px-md py-sm rounded-md text-label-md font-medium transition-all">
+                            <span class="material-symbols-outlined text-[16px]">link</span>
+                            Paste Link
+                        </button>
                     </div>
-                    <div class="border border-dashed border-outline-variant rounded-xl p-md">
-                        <input id="file" name="file" type="file"
-                               class="block w-full text-body-sm text-secondary
-                                      file:mr-md file:py-xs file:px-md
-                                      file:rounded-lg file:border-0
-                                      file:text-label-sm file:font-semibold
-                                      file:bg-surface-container file:text-secondary
-                                      hover:file:bg-surface-container-high cursor-pointer">
-                        <p class="mt-xs text-label-sm text-secondary">PDF, DOC, DOCX, PPT, XLSX, JPG, PNG, MP3, MP4, ZIP &mdash; max 50 MB</p>
+
+                    {{-- Upload File panel --}}
+                    <div x-show="tab === 'file'">
+                        @if($material->file_path)
+                            <div class="flex items-center gap-sm p-sm bg-surface-container border border-outline-variant rounded-lg mb-sm">
+                                <span class="material-symbols-outlined text-secondary text-[18px]">description</span>
+                                <p class="text-label-sm text-on-surface truncate flex-1">{{ basename($material->file_path) }}</p>
+                                <span class="text-label-sm text-secondary shrink-0">Upload a new file to replace it.</span>
+                            </div>
+                        @endif
+                        <div class="border border-dashed border-outline-variant rounded-xl p-md">
+                            <input id="file" name="file" type="file"
+                                   class="block w-full text-body-sm text-secondary
+                                          file:mr-md file:py-xs file:px-md
+                                          file:rounded-lg file:border-0
+                                          file:text-label-sm file:font-semibold
+                                          file:bg-surface-container file:text-secondary
+                                          hover:file:bg-surface-container-high cursor-pointer">
+                            <p class="mt-xs text-label-sm text-secondary">PDF, DOC, DOCX, PPT, XLSX, JPG, PNG, MP3, MP4, ZIP &mdash; max 50 MB</p>
+                        </div>
+                        @error('file')
+                            <p class="text-label-sm text-error">{{ $message }}</p>
+                        @enderror
                     </div>
-                    @error('file')
-                        <p class="text-label-sm text-error">{{ $message }}</p>
-                    @enderror
+
+                    {{-- Paste Link panel --}}
+                    <div x-show="tab === 'link'">
+                        <input id="material_link" name="material_link" type="url"
+                               value="{{ old('material_link', $material->material_link) }}"
+                               placeholder="https://drive.google.com/..."
+                               class="w-full border border-outline-variant rounded-lg px-md py-sm focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all text-body-sm text-on-surface bg-surface-container-lowest">
+                        <p class="mt-xs text-label-sm text-secondary">Paste a Google Drive, OneDrive, YouTube, or any public URL.</p>
+                        @error('material_link')
+                            <p class="text-label-sm text-error">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
 
                 {{-- Student Access --}}

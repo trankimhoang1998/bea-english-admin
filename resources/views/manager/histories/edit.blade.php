@@ -144,6 +144,7 @@
                     <div class="px-md py-sm bg-surface-container border border-outline-variant rounded-lg text-body-sm text-secondary">
                         {{ 'Lesson: ' . str_pad($history->lesson_number, 2, '0', STR_PAD_LEFT) }}
                     </div>
+                    <p class="text-label-sm text-secondary">Lesson number is fixed and will not update if you reassign this record to a different student.</p>
                 </div>
 
                 {{-- Date --}}
@@ -205,32 +206,60 @@
                 </div>
 
                 {{-- Video --}}
-                <div class="space-y-xs">
-                    <label for="video" class="block text-label-md font-semibold text-on-surface">Video Log</label>
-                    @if($history->video_path)
-                        <div class="flex items-center gap-sm p-sm bg-secondary-container/30 border border-secondary-container rounded-lg mb-sm">
-                            <span class="material-symbols-outlined text-primary text-[18px]">videocam</span>
-                            <div class="flex-1 text-label-sm text-on-surface">Video already uploaded. Upload a new file to replace it.</div>
-                            <a href="{{ route('manager.histories.video', $history) }}"
-                               class="inline-flex items-center gap-xs text-label-sm text-primary font-medium hover:underline shrink-0">
-                                <span class="material-symbols-outlined text-[15px]">download</span>
-                                Download
-                            </a>
-                        </div>
-                    @endif
-                    <div class="border border-dashed border-outline-variant rounded-xl p-md">
-                        <input id="video" name="video" type="file" accept="video/*"
-                               class="block w-full text-body-sm text-secondary
-                                      file:mr-md file:py-xs file:px-md
-                                      file:rounded-lg file:border-0
-                                      file:text-label-sm file:font-semibold
-                                      file:bg-surface-container file:text-secondary
-                                      hover:file:bg-surface-container-high cursor-pointer">
-                        <p class="mt-xs text-label-sm text-secondary">Accepted: MP4, WebM, MOV &mdash; max 500 MB</p>
+                @php $initVtype = old('video_type', $history->video_link ? 'link' : 'file'); @endphp
+                <div class="space-y-xs" x-data="{ vtype: '{{ $initVtype }}' }">
+                    <label class="block text-label-md font-semibold text-on-surface">Video Log</label>
+                    <div class="flex gap-xs">
+                        <button type="button" @click="vtype = 'file'"
+                                :class="vtype === 'file' ? 'bg-primary-container text-on-primary' : 'bg-surface-container text-secondary hover:text-on-surface'"
+                                class="inline-flex items-center gap-xs px-md py-xs rounded-lg text-label-sm font-medium transition-colors">
+                            <span class="material-symbols-outlined text-[15px]">upload</span>
+                            Upload File
+                        </button>
+                        <button type="button" @click="vtype = 'link'"
+                                :class="vtype === 'link' ? 'bg-primary-container text-on-primary' : 'bg-surface-container text-secondary hover:text-on-surface'"
+                                class="inline-flex items-center gap-xs px-md py-xs rounded-lg text-label-sm font-medium transition-colors">
+                            <span class="material-symbols-outlined text-[15px]">link</span>
+                            Paste Link
+                        </button>
                     </div>
-                    @error('video')
-                        <p class="text-label-sm text-error">{{ $message }}</p>
-                    @enderror
+                    <input type="hidden" name="video_type" :value="vtype">
+                    <div x-show="vtype === 'file'" x-cloak>
+                        @if($history->video_path)
+                            <div class="flex items-center gap-sm p-sm bg-secondary-container/30 border border-secondary-container rounded-lg mb-sm">
+                                <span class="material-symbols-outlined text-primary text-[18px]">videocam</span>
+                                <div class="flex-1 text-label-sm text-on-surface">Video already uploaded. Upload a new file to replace it.</div>
+                                <a href="{{ route('manager.histories.video', $history) }}"
+                                   class="inline-flex items-center gap-xs text-label-sm text-primary font-medium hover:underline shrink-0">
+                                    <span class="material-symbols-outlined text-[15px]">download</span>
+                                    Download
+                                </a>
+                            </div>
+                        @endif
+                        <div class="border border-dashed border-outline-variant rounded-xl p-md">
+                            <input id="video" name="video" type="file" accept="video/*"
+                                   class="block w-full text-body-sm text-secondary
+                                          file:mr-md file:py-xs file:px-md
+                                          file:rounded-lg file:border-0
+                                          file:text-label-sm file:font-semibold
+                                          file:bg-surface-container file:text-secondary
+                                          hover:file:bg-surface-container-high cursor-pointer">
+                            <p class="mt-xs text-label-sm text-secondary">Accepted: MP4, WebM, MOV &mdash; max 500 MB</p>
+                        </div>
+                        @error('video')
+                            <p class="text-label-sm text-error">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div x-show="vtype === 'link'" x-cloak>
+                        <input type="url" name="video_link"
+                               value="{{ old('video_link', $history->video_link) }}"
+                               placeholder="https://youtu.be/..."
+                               class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all">
+                        <p class="mt-xs text-label-sm text-secondary">Enter a YouTube, Google Drive or other video URL.</p>
+                        @error('video_link')
+                            <p class="text-label-sm text-error">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
 
                 <div class="flex items-center gap-md pt-sm border-t border-outline-variant">

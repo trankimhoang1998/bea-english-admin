@@ -43,24 +43,59 @@
                     @enderror
                 </div>
 
-                {{-- File --}}
-                <div class="space-y-xs">
-                    <label for="file" class="block text-label-md font-semibold text-on-surface">File</label>
-                    <div class="border-2 border-dashed border-outline-variant rounded-xl p-lg text-center hover:border-primary transition-colors cursor-pointer">
-                        <span class="material-symbols-outlined text-[40px] text-secondary mb-sm block">upload_file</span>
-                        <p class="text-body-sm text-on-surface mb-xs">Click to upload or drag and drop</p>
-                        <p class="text-label-sm text-secondary">PDF, DOC, DOCX, PPT, XLSX, JPG, PNG, MP3, MP4, ZIP &mdash; max 50 MB</p>
-                        <input id="file" name="file" type="file" required
-                               class="mt-md block w-full text-body-sm text-secondary
-                                      file:mr-md file:py-sm file:px-md
-                                      file:rounded-lg file:border-0
-                                      file:text-label-md file:font-semibold
-                                      file:bg-primary-container file:text-on-primary
-                                      hover:file:brightness-110 cursor-pointer">
+                {{-- Material (Upload File or Paste Link) --}}
+                <div class="space-y-sm" x-data="{ tab: '{{ old('material_type', 'file') }}' }">
+                    <label class="block text-label-md font-semibold text-on-surface">Material</label>
+                    <input type="hidden" name="material_type" :value="tab">
+
+                    {{-- Tab buttons --}}
+                    <div class="flex gap-xs bg-surface-container rounded-lg p-xs w-fit">
+                        <button type="button"
+                                @click="tab = 'file'"
+                                :class="tab === 'file' ? 'bg-surface-container-highest text-on-surface shadow-sm' : 'text-secondary hover:text-on-surface'"
+                                class="inline-flex items-center gap-xs px-md py-sm rounded-md text-label-md font-medium transition-all">
+                            <span class="material-symbols-outlined text-[16px]">upload_file</span>
+                            Upload File
+                        </button>
+                        <button type="button"
+                                @click="tab = 'link'"
+                                :class="tab === 'link' ? 'bg-surface-container-highest text-on-surface shadow-sm' : 'text-secondary hover:text-on-surface'"
+                                class="inline-flex items-center gap-xs px-md py-sm rounded-md text-label-md font-medium transition-all">
+                            <span class="material-symbols-outlined text-[16px]">link</span>
+                            Paste Link
+                        </button>
                     </div>
-                    @error('file')
-                        <p class="text-label-sm text-error">{{ $message }}</p>
-                    @enderror
+
+                    {{-- Upload File panel --}}
+                    <div x-show="tab === 'file'">
+                        <div class="border-2 border-dashed border-outline-variant rounded-xl p-lg text-center hover:border-primary transition-colors cursor-pointer">
+                            <span class="material-symbols-outlined text-[40px] text-secondary mb-sm block">upload_file</span>
+                            <p class="text-body-sm text-on-surface mb-xs">Click to upload or drag and drop</p>
+                            <p class="text-label-sm text-secondary">PDF, DOC, DOCX, PPT, XLSX, JPG, PNG, MP3, MP4, ZIP &mdash; max 50 MB</p>
+                            <input id="file" name="file" type="file"
+                                   class="mt-md block w-full text-body-sm text-secondary
+                                          file:mr-md file:py-sm file:px-md
+                                          file:rounded-lg file:border-0
+                                          file:text-label-md file:font-semibold
+                                          file:bg-primary-container file:text-on-primary
+                                          hover:file:brightness-110 cursor-pointer">
+                        </div>
+                        @error('file')
+                            <p class="text-label-sm text-error mt-xs">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    {{-- Paste Link panel --}}
+                    <div x-show="tab === 'link'">
+                        <input id="material_link" name="material_link" type="url"
+                               value="{{ old('material_link') }}"
+                               placeholder="https://drive.google.com/..."
+                               class="w-full border border-outline-variant rounded-lg px-md py-sm focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all text-body-sm text-on-surface bg-surface-container-lowest">
+                        <p class="mt-xs text-label-sm text-secondary">Paste a Google Drive, OneDrive, YouTube, or any public URL.</p>
+                        @error('material_link')
+                            <p class="text-label-sm text-error">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
 
                 {{-- Student Access --}}

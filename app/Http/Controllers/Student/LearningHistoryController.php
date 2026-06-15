@@ -80,6 +80,19 @@ class LearningHistoryController extends Controller
         return view('student.history.show', compact('history'));
     }
 
+    public function streamVideo(TeachingHistory $history)
+    {
+        if ($history->student_id !== $this->student()->id) {
+            abort(403);
+        }
+
+        if (!$history->video_path) {
+            abort(404);
+        }
+
+        return Storage::disk('local')->response($history->video_path);
+    }
+
     public function downloadVideo(TeachingHistory $history)
     {
         if ($history->student_id !== $this->student()->id) {

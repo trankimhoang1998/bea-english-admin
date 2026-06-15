@@ -16,9 +16,11 @@ class TeachingHistorySeeder extends Seeder
         $counters = [];
         $rows     = [];
 
+        // Pass a file path like 'videos/file.mp4' for uploads, or a full URL for links.
         $add = function (string $tea, string $stu, string $tf, string $tt, int $dur, string $date, ?string $note, ?string $video = null)
             use ($tIds, $sIds, &$counters, &$rows): void {
             $counters[$stu] = ($counters[$stu] ?? 0) + 1;
+            $isLink = $video && str_starts_with($video, 'http');
             $rows[] = [
                 'teacher_id'    => $tIds[$tea],
                 'student_id'    => $sIds[$stu],
@@ -28,7 +30,8 @@ class TeachingHistorySeeder extends Seeder
                 'time_to'       => $tt,
                 'duration'      => $dur,
                 'note'          => $note,
-                'video_path'    => $video,
+                'video_path'    => $isLink ? null : $video,
+                'video_link'    => $isLink ? $video : null,
             ];
         };
 
@@ -48,8 +51,8 @@ class TeachingHistorySeeder extends Seeder
             ['2026-03-30', 'Speaking exercise on daily routines — very confident today.', null],
             ['2026-04-06', 'Comparative adjectives introduced. HW: Compare 3 pairs of objects in writing.', null],
             ['2026-04-13', 'Mid-term review. Score: 85%. Ready for Unit 5.', null],
-            ['2026-04-27', 'Covered modal verbs. HW: Write 3 sentences each for can/could/should/must.', 'videos/tea101_stu1011_lesson11.mp4'],
-            ['2026-05-11', 'Type 1 conditionals — strong understanding. HW: Complete worksheet 9B.', 'videos/tea101_stu1011_lesson12.mp4'],
+            ['2026-04-27', 'Covered modal verbs. HW: Write 3 sentences each for can/could/should/must.', 'https://www.youtube.com/watch?v=LKFuXETZUsI'],
+            ['2026-05-11', 'Type 1 conditionals — strong understanding. HW: Complete worksheet 9B.', 'https://www.youtube.com/watch?v=LKFuXETZUsI'],
         ] as [$date, $note, $video]) {
             $add('TEA101', 'STU1011', '18:00', '18:50', 50, $date, $note, $video);
         }
@@ -65,7 +68,7 @@ class TeachingHistorySeeder extends Seeder
             ['2026-04-14', 'Speaking confidence improving noticeably.', null],
             ['2026-04-21', 'Homework not submitted. Will follow up next session.', null],
             ['2026-05-05', 'Present continuous — good understanding. HW: Describe what family members are doing right now.', 'videos/tea101_stu1014_lesson09.mp4'],
-            ['2026-05-19', 'Great session — student very prepared. Ready to advance to Unit 4.', 'videos/tea101_stu1014_lesson10.mp4'],
+            ['2026-05-19', 'Great session — student very prepared. Ready to advance to Unit 4.', 'https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/view'],
         ] as [$date, $note, $video]) {
             $add('TEA101', 'STU1014', '19:00', '19:25', 25, $date, $note, $video);
         }
@@ -79,7 +82,7 @@ class TeachingHistorySeeder extends Seeder
             ['2026-04-03', 'Question words (who/what/where/when/why). HW: Write 5 questions about a given photo.', null],
             ['2026-04-10', null, null],
             ['2026-05-01', 'Prepositions of place — solid understanding. HW: Write a description of your bedroom.', null],
-            ['2026-05-15', 'Excellent session. Nearly at intermediate level.', 'videos/tea101_stu1015_lesson08.mp4'],
+            ['2026-05-15', 'Excellent session. Nearly at intermediate level.', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'],
         ] as [$date, $note, $video]) {
             $add('TEA101', 'STU1015', '18:00', '18:25', 25, $date, $note, $video);
         }
@@ -111,7 +114,7 @@ class TeachingHistorySeeder extends Seeder
             ['2026-04-06', 'Days of week and months. HW: Write a sample weekly schedule in English.', null],
             ['2026-04-13', 'Short reading passage — student understood main idea.', null],
             ['2026-04-27', 'Simple yes/no questions introduced. Good effort.', null],
-            ['2026-05-11', 'Family vocabulary. HW: Write 5 sentences about your family members.', 'videos/tea102_stu1017_lesson09.mp4'],
+            ['2026-05-11', 'Family vocabulary. HW: Write 5 sentences about your family members.', 'https://www.youtube.com/watch?v=9bZkp7q19f0'],
         ] as [$date, $note, $video]) {
             $add('TEA102', 'STU1017', '17:00', '17:25', 25, $date, $note, $video);
         }
@@ -125,7 +128,7 @@ class TeachingHistorySeeder extends Seeder
             ['2026-04-07', null, null],
             ['2026-04-14', 'Hobbies vocabulary — good use of "like + -ing" structure.', null],
             ['2026-04-28', 'Telling the time. HW: Describe your daily schedule using time expressions.', null],
-            ['2026-05-12', 'Strong session. HW: Write a paragraph about a typical school day.', 'videos/tea102_stu1018_lesson08.mp4'],
+            ['2026-05-12', 'Strong session. HW: Write a paragraph about a typical school day.', 'https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/view'],
         ] as [$date, $note, $video]) {
             $add('TEA102', 'STU1018', '17:00', '17:25', 25, $date, $note, $video);
         }

@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->string('file_path');
+            $table->string('file_path')->nullable();
+            $table->string('material_link')->nullable();
             $table->foreignId('uploaded_by')->constrained('users')->restrictOnDelete();
             $table->timestamps();
         });

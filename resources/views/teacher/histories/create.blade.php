@@ -100,6 +100,7 @@
                     <label for="video" class="block text-label-md font-semibold text-on-surface">
                         Video Log <span class="text-secondary font-normal">(optional)</span>
                     </label>
+                    <input type="hidden" name="video_type" value="file">
                     <div class="border border-dashed border-outline-variant rounded-xl p-md">
                         <input id="video" name="video" type="file" accept="video/*"
                                class="block w-full text-body-sm text-secondary

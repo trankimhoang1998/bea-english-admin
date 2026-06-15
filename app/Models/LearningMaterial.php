@@ -14,6 +14,7 @@ class LearningMaterial extends Model
         'title',
         'description',
         'file_path',
+        'material_link',
         'uploaded_by',
     ];
 

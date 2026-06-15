@@ -85,7 +85,7 @@
                                         @csrf @method('DELETE')
                                     </form>
                                     <button type="button"
-                                            @click="$store.confirmModal.show('Delete this teacher? Their existing teaching history records will be preserved.', 'del-teacher-{{ $teacher->id }}')"
+                                            @click="$store.confirmModal.show('Delete this teacher? This will fail if they have existing teaching history records.', 'del-teacher-{{ $teacher->id }}')"
                                             class="inline-flex items-center gap-xs text-label-sm text-error hover:text-on-surface px-sm py-xs rounded-lg hover:bg-error-container/30 transition-colors">
                                         <span class="material-symbols-outlined text-[16px]">delete</span>
                                         Delete

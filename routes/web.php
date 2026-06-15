@@ -39,6 +39,7 @@ Route::middleware(['auth'])->group(function () {
         // Teaching histories (view/manage all)
         Route::resource('histories', TeachingHistoryManagerController::class)->only(['index', 'show', 'edit', 'update', 'destroy']);
         Route::get('histories/{history}/video', [TeachingHistoryManagerController::class, 'downloadVideo'])->name('histories.video');
+        Route::get('histories/{history}/stream', [TeachingHistoryManagerController::class, 'streamVideo'])->name('histories.stream');
     });
 
     // -------------------------
@@ -48,6 +49,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [TeachingHistoryController::class, 'dashboard'])->name('dashboard');
         Route::resource('histories', TeachingHistoryController::class);
         Route::get('histories/{history}/video', [TeachingHistoryController::class, 'downloadVideo'])->name('histories.video');
+        Route::get('histories/{history}/stream', [TeachingHistoryController::class, 'streamVideo'])->name('histories.stream');
     });
 
     // -------------------------
@@ -58,6 +60,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('history', [LearningHistoryController::class, 'index'])->name('history.index');
         Route::get('history/{history}', [LearningHistoryController::class, 'show'])->name('history.show');
         Route::get('history/{history}/video', [LearningHistoryController::class, 'downloadVideo'])->name('history.video');
+        Route::get('history/{history}/stream', [LearningHistoryController::class, 'streamVideo'])->name('history.stream');
         Route::get('materials', [MaterialDownloadController::class, 'index'])->name('materials.index');
         Route::get('materials/{material}/download', [MaterialDownloadController::class, 'download'])
             ->name('materials.download');

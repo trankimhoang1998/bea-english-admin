@@ -79,7 +79,7 @@
 
             $byDaySlot = [];
             foreach ($teacher->schedules as $s) {
-                $byDaySlot[$s->start_time][$s->day_of_week] = $s;
+                $byDaySlot[$s->start_time . '|' . $s->end_time][$s->day_of_week] = $s;
             }
             ksort($byDaySlot);
         @endphp
@@ -118,8 +118,8 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-outline-variant">
-                            @foreach($byDaySlot as $startTime => $dayMap)
-                                @php $endTime = collect($dayMap)->first()->end_time; @endphp
+                            @foreach($byDaySlot as $slotKey => $dayMap)
+                                @php [$startTime, $endTime] = explode('|', $slotKey); @endphp
                                 <tr class="hover:bg-surface-container-low/50 transition-colors">
                                     <td class="px-md py-sm font-mono text-label-sm text-secondary whitespace-nowrap">
                                         {{ substr($startTime, 0, 5) }}–{{ substr($endTime, 0, 5) }}
@@ -272,6 +272,12 @@
                                            class="inline-flex items-center gap-xs text-label-sm text-primary hover:underline">
                                             <span class="material-symbols-outlined text-[16px]">download</span>
                                             Download
+                                        </a>
+                                    @elseif($h->video_link)
+                                        <a href="{{ $h->video_link }}" target="_blank" rel="noopener"
+                                           class="inline-flex items-center gap-xs text-label-sm text-sky-600 hover:underline">
+                                            <span class="material-symbols-outlined text-[16px]">play_circle</span>
+                                            Watch
                                         </a>
                                     @else
                                         <span class="inline-flex items-center gap-xs text-label-sm text-secondary/50">

@@ -116,6 +116,7 @@ class StudentController extends Controller
 
         $user = $student->user;
         $student->schedules()->delete();
+        $student->learningMaterials()->detach();
         $student->delete();
         $user->delete();
 

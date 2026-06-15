@@ -14,16 +14,78 @@
         </div>
     </x-slot>
 
+    {{-- Filters --}}
+    <form method="GET" action="{{ route('manager.materials.index') }}"
+          class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm p-md mb-md">
+        <div class="flex flex-wrap gap-md items-end">
+            <div class="space-y-xs flex-1 min-w-[180px]">
+                <label class="block text-label-sm font-semibold text-secondary uppercase tracking-wide">Search</label>
+                <div class="relative">
+                    <span class="absolute left-sm top-1/2 -translate-y-1/2 text-secondary pointer-events-none">
+                        <span class="material-symbols-outlined text-[16px]">search</span>
+                    </span>
+                    <input type="text" name="search" value="{{ request('search') }}"
+                           placeholder="Search by title..."
+                           class="w-full pl-xl border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all">
+                </div>
+            </div>
+            <div class="space-y-xs w-36 shrink-0">
+                <label class="block text-label-sm font-semibold text-secondary uppercase tracking-wide">Type</label>
+                <select name="type"
+                        class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all">
+                    <option value="">All Types</option>
+                    <option value="file" {{ request('type') === 'file' ? 'selected' : '' }}>File</option>
+                    <option value="link" {{ request('type') === 'link' ? 'selected' : '' }}>Link</option>
+                </select>
+            </div>
+            <div class="space-y-xs w-52 shrink-0">
+                <label class="block text-label-sm font-semibold text-secondary uppercase tracking-wide">Student</label>
+                <select name="student_id"
+                        class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all">
+                    <option value="">All Students</option>
+                    @foreach($students as $stu)
+                        <option value="{{ $stu->id }}" {{ request('student_id') == $stu->id ? 'selected' : '' }}>
+                            {{ $stu->user->name }} ({{ $stu->student_id }})
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="flex gap-sm shrink-0">
+                <button type="submit"
+                        class="inline-flex items-center gap-xs bg-primary-container text-on-primary font-label-md px-md py-sm rounded-lg hover:brightness-110 transition-all active:scale-95">
+                    <span class="material-symbols-outlined text-[16px]">filter_alt</span>
+                    Filter
+                </button>
+                @if(request()->anyFilled(['search', 'type', 'student_id']))
+                    <a href="{{ route('manager.materials.index') }}"
+                       class="inline-flex items-center px-sm py-sm text-secondary hover:text-on-surface transition-colors"
+                       title="Clear filters">
+                        <span class="material-symbols-outlined text-[18px]">close</span>
+                    </a>
+                @endif
+            </div>
+        </div>
+    </form>
+
     <div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden">
         @if($materials->isEmpty())
             <div class="flex flex-col items-center py-2xl text-secondary">
                 <span class="material-symbols-outlined text-[48px] mb-md opacity-30">folder_open</span>
-                <p class="text-body-md mb-md">No materials uploaded yet.</p>
-                <a href="{{ route('manager.materials.create') }}"
-                   class="inline-flex items-center gap-sm bg-primary-container text-on-primary font-label-md px-md py-sm rounded-lg hover:brightness-110 transition-all">
-                    <span class="material-symbols-outlined text-[16px]">upload_file</span>
-                    Upload first material
-                </a>
+                @if(request()->anyFilled(['search', 'type', 'student_id']))
+                    <p class="text-body-md mb-md">No materials match your filters.</p>
+                    <a href="{{ route('manager.materials.index') }}"
+                       class="inline-flex items-center gap-xs text-label-sm text-primary hover:underline">
+                        <span class="material-symbols-outlined text-[16px]">close</span>
+                        Clear filters
+                    </a>
+                @else
+                    <p class="text-body-md mb-md">No materials uploaded yet.</p>
+                    <a href="{{ route('manager.materials.create') }}"
+                       class="inline-flex items-center gap-sm bg-primary-container text-on-primary font-label-md px-md py-sm rounded-lg hover:brightness-110 transition-all">
+                        <span class="material-symbols-outlined text-[16px]">upload_file</span>
+                        Upload first material
+                    </a>
+                @endif
             </div>
         @else
             <div class="overflow-x-auto">
@@ -43,7 +105,7 @@
                                 <td class="px-lg py-md">
                                     <div class="flex items-center gap-md">
                                         <div class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center shrink-0">
-                                            <span class="material-symbols-outlined text-[18px] text-secondary">description</span>
+                                            <span class="material-symbols-outlined text-[18px] text-secondary">{{ $material->material_link ? 'link' : 'description' }}</span>
                                         </div>
                                         <div>
                                             <span class="font-semibold text-body-sm text-on-surface">{{ $material->title }}</span>
@@ -90,16 +152,24 @@
                                             <span class="material-symbols-outlined text-[16px]">edit</span>
                                             Edit
                                         </a>
-                                        <a href="{{ route('manager.materials.download', $material) }}"
-                                           class="inline-flex items-center gap-xs text-label-sm text-primary hover:text-on-surface px-sm py-xs rounded-lg hover:bg-surface-container transition-colors">
-                                            <span class="material-symbols-outlined text-[16px]">download</span>
-                                            Download
-                                        </a>
+                                        @if($material->material_link)
+                                            <a href="{{ $material->material_link }}" target="_blank" rel="noopener"
+                                               class="inline-flex items-center gap-xs text-label-sm text-sky-600 hover:text-on-surface px-sm py-xs rounded-lg hover:bg-surface-container transition-colors">
+                                                <span class="material-symbols-outlined text-[16px]">open_in_new</span>
+                                                Open Link
+                                            </a>
+                                        @elseif($material->file_path)
+                                            <a href="{{ route('manager.materials.download', $material) }}"
+                                               class="inline-flex items-center gap-xs text-label-sm text-primary hover:text-on-surface px-sm py-xs rounded-lg hover:bg-surface-container transition-colors">
+                                                <span class="material-symbols-outlined text-[16px]">download</span>
+                                                Download
+                                            </a>
+                                        @endif
                                         <form id="del-material-{{ $material->id }}" method="POST" action="{{ route('manager.materials.destroy', $material) }}">
                                             @csrf @method('DELETE')
                                         </form>
                                         <button type="button"
-                                                @click="$store.confirmModal.show('Delete &quot;{{ addslashes($material->title) }}&quot;? The file will also be removed from storage.', 'del-material-{{ $material->id }}')"
+                                                @click="$store.confirmModal.show('Delete ' + {{ Js::from($material->title) }} + '? The file will also be removed from storage.', 'del-material-{{ $material->id }}')"
                                                 class="inline-flex items-center gap-xs text-label-sm text-error hover:text-on-surface px-sm py-xs rounded-lg hover:bg-error-container/30 transition-colors">
                                             <span class="material-symbols-outlined text-[16px]">delete</span>
                                             Delete

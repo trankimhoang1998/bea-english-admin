@@ -21,6 +21,7 @@ return new class extends Migration
             $table->time('time_to');
             $table->unsignedSmallInteger('duration');
             $table->string('video_path')->nullable();
+            $table->string('video_link')->nullable();
             $table->text('note')->nullable();
             $table->timestamps();
         });
