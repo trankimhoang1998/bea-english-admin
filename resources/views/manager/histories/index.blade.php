@@ -172,73 +172,78 @@
             <table class="w-full">
                 <thead>
                     <tr class="border-b border-outline-variant bg-surface-container-low">
-                        <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Date</th>
-                        <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Teacher</th>
-                        <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Student</th>
-                        <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Lesson</th>
-                        <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Duration</th>
-                        <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Video</th>
-                        <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Note/Homework</th>
-                        <th class="px-lg py-md text-right text-label-sm font-semibold text-secondary uppercase tracking-wide">Actions</th>
+                        <th class="px-md py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide whitespace-nowrap">Session</th>
+                        <th class="px-md py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Teacher / Student</th>
+                        <th class="px-md py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Details</th>
+                        <th class="px-md py-md text-right text-label-sm font-semibold text-secondary uppercase tracking-wide">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-outline-variant">
                     @forelse($histories as $history)
                         <tr class="hover:bg-surface-container-low transition-colors">
-                            <td class="px-lg py-md whitespace-nowrap">
-                                <p class="text-body-sm text-on-surface">{{ $history->taught_date->format('d/m/Y') }}</p>
-                                <p class="text-label-sm text-secondary">{{ $history->time_from }} – {{ $history->time_to }}</p>
+
+                            {{-- Session: date + time --}}
+                            <td class="px-md py-md whitespace-nowrap align-top">
+                                <p class="text-body-sm font-semibold text-on-surface">{{ $history->taught_date->format('d/m/Y') }}</p>
+                                <p class="text-label-sm text-secondary mt-xs">{{ $history->time_from }} – {{ $history->time_to }}</p>
                             </td>
-                            <td class="px-lg py-md whitespace-nowrap">
-                                <p class="font-semibold text-body-sm text-on-surface">{{ $history->teacher->user->name }}</p>
-                                <p class="text-label-sm text-secondary">{{ $history->teacher->teacher_id }}</p>
+
+                            {{-- Teacher / Student stacked --}}
+                            <td class="px-md py-md align-top">
+                                <div class="flex items-start gap-xs">
+                                    <span class="material-symbols-outlined text-[14px] text-secondary mt-[3px] shrink-0">school</span>
+                                    <div>
+                                        <p class="text-body-sm font-semibold text-on-surface whitespace-nowrap">{{ $history->teacher->user->name }}</p>
+                                        <p class="text-label-sm text-secondary">{{ $history->teacher->teacher_id }}</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-xs mt-sm">
+                                    <span class="material-symbols-outlined text-[14px] text-secondary mt-[3px] shrink-0">person</span>
+                                    <div>
+                                        <p class="text-body-sm text-on-surface whitespace-nowrap">{{ $history->student->user->name }}</p>
+                                        <p class="text-label-sm text-secondary">{{ $history->student->student_id }}</p>
+                                    </div>
+                                </div>
                             </td>
-                            <td class="px-lg py-md whitespace-nowrap">
-                                <p class="font-medium text-body-sm text-on-surface">{{ $history->student->user->name }}</p>
-                                <p class="text-label-sm text-secondary">{{ $history->student->student_id }}</p>
-                            </td>
-                            <td class="px-lg py-md text-body-sm text-on-surface whitespace-nowrap">
-                                {{ 'Lesson: ' . str_pad($history->lesson_number, 2, '0', STR_PAD_LEFT) }}
-                            </td>
-                            <td class="px-lg py-md">
-                                <span class="text-label-sm bg-surface-container px-sm py-xs rounded-full text-secondary">{{ $history->duration }} min</span>
-                            </td>
-                            <td class="px-lg py-md whitespace-nowrap">
-                                @if($history->video_path)
-                                    <a href="{{ route('manager.histories.video', $history) }}"
-                                       class="inline-flex items-center gap-xs text-label-sm text-primary hover:underline">
-                                        <span class="material-symbols-outlined text-[16px]">download</span>
-                                        Download
-                                    </a>
-                                @elseif($history->video_link)
-                                    <a href="{{ $history->video_link }}" target="_blank" rel="noopener"
-                                       class="inline-flex items-center gap-xs text-label-sm text-sky-600 hover:underline">
-                                        <span class="material-symbols-outlined text-[16px]">play_circle</span>
-                                        Watch
-                                    </a>
-                                @else
-                                    <span class="inline-flex items-center gap-xs text-label-sm text-secondary/50">
-                                        <span class="material-symbols-outlined text-[14px]">close</span>
-                                        No video
+
+                            {{-- Details: lesson, duration, video, note --}}
+                            <td class="px-md py-md align-top">
+                                <div class="flex items-center gap-sm flex-wrap">
+                                    <span class="text-label-sm font-semibold text-on-surface">
+                                        Lesson {{ str_pad($history->lesson_number, 2, '0', STR_PAD_LEFT) }}
                                     </span>
-                                @endif
-                            </td>
-                            <td class="px-lg py-md">
+                                    <span class="text-label-sm bg-surface-container px-sm py-xs rounded-full text-secondary whitespace-nowrap">
+                                        {{ $history->duration }} min
+                                    </span>
+                                    @if($history->video_path)
+                                        <a href="{{ route('manager.histories.video', $history) }}"
+                                           class="inline-flex items-center gap-xs text-label-sm text-primary hover:underline whitespace-nowrap">
+                                            <span class="material-symbols-outlined text-[14px]">download</span>
+                                            Video
+                                        </a>
+                                    @elseif($history->video_link)
+                                        <a href="{{ $history->video_link }}" target="_blank" rel="noopener"
+                                           class="inline-flex items-center gap-xs text-label-sm text-sky-600 hover:underline whitespace-nowrap">
+                                            <span class="material-symbols-outlined text-[14px]">play_circle</span>
+                                            Video
+                                        </a>
+                                    @endif
+                                </div>
                                 @if($history->note)
-                                    <span class="block truncate text-body-sm text-on-surface max-w-[180px]">{{ $history->note }}</span>
-                                @else
-                                    <span class="text-label-sm text-secondary">—</span>
+                                    <p class="text-label-sm text-secondary mt-xs line-clamp-2 max-w-xs">{{ $history->note }}</p>
                                 @endif
                             </td>
-                            <td class="px-lg py-md">
-                                <div class="flex items-center justify-end gap-sm">
+
+                            {{-- Actions --}}
+                            <td class="px-md py-md align-top">
+                                <div class="flex items-center justify-end gap-xs">
                                     <a href="{{ route('manager.histories.show', $history) }}"
-                                       class="inline-flex items-center gap-xs text-label-sm text-secondary hover:text-on-surface px-sm py-xs rounded-lg hover:bg-surface-container transition-colors">
+                                       class="inline-flex items-center gap-xs text-label-sm text-secondary hover:text-on-surface px-sm py-xs rounded-lg hover:bg-surface-container transition-colors whitespace-nowrap">
                                         <span class="material-symbols-outlined text-[16px]">visibility</span>
                                         View
                                     </a>
                                     <a href="{{ route('manager.histories.edit', $history) }}"
-                                       class="inline-flex items-center gap-xs text-label-sm text-primary hover:text-on-surface px-sm py-xs rounded-lg hover:bg-surface-container transition-colors">
+                                       class="inline-flex items-center gap-xs text-label-sm text-primary hover:text-on-surface px-sm py-xs rounded-lg hover:bg-surface-container transition-colors whitespace-nowrap">
                                         <span class="material-symbols-outlined text-[16px]">edit</span>
                                         Edit
                                     </a>
@@ -247,7 +252,7 @@
                                     </form>
                                     <button type="button"
                                             @click="$store.confirmModal.show('Delete this teaching history record? Any uploaded video will also be removed.', 'del-history-{{ $history->id }}')"
-                                            class="inline-flex items-center gap-xs text-label-sm text-error hover:text-on-surface px-sm py-xs rounded-lg hover:bg-error-container/30 transition-colors">
+                                            class="inline-flex items-center gap-xs text-label-sm text-error hover:text-on-surface px-sm py-xs rounded-lg hover:bg-error-container/30 transition-colors whitespace-nowrap">
                                         <span class="material-symbols-outlined text-[16px]">delete</span>
                                         Delete
                                     </button>
@@ -256,7 +261,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="8" class="px-lg py-2xl text-center">
+                            <td colspan="4" class="px-lg py-2xl text-center">
                                 <div class="flex flex-col items-center gap-md text-secondary">
                                     <span class="material-symbols-outlined text-[48px] opacity-30">history_edu</span>
                                     <p class="text-body-md">No teaching histories found.</p>
