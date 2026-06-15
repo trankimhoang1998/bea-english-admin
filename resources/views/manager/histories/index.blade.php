@@ -173,7 +173,8 @@
                 <thead>
                     <tr class="border-b border-outline-variant bg-surface-container-low">
                         <th class="px-md py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide whitespace-nowrap">Session</th>
-                        <th class="px-md py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Teacher / Student</th>
+                        <th class="px-md py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Teacher</th>
+                        <th class="px-md py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Student</th>
                         <th class="px-md py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Details</th>
                         <th class="px-md py-md text-right text-label-sm font-semibold text-secondary uppercase tracking-wide">Actions</th>
                     </tr>
@@ -188,22 +189,16 @@
                                 <p class="text-label-sm text-secondary mt-xs">{{ $history->time_from }} – {{ $history->time_to }}</p>
                             </td>
 
-                            {{-- Teacher / Student stacked --}}
-                            <td class="px-md py-md align-top">
-                                <div class="flex items-start gap-xs">
-                                    <span class="material-symbols-outlined text-[14px] text-secondary mt-[3px] shrink-0">school</span>
-                                    <div>
-                                        <p class="text-body-sm font-semibold text-on-surface whitespace-nowrap">{{ $history->teacher->user->name }}</p>
-                                        <p class="text-label-sm text-secondary">{{ $history->teacher->teacher_id }}</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-start gap-xs mt-sm">
-                                    <span class="material-symbols-outlined text-[14px] text-secondary mt-[3px] shrink-0">person</span>
-                                    <div>
-                                        <p class="text-body-sm text-on-surface whitespace-nowrap">{{ $history->student->user->name }}</p>
-                                        <p class="text-label-sm text-secondary">{{ $history->student->student_id }}</p>
-                                    </div>
-                                </div>
+                            {{-- Teacher --}}
+                            <td class="px-md py-md align-top whitespace-nowrap">
+                                <p class="text-body-sm font-semibold text-on-surface">{{ $history->teacher->user->name }}</p>
+                                <p class="text-label-sm text-secondary">{{ $history->teacher->teacher_id }}</p>
+                            </td>
+
+                            {{-- Student --}}
+                            <td class="px-md py-md align-top whitespace-nowrap">
+                                <p class="text-body-sm text-on-surface">{{ $history->student->user->name }}</p>
+                                <p class="text-label-sm text-secondary">{{ $history->student->student_id }}</p>
                             </td>
 
                             {{-- Details: lesson, duration, video, note --}}
@@ -261,7 +256,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="px-lg py-2xl text-center">
+                            <td colspan="5" class="px-lg py-2xl text-center">
                                 <div class="flex flex-col items-center gap-md text-secondary">
                                     <span class="material-symbols-outlined text-[48px] opacity-30">history_edu</span>
                                     <p class="text-body-md">No teaching histories found.</p>
