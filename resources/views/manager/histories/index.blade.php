@@ -235,7 +235,7 @@
                                     @endif
                                 </div>
                                 @if($history->note)
-                                    <p class="text-label-sm text-secondary mt-xs line-clamp-2 max-w-xs">{{ $history->note }}</p>
+                                    <p class="text-label-sm text-secondary mt-xs truncate max-w-xs">{{ $history->note }}</p>
                                 @endif
                             </td>
 
