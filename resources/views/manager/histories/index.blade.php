@@ -189,15 +189,15 @@
                                 <p class="text-body-sm text-on-surface">{{ $history->taught_date->format('d/m/Y') }}</p>
                                 <p class="text-label-sm text-secondary">{{ $history->time_from }} – {{ $history->time_to }}</p>
                             </td>
-                            <td class="px-lg py-md">
+                            <td class="px-lg py-md whitespace-nowrap">
                                 <p class="font-semibold text-body-sm text-on-surface">{{ $history->teacher->user->name }}</p>
                                 <p class="text-label-sm text-secondary">{{ $history->teacher->teacher_id }}</p>
                             </td>
-                            <td class="px-lg py-md">
+                            <td class="px-lg py-md whitespace-nowrap">
                                 <p class="font-medium text-body-sm text-on-surface">{{ $history->student->user->name }}</p>
                                 <p class="text-label-sm text-secondary">{{ $history->student->student_id }}</p>
                             </td>
-                            <td class="px-lg py-md text-body-sm text-on-surface">
+                            <td class="px-lg py-md text-body-sm text-on-surface whitespace-nowrap">
                                 {{ 'Lesson: ' . str_pad($history->lesson_number, 2, '0', STR_PAD_LEFT) }}
                             </td>
                             <td class="px-lg py-md">

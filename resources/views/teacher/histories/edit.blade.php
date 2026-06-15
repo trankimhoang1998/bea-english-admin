@@ -13,9 +13,51 @@
         </div>
     </x-slot>
 
+    <script>
+    window._videoUploadData = window._videoUploadData || function() {
+        return {
+            uploading: false,
+            progress: 0,
+            submit(form) {
+                const videoType = form.querySelector('[name="video_type"]');
+                const video = form.querySelector('[name="video"]');
+                const isFileUpload = !videoType || videoType.value === 'file';
+                if (!isFileUpload || !video || !video.files.length) { form.submit(); return; }
+                this.uploading = true;
+                this.progress = 0;
+                const self = this;
+                const xhr = new XMLHttpRequest();
+                xhr.upload.onprogress = e => { if (e.lengthComputable) self.progress = Math.round(e.loaded / e.total * 100); };
+                xhr.upload.onload = () => { self.progress = 100; };
+                xhr.onload = () => {
+                    if (xhr.responseURL !== window.location.href) history.pushState({}, '', xhr.responseURL);
+                    document.open(); document.write(xhr.responseText); document.close();
+                };
+                xhr.onerror = () => { self.uploading = false; alert('Upload failed. Please try again.'); };
+                xhr.open('POST', form.action);
+                xhr.send(new FormData(form));
+            }
+        };
+    };
+    </script>
+
     <div class="max-w-2xl">
         <div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm p-lg">
-            <form method="POST" action="{{ route('teacher.histories.update', $history) }}" enctype="multipart/form-data" class="space-y-lg">
+            @if($errors->any())
+                <div class="flex items-start gap-sm p-md bg-error-container border border-error/20 rounded-xl mb-lg">
+                    <span class="material-symbols-outlined text-error text-[20px] shrink-0 mt-xs">error</span>
+                    <div>
+                        <p class="text-label-md font-semibold text-on-error-container mb-xs">Please fix the following errors:</p>
+                        <ul class="list-disc list-inside text-label-sm text-on-error-container space-y-xs">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            @endif
+            <form method="POST" action="{{ route('teacher.histories.update', $history) }}" enctype="multipart/form-data" class="space-y-lg"
+                  x-data="window._videoUploadData()" @submit.prevent="submit($el)">
                 @csrf @method('PUT')
 
                 {{-- Student --}}
@@ -161,6 +203,27 @@
                        class="text-label-md text-secondary hover:text-on-surface transition-colors">
                         Cancel
                     </a>
+                </div>
+
+                {{-- Video upload progress overlay --}}
+                <div x-show="uploading" x-cloak
+                     class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+                    <div class="bg-surface-container-lowest rounded-2xl shadow-xl p-xl w-full max-w-sm mx-lg">
+                        <div class="flex flex-col items-center text-center">
+                            <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-lg">
+                                <span class="material-symbols-outlined text-primary text-[32px]">cloud_upload</span>
+                            </div>
+                            <p class="font-semibold text-body-md text-on-surface mb-xs"
+                               x-text="progress < 100 ? 'Uploading video...' : 'Processing...'"></p>
+                            <p class="text-label-sm text-secondary mb-lg"
+                               x-text="progress < 100 ? progress + '%' : 'Almost done, please wait'"></p>
+                            <div class="w-full bg-surface-container rounded-full h-2 overflow-hidden">
+                                <div class="bg-primary h-full rounded-full transition-all duration-300"
+                                     :style="'width: ' + progress + '%'"></div>
+                            </div>
+                            <p class="text-label-sm text-secondary/70 mt-md">Do not close this page.</p>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>

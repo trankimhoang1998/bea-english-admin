@@ -29,7 +29,10 @@ class LearningMaterialController extends Controller
         }
 
         if ($studentId = $request->input('student_id')) {
-            $query->whereHas('students', fn($q) => $q->where('students.id', $studentId));
+            $query->where(fn($q) => $q
+                ->whereHas('students', fn($q2) => $q2->where('students.id', $studentId))
+                ->orDoesntHave('students')
+            );
         }
 
         $materials = $query->latest()->paginate(10)->withQueryString();

@@ -82,6 +82,10 @@ class TeachingHistoryManagerController extends Controller
         }
         $data = $request->validate($rules);
 
+        if ($error = $this->checkConflict($data, $history->id)) {
+            return back()->withInput()->withErrors(['time_from' => $error]);
+        }
+
         $videoPath = $history->video_path;
         $videoLink = $history->video_link;
         if ($request->input('video_type') === 'link') {
@@ -94,7 +98,11 @@ class TeachingHistoryManagerController extends Controller
             if ($videoPath) {
                 Storage::disk('local')->delete($videoPath);
             }
-            $videoPath = $request->file('video')->store('videos');
+            $student = Student::with('user')->find($data['student_id']);
+            $safeName = preg_replace('/[\/\\\\:\*\?"<>\|]/', '', $student->user->name);
+            $ext = $request->file('video')->getClientOriginalExtension() ?: 'mp4';
+            $filename = $safeName . ' (' . $student->student_id . ') - Lesson ' . str_pad($history->lesson_number, 2, '0', STR_PAD_LEFT) . '.' . $ext;
+            $videoPath = $request->file('video')->storeAs('videos', $filename);
             $videoLink = null;
         }
 
@@ -129,9 +137,7 @@ class TeachingHistoryManagerController extends Controller
             abort(404);
         }
 
-        $filename = 'Lesson-' . str_pad($history->lesson_number, 2, '0', STR_PAD_LEFT) . '.mp4';
-
-        return Storage::disk('local')->download($history->video_path, $filename);
+        return Storage::disk('local')->download($history->video_path, basename($history->video_path));
     }
 
     public function destroy(TeachingHistory $history): RedirectResponse
@@ -144,5 +150,19 @@ class TeachingHistoryManagerController extends Controller
 
         return redirect()->route('manager.histories.index')
             ->with('success', 'History record deleted successfully.');
+    }
+
+    private function checkConflict(array $data, ?int $excludeId = null): ?string
+    {
+        $exists = TeachingHistory::where('teacher_id', $data['teacher_id'])
+            ->where('taught_date', $data['taught_date'])
+            ->where('time_from', '<', $data['time_to'])
+            ->where('time_to', '>', $data['time_from'])
+            ->when($excludeId, fn($q) => $q->where('id', '!=', $excludeId))
+            ->exists();
+
+        return $exists
+            ? 'This teacher already has a teaching record that overlaps this time slot on this date.'
+            : null;
     }
 }

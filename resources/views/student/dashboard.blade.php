@@ -156,7 +156,7 @@
                 </div>
                 <div>
                     <p class="font-semibold text-body-sm text-on-surface group-hover:text-primary transition-colors">Learning Materials</p>
-                    <p class="text-label-sm text-secondary">Download resources from your teachers</p>
+                    <p class="text-label-sm text-secondary">Download resources</p>
                 </div>
                 <span class="material-symbols-outlined text-secondary text-[18px] ml-auto group-hover:text-primary transition-colors">arrow_forward</span>
             </a>
