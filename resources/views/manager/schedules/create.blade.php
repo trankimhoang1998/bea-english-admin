@@ -13,6 +13,22 @@
         </div>
     </x-slot>
 
+    @php
+        $oldTeacher = $teachers->firstWhere('id', old('teacher_id'));
+        $oldStudent = $students->firstWhere('id', old('student_id'));
+    @endphp
+
+    <script>
+        window._scheduleCreate = {
+            teacherOptions: @json($teachers->map(fn($t) => ['id' => $t->id, 'name' => $t->user->name, 'code' => $t->teacher_id])),
+            studentOptions: @json($students->map(fn($s) => ['id' => $s->id, 'name' => $s->user->name, 'code' => $s->student_id])),
+            teacherInit:  @json($oldTeacher ? $oldTeacher->user->name . ' (' . $oldTeacher->teacher_id . ')' : ''),
+            studentInit:  @json($oldStudent ? $oldStudent->user->name . ' (' . $oldStudent->student_id . ')' : ''),
+            teacherValue: @json(old('teacher_id', '')),
+            studentValue: @json(old('student_id', '')),
+        };
+    </script>
+
     <div class="max-w-2xl">
         <div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm p-lg">
             @if($errors->any())
@@ -33,34 +49,88 @@
                 @csrf
 
                 {{-- Teacher --}}
-                <div class="space-y-xs">
-                    <label for="teacher_id" class="block text-label-md font-semibold text-on-surface">Teacher</label>
-                    <select id="teacher_id" name="teacher_id" required
-                            class="w-full border border-outline-variant rounded-lg px-md py-sm focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all text-body-sm text-on-surface bg-surface-container-lowest">
-                        <option value="">— Select Teacher —</option>
-                        @foreach($teachers as $teacher)
-                            <option value="{{ $teacher->id }}" {{ old('teacher_id') == $teacher->id ? 'selected' : '' }}>
-                                {{ $teacher->user->name }} ({{ $teacher->teacher_id }})
-                            </option>
-                        @endforeach
-                    </select>
+                <div class="space-y-xs"
+                     x-data="{
+                         search: window._scheduleCreate.teacherInit,
+                         value: window._scheduleCreate.teacherValue,
+                         open: false,
+                         options: window._scheduleCreate.teacherOptions,
+                         get filtered() {
+                             if (!this.search) return this.options;
+                             const q = this.search.toLowerCase();
+                             return this.options.filter(o => o.name.toLowerCase().includes(q) || o.code.toLowerCase().includes(q));
+                         },
+                         select(opt) { this.value = opt.id; this.search = opt.name + ' (' + opt.code + ')'; this.open = false; },
+                         clear() { this.value = ''; this.search = ''; }
+                     }">
+                    <label class="block text-label-md font-semibold text-on-surface">Teacher</label>
+                    <input type="hidden" name="teacher_id" :value="value">
+                    <div class="relative">
+                        <input type="text" x-model="search"
+                               @focus="open = true" @click.outside="open = false"
+                               @input="open = true; value = ''"
+                               placeholder="Search by name or ID..."
+                               class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all pr-xl">
+                        <button type="button" x-show="value || search" @click="clear()"
+                                class="absolute right-sm top-1/2 -translate-y-1/2 text-secondary hover:text-on-surface transition-colors">
+                            <span class="material-symbols-outlined text-[16px]">close</span>
+                        </button>
+                        <div x-show="open" x-cloak
+                             class="absolute z-50 w-full mt-xs bg-surface-container-lowest border border-outline-variant rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                            <div x-show="filtered.length === 0" class="px-md py-sm text-label-sm text-secondary">No results</div>
+                            <template x-for="opt in filtered" :key="opt.id">
+                                <div @click="select(opt)"
+                                     class="px-md py-sm hover:bg-surface-container-low cursor-pointer flex items-center justify-between gap-sm">
+                                    <span class="text-body-sm text-on-surface" x-text="opt.name"></span>
+                                    <span class="text-label-sm text-secondary shrink-0" x-text="opt.code"></span>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
                     @error('teacher_id')
                         <p class="text-label-sm text-error">{{ $message }}</p>
                     @enderror
                 </div>
 
                 {{-- Student --}}
-                <div class="space-y-xs">
-                    <label for="student_id" class="block text-label-md font-semibold text-on-surface">Student</label>
-                    <select id="student_id" name="student_id" required
-                            class="w-full border border-outline-variant rounded-lg px-md py-sm focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all text-body-sm text-on-surface bg-surface-container-lowest">
-                        <option value="">— Select Student —</option>
-                        @foreach($students as $student)
-                            <option value="{{ $student->id }}" {{ old('student_id') == $student->id ? 'selected' : '' }}>
-                                {{ $student->user->name }} ({{ $student->student_id }})
-                            </option>
-                        @endforeach
-                    </select>
+                <div class="space-y-xs"
+                     x-data="{
+                         search: window._scheduleCreate.studentInit,
+                         value: window._scheduleCreate.studentValue,
+                         open: false,
+                         options: window._scheduleCreate.studentOptions,
+                         get filtered() {
+                             if (!this.search) return this.options;
+                             const q = this.search.toLowerCase();
+                             return this.options.filter(o => o.name.toLowerCase().includes(q) || o.code.toLowerCase().includes(q));
+                         },
+                         select(opt) { this.value = opt.id; this.search = opt.name + ' (' + opt.code + ')'; this.open = false; },
+                         clear() { this.value = ''; this.search = ''; }
+                     }">
+                    <label class="block text-label-md font-semibold text-on-surface">Student</label>
+                    <input type="hidden" name="student_id" :value="value">
+                    <div class="relative">
+                        <input type="text" x-model="search"
+                               @focus="open = true" @click.outside="open = false"
+                               @input="open = true; value = ''"
+                               placeholder="Search by name or ID..."
+                               class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all pr-xl">
+                        <button type="button" x-show="value || search" @click="clear()"
+                                class="absolute right-sm top-1/2 -translate-y-1/2 text-secondary hover:text-on-surface transition-colors">
+                            <span class="material-symbols-outlined text-[16px]">close</span>
+                        </button>
+                        <div x-show="open" x-cloak
+                             class="absolute z-50 w-full mt-xs bg-surface-container-lowest border border-outline-variant rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                            <div x-show="filtered.length === 0" class="px-md py-sm text-label-sm text-secondary">No results</div>
+                            <template x-for="opt in filtered" :key="opt.id">
+                                <div @click="select(opt)"
+                                     class="px-md py-sm hover:bg-surface-container-low cursor-pointer flex items-center justify-between gap-sm">
+                                    <span class="text-body-sm text-on-surface" x-text="opt.name"></span>
+                                    <span class="text-label-sm text-secondary shrink-0" x-text="opt.code"></span>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
                     @error('student_id')
                         <p class="text-label-sm text-error">{{ $message }}</p>
                     @enderror

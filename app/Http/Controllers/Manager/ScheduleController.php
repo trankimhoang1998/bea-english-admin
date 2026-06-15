@@ -25,6 +25,12 @@ class ScheduleController extends Controller
         if ($request->filled('day_of_week')) {
             $query->where('day_of_week', $request->day_of_week);
         }
+        if ($request->filled('time_from')) {
+            $query->where('start_time', '>=', $request->time_from);
+        }
+        if ($request->filled('time_to')) {
+            $query->where('start_time', '<=', $request->time_to);
+        }
 
         $schedules = $query->orderByRaw("CASE day_of_week
             WHEN 'mon' THEN 1 WHEN 'tue' THEN 2 WHEN 'wed' THEN 3
@@ -58,6 +64,10 @@ class ScheduleController extends Controller
             'end_time'    => ['required', 'date_format:H:i', 'after:start_time'],
         ]);
 
+        if ($error = $this->checkConflict($data)) {
+            return back()->withInput()->withErrors(['start_time' => $error]);
+        }
+
         Schedule::create($data);
 
         return redirect()->route('manager.schedules.index')
@@ -83,10 +93,33 @@ class ScheduleController extends Controller
             'end_time'    => ['required', 'date_format:H:i', 'after:start_time'],
         ]);
 
+        if ($error = $this->checkConflict($data, $schedule->id)) {
+            return back()->withInput()->withErrors(['start_time' => $error]);
+        }
+
         $schedule->update($data);
 
         return redirect()->route('manager.schedules.index')
             ->with('success', 'Schedule updated successfully.');
+    }
+
+    private function checkConflict(array $data, ?int $excludeId = null): ?string
+    {
+        $base = fn(string $col, mixed $val) => Schedule::where($col, $val)
+            ->where('day_of_week', $data['day_of_week'])
+            ->where('start_time', '<', $data['end_time'])
+            ->where('end_time', '>', $data['start_time'])
+            ->when($excludeId, fn($q) => $q->where('id', '!=', $excludeId));
+
+        if ($base('teacher_id', $data['teacher_id'])->exists()) {
+            return 'This teacher already has a schedule that overlaps this time slot on this day.';
+        }
+
+        if ($base('student_id', $data['student_id'])->exists()) {
+            return 'This student already has a schedule that overlaps this time slot on this day.';
+        }
+
+        return null;
     }
 
     public function destroy(Schedule $schedule): RedirectResponse

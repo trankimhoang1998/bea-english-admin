@@ -48,16 +48,22 @@ class TeachingHistoryController extends Controller
             $query->where('student_id', $request->student_id);
         }
         if ($request->filled('date_from')) {
-            $query->whereDate('taught_at', '>=', $request->date_from);
+            $query->where('taught_date', '>=', $request->date_from);
         }
         if ($request->filled('date_to')) {
-            $query->whereDate('taught_at', '<=', $request->date_to);
+            $query->where('taught_date', '<=', $request->date_to);
+        }
+        if ($request->filled('time_from')) {
+            $query->where('time_from', '>=', $request->time_from);
+        }
+        if ($request->filled('time_to')) {
+            $query->where('time_to', '<=', $request->time_to);
         }
         if ($request->filled('duration')) {
             $query->where('duration', $request->duration);
         }
 
-        $histories = $query->latest('taught_at')->paginate(10)->withQueryString();
+        $histories = $query->orderByDesc('taught_date')->orderByDesc('time_from')->paginate(10)->withQueryString();
         $students  = Student::whereHas('schedules', fn($q) => $q->where('teacher_id', $teacher->id))
             ->with('user')->get();
 
@@ -80,11 +86,13 @@ class TeachingHistoryController extends Controller
         $teacher = $this->teacher();
 
         $data = $request->validate([
-            'student_id' => ['required', Rule::exists('schedules', 'student_id')->where('teacher_id', $this->teacher()->id)],
-            'taught_at'  => ['required', 'date'],
-            'duration'   => ['required', 'in:25,50'],
-            'note'       => ['nullable', 'string', 'max:2000'],
-            'video'      => ['nullable', 'file', 'mimetypes:video/mp4,video/webm,video/quicktime', 'max:512000'],
+            'student_id' => ['required', Rule::exists('schedules', 'student_id')->where('teacher_id', $teacher->id)],
+            'taught_date' => ['required', 'date'],
+            'time_from'   => ['required', 'date_format:H:i'],
+            'time_to'     => ['required', 'date_format:H:i', 'after:time_from'],
+            'duration'    => ['required', 'in:25,50'],
+            'note'        => ['nullable', 'string', 'max:2000'],
+            'video'       => ['nullable', 'file', 'mimetypes:video/mp4,video/webm,video/quicktime', 'max:512000'],
         ]);
 
         $lessonNumber = TeachingHistory::where('student_id', $data['student_id'])->count() + 1;
@@ -98,7 +106,9 @@ class TeachingHistoryController extends Controller
             'teacher_id'    => $teacher->id,
             'student_id'    => $data['student_id'],
             'lesson_number' => $lessonNumber,
-            'taught_at'     => $data['taught_at'],
+            'taught_date'   => $data['taught_date'],
+            'time_from'     => $data['time_from'],
+            'time_to'       => $data['time_to'],
             'duration'      => $data['duration'],
             'note'          => $data['note'] ?? null,
             'video_path'    => $videoPath,
@@ -143,11 +153,13 @@ class TeachingHistoryController extends Controller
         }
 
         $data = $request->validate([
-            'student_id' => ['required', Rule::exists('schedules', 'student_id')->where('teacher_id', $this->teacher()->id)],
-            'taught_at'  => ['required', 'date'],
-            'duration'   => ['required', 'in:25,50'],
-            'note'       => ['nullable', 'string', 'max:2000'],
-            'video'      => ['nullable', 'file', 'mimetypes:video/mp4,video/webm,video/quicktime', 'max:512000'],
+            'student_id'  => ['required', Rule::exists('schedules', 'student_id')->where('teacher_id', $this->teacher()->id)],
+            'taught_date' => ['required', 'date'],
+            'time_from'   => ['required', 'date_format:H:i'],
+            'time_to'     => ['required', 'date_format:H:i', 'after:time_from'],
+            'duration'    => ['required', 'in:25,50'],
+            'note'        => ['nullable', 'string', 'max:2000'],
+            'video'       => ['nullable', 'file', 'mimetypes:video/mp4,video/webm,video/quicktime', 'max:512000'],
         ]);
 
         $videoPath = $history->video_path;
@@ -159,15 +171,32 @@ class TeachingHistoryController extends Controller
         }
 
         $history->update([
-            'student_id' => $data['student_id'],
-            'taught_at'  => $data['taught_at'],
-            'duration'   => $data['duration'],
-            'note'       => $data['note'] ?? null,
-            'video_path' => $videoPath,
+            'student_id'  => $data['student_id'],
+            'taught_date' => $data['taught_date'],
+            'time_from'   => $data['time_from'],
+            'time_to'     => $data['time_to'],
+            'duration'    => $data['duration'],
+            'note'        => $data['note'] ?? null,
+            'video_path'  => $videoPath,
         ]);
 
         return redirect()->route('teacher.histories.index')
             ->with('success', 'Teaching history updated successfully.');
+    }
+
+    public function downloadVideo(TeachingHistory $history)
+    {
+        if ($history->teacher_id !== $this->teacher()->id) {
+            abort(403);
+        }
+
+        if (!$history->video_path) {
+            abort(404);
+        }
+
+        $filename = 'Lesson-' . str_pad($history->lesson_number, 2, '0', STR_PAD_LEFT) . '.mp4';
+
+        return Storage::disk('local')->download($history->video_path, $filename);
     }
 
     public function destroy(TeachingHistory $history): RedirectResponse

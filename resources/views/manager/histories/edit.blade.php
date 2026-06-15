@@ -1,29 +1,27 @@
 <x-app-layout>
-    <x-slot name="title">Edit Schedule | BEA English</x-slot>
+    <x-slot name="title">Edit Teaching Record | BEA English</x-slot>
     <x-slot name="header">
         <div class="flex items-center gap-md">
-            <a href="{{ route('manager.schedules.index') }}"
+            <a href="{{ route('manager.histories.show', $history) }}"
                class="text-secondary hover:text-on-surface transition-colors">
                 <span class="material-symbols-outlined text-[20px]">arrow_back</span>
             </a>
             <div>
-                <h1 class="font-bold text-headline-sm text-on-surface">Edit Schedule</h1>
-                <p class="text-label-sm text-secondary mt-xs">
-                    {{ $schedule->teacher->user->name }} &rarr; {{ $schedule->student->user->name }}
-                </p>
+                <h1 class="font-bold text-headline-sm text-on-surface">Edit Teaching Record</h1>
+                <p class="text-label-sm text-secondary mt-xs">{{ 'Lesson: ' . str_pad($history->lesson_number, 2, '0', STR_PAD_LEFT) }}</p>
             </div>
         </div>
     </x-slot>
 
     @php
-        $activeTeacherId = old('teacher_id', $schedule->teacher_id);
-        $activeStudentId = old('student_id', $schedule->student_id);
+        $activeTeacherId = old('teacher_id', $history->teacher_id);
+        $activeStudentId = old('student_id', $history->student_id);
         $activeTeacher   = $teachers->firstWhere('id', $activeTeacherId);
         $activeStudent   = $students->firstWhere('id', $activeStudentId);
     @endphp
 
     <script>
-        window._scheduleEdit = {
+        window._historyEdit = {
             teacherOptions: @json($teachers->map(fn($t) => ['id' => $t->id, 'name' => $t->user->name, 'code' => $t->teacher_id])),
             studentOptions: @json($students->map(fn($s) => ['id' => $s->id, 'name' => $s->user->name, 'code' => $s->student_id])),
             teacherInit:  @json($activeTeacher ? $activeTeacher->user->name . ' (' . $activeTeacher->teacher_id . ')' : ''),
@@ -49,16 +47,16 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('manager.schedules.update', $schedule) }}" class="space-y-lg">
+            <form method="POST" action="{{ route('manager.histories.update', $history) }}" enctype="multipart/form-data" class="space-y-lg">
                 @csrf @method('PUT')
 
                 {{-- Teacher --}}
                 <div class="space-y-xs"
                      x-data="{
-                         search: window._scheduleEdit.teacherInit,
-                         value: window._scheduleEdit.teacherValue,
+                         search: window._historyEdit.teacherInit,
+                         value: window._historyEdit.teacherValue,
                          open: false,
-                         options: window._scheduleEdit.teacherOptions,
+                         options: window._historyEdit.teacherOptions,
                          get filtered() {
                              if (!this.search) return this.options;
                              const q = this.search.toLowerCase();
@@ -99,10 +97,10 @@
                 {{-- Student --}}
                 <div class="space-y-xs"
                      x-data="{
-                         search: window._scheduleEdit.studentInit,
-                         value: window._scheduleEdit.studentValue,
+                         search: window._historyEdit.studentInit,
+                         value: window._historyEdit.studentValue,
                          open: false,
-                         options: window._scheduleEdit.studentOptions,
+                         options: window._historyEdit.studentOptions,
                          get filtered() {
                              if (!this.search) return this.options;
                              const q = this.search.toLowerCase();
@@ -140,52 +138,108 @@
                     @enderror
                 </div>
 
-                {{-- Day of Week --}}
+                {{-- Lesson number (read-only) --}}
                 <div class="space-y-xs">
-                    <label for="day_of_week" class="block text-label-md font-semibold text-on-surface">Day of Week</label>
-                    <select id="day_of_week" name="day_of_week" required
-                            class="w-full border border-outline-variant rounded-lg px-md py-sm focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all text-body-sm text-on-surface bg-surface-container-lowest">
-                        @foreach(['mon' => 'Monday', 'tue' => 'Tuesday', 'wed' => 'Wednesday', 'thu' => 'Thursday', 'fri' => 'Friday', 'sat' => 'Saturday', 'sun' => 'Sunday'] as $val => $label)
-                            <option value="{{ $val }}"
-                                {{ old('day_of_week', $schedule->day_of_week) === $val ? 'selected' : '' }}>
-                                {{ $label }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('day_of_week')
+                    <label class="block text-label-md font-semibold text-on-surface">Lesson Number</label>
+                    <div class="px-md py-sm bg-surface-container border border-outline-variant rounded-lg text-body-sm text-secondary">
+                        {{ 'Lesson: ' . str_pad($history->lesson_number, 2, '0', STR_PAD_LEFT) }}
+                    </div>
+                </div>
+
+                {{-- Date --}}
+                <div class="space-y-xs">
+                    <label for="taught_date" class="block text-label-md font-semibold text-on-surface">Date</label>
+                    <input id="taught_date" name="taught_date" type="date"
+                           value="{{ old('taught_date', $history->taught_date->format('Y-m-d')) }}" required
+                           class="w-full border border-outline-variant rounded-lg px-md py-sm focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all text-body-sm text-on-surface bg-surface-container-lowest">
+                    @error('taught_date')
                         <p class="text-label-sm text-error">{{ $message }}</p>
                     @enderror
                 </div>
 
-                {{-- Time --}}
+                {{-- Time From / Time To --}}
                 <div class="grid grid-cols-2 gap-md">
                     <div class="space-y-xs">
-                        <label for="start_time" class="block text-label-md font-semibold text-on-surface">Start Time</label>
-                        <input id="start_time" name="start_time" type="time"
-                               value="{{ old('start_time', substr($schedule->start_time, 0, 5)) }}" required
+                        <label for="time_from" class="block text-label-md font-semibold text-on-surface">Time From</label>
+                        <input id="time_from" name="time_from" type="time"
+                               value="{{ old('time_from', $history->time_from) }}" required
                                class="w-full border border-outline-variant rounded-lg px-md py-sm focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all text-body-sm text-on-surface bg-surface-container-lowest">
-                        @error('start_time')
+                        @error('time_from')
                             <p class="text-label-sm text-error">{{ $message }}</p>
                         @enderror
                     </div>
                     <div class="space-y-xs">
-                        <label for="end_time" class="block text-label-md font-semibold text-on-surface">End Time</label>
-                        <input id="end_time" name="end_time" type="time"
-                               value="{{ old('end_time', substr($schedule->end_time, 0, 5)) }}" required
+                        <label for="time_to" class="block text-label-md font-semibold text-on-surface">Time To</label>
+                        <input id="time_to" name="time_to" type="time"
+                               value="{{ old('time_to', $history->time_to) }}" required
                                class="w-full border border-outline-variant rounded-lg px-md py-sm focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all text-body-sm text-on-surface bg-surface-container-lowest">
-                        @error('end_time')
+                        @error('time_to')
                             <p class="text-label-sm text-error">{{ $message }}</p>
                         @enderror
                     </div>
+                </div>
+
+                {{-- Duration --}}
+                <div class="space-y-xs">
+                    <label for="duration" class="block text-label-md font-semibold text-on-surface">Duration</label>
+                    <select id="duration" name="duration" required
+                            class="w-full border border-outline-variant rounded-lg px-md py-sm focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all text-body-sm text-on-surface bg-surface-container-lowest">
+                        <option value="25" {{ old('duration', $history->duration) == 25 ? 'selected' : '' }}>25 min</option>
+                        <option value="50" {{ old('duration', $history->duration) == 50 ? 'selected' : '' }}>50 min</option>
+                    </select>
+                    @error('duration')
+                        <p class="text-label-sm text-error">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                {{-- Note/Homework --}}
+                <div class="space-y-xs">
+                    <label for="note" class="block text-label-md font-semibold text-on-surface">
+                        Note/Homework <span class="text-secondary font-normal">(optional)</span>
+                    </label>
+                    <textarea id="note" name="note" rows="5"
+                              class="w-full border border-outline-variant rounded-lg px-md py-sm focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all text-body-sm text-on-surface bg-surface-container-lowest resize-y">{{ old('note', $history->note) }}</textarea>
+                    @error('note')
+                        <p class="text-label-sm text-error">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                {{-- Video --}}
+                <div class="space-y-xs">
+                    <label for="video" class="block text-label-md font-semibold text-on-surface">Video Log</label>
+                    @if($history->video_path)
+                        <div class="flex items-center gap-sm p-sm bg-secondary-container/30 border border-secondary-container rounded-lg mb-sm">
+                            <span class="material-symbols-outlined text-primary text-[18px]">videocam</span>
+                            <div class="flex-1 text-label-sm text-on-surface">Video already uploaded. Upload a new file to replace it.</div>
+                            <a href="{{ route('manager.histories.video', $history) }}"
+                               class="inline-flex items-center gap-xs text-label-sm text-primary font-medium hover:underline shrink-0">
+                                <span class="material-symbols-outlined text-[15px]">download</span>
+                                Download
+                            </a>
+                        </div>
+                    @endif
+                    <div class="border border-dashed border-outline-variant rounded-xl p-md">
+                        <input id="video" name="video" type="file" accept="video/*"
+                               class="block w-full text-body-sm text-secondary
+                                      file:mr-md file:py-xs file:px-md
+                                      file:rounded-lg file:border-0
+                                      file:text-label-sm file:font-semibold
+                                      file:bg-surface-container file:text-secondary
+                                      hover:file:bg-surface-container-high cursor-pointer">
+                        <p class="mt-xs text-label-sm text-secondary">Accepted: MP4, WebM, MOV &mdash; max 500 MB</p>
+                    </div>
+                    @error('video')
+                        <p class="text-label-sm text-error">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div class="flex items-center gap-md pt-sm border-t border-outline-variant">
                     <button type="submit"
                             class="inline-flex items-center gap-sm bg-primary-container text-on-primary font-label-md px-lg py-sm rounded-lg hover:brightness-110 transition-all active:scale-95">
                         <span class="material-symbols-outlined text-[18px]">save</span>
-                        Update Schedule
+                        Update Record
                     </button>
-                    <a href="{{ route('manager.schedules.index') }}"
+                    <a href="{{ route('manager.histories.show', $history) }}"
                        class="text-label-md text-secondary hover:text-on-surface transition-colors">
                         Cancel
                     </a>

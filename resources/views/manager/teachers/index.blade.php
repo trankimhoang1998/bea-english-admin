@@ -14,6 +14,33 @@
         </div>
     </x-slot>
 
+    {{-- Search --}}
+    <form method="GET" action="{{ route('manager.teachers.index') }}"
+          class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm p-md mb-md">
+        <div class="flex gap-sm">
+            <div class="relative flex-1">
+                <span class="absolute left-sm top-1/2 -translate-y-1/2 text-secondary pointer-events-none">
+                    <span class="material-symbols-outlined text-[18px]">search</span>
+                </span>
+                <input type="text" name="search" value="{{ request('search') }}"
+                       placeholder="Search by name or teacher ID..."
+                       class="w-full border border-outline-variant rounded-lg pl-xl pr-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all">
+            </div>
+            <button type="submit"
+                    class="inline-flex items-center gap-xs bg-primary-container text-on-primary font-label-md px-md py-sm rounded-lg hover:brightness-110 transition-all active:scale-95 shrink-0">
+                <span class="material-symbols-outlined text-[16px]">search</span>
+                Search
+            </button>
+            @if(request('search'))
+                <a href="{{ route('manager.teachers.index') }}"
+                   class="inline-flex items-center px-sm py-sm text-secondary hover:text-on-surface transition-colors shrink-0"
+                   title="Clear search">
+                    <span class="material-symbols-outlined text-[18px]">close</span>
+                </a>
+            @endif
+        </div>
+    </form>
+
     <div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full">
@@ -71,12 +98,18 @@
                             <td colspan="5" class="px-lg py-2xl text-center">
                                 <div class="flex flex-col items-center gap-md text-secondary">
                                     <span class="material-symbols-outlined text-[48px] opacity-30">person_off</span>
+                                    @if(request('search'))
+                                    <p class="text-body-md">No teachers match "{{ request('search') }}".</p>
+                                    <a href="{{ route('manager.teachers.index') }}"
+                                       class="text-label-md text-primary hover:underline">Clear search</a>
+                                @else
                                     <p class="text-body-md">No teachers found.</p>
                                     <a href="{{ route('manager.teachers.create') }}"
                                        class="inline-flex items-center gap-sm bg-primary-container text-on-primary font-label-md px-md py-sm rounded-lg hover:brightness-110 transition-all">
                                         <span class="material-symbols-outlined text-[16px]">add</span>
                                         Add first teacher
                                     </a>
+                                @endif
                                 </div>
                             </td>
                         </tr>

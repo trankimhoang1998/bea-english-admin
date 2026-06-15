@@ -44,15 +44,37 @@
                     </div>
                 </div>
 
-                {{-- Date & Time --}}
+                {{-- Date --}}
                 <div class="space-y-xs">
-                    <label for="taught_at" class="block text-label-md font-semibold text-on-surface">Date &amp; Time</label>
-                    <input id="taught_at" name="taught_at" type="datetime-local"
-                           value="{{ old('taught_at', $history->taught_at->format('Y-m-d\TH:i')) }}" required
+                    <label for="taught_date" class="block text-label-md font-semibold text-on-surface">Date</label>
+                    <input id="taught_date" name="taught_date" type="date"
+                           value="{{ old('taught_date', $history->taught_date->format('Y-m-d')) }}" required
                            class="w-full border border-outline-variant rounded-lg px-md py-sm focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all text-body-sm text-on-surface bg-surface-container-lowest">
-                    @error('taught_at')
+                    @error('taught_date')
                         <p class="text-label-sm text-error">{{ $message }}</p>
                     @enderror
+                </div>
+
+                {{-- Time From / Time To --}}
+                <div class="grid grid-cols-2 gap-md">
+                    <div class="space-y-xs">
+                        <label for="time_from" class="block text-label-md font-semibold text-on-surface">Time From</label>
+                        <input id="time_from" name="time_from" type="time"
+                               value="{{ old('time_from', $history->time_from) }}" required
+                               class="w-full border border-outline-variant rounded-lg px-md py-sm focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all text-body-sm text-on-surface bg-surface-container-lowest">
+                        @error('time_from')
+                            <p class="text-label-sm text-error">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="space-y-xs">
+                        <label for="time_to" class="block text-label-md font-semibold text-on-surface">Time To</label>
+                        <input id="time_to" name="time_to" type="time"
+                               value="{{ old('time_to', $history->time_to) }}" required
+                               class="w-full border border-outline-variant rounded-lg px-md py-sm focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all text-body-sm text-on-surface bg-surface-container-lowest">
+                        @error('time_to')
+                            <p class="text-label-sm text-error">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
 
                 {{-- Duration --}}
@@ -68,12 +90,12 @@
                     @enderror
                 </div>
 
-                {{-- Note --}}
+                {{-- Note/Homework --}}
                 <div class="space-y-xs">
                     <label for="note" class="block text-label-md font-semibold text-on-surface">
-                        Note <span class="text-secondary font-normal">(optional)</span>
+                        Note/Homework <span class="text-secondary font-normal">(optional)</span>
                     </label>
-                    <textarea id="note" name="note" rows="3"
+                    <textarea id="note" name="note" rows="5"
                               class="w-full border border-outline-variant rounded-lg px-md py-sm focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all text-body-sm text-on-surface bg-surface-container-lowest resize-y">{{ old('note', $history->note) }}</textarea>
                     @error('note')
                         <p class="text-label-sm text-error">{{ $message }}</p>
@@ -86,7 +108,12 @@
                     @if($history->video_path)
                         <div class="flex items-center gap-sm p-sm bg-secondary-container/30 border border-secondary-container rounded-lg mb-sm">
                             <span class="material-symbols-outlined text-primary text-[18px]">videocam</span>
-                            <p class="text-label-sm text-on-surface">Video already uploaded. Upload a new file to replace it.</p>
+                            <div class="flex-1 text-label-sm text-on-surface">Video already uploaded. Upload a new file to replace it.</div>
+                            <a href="{{ route('teacher.histories.video', $history) }}"
+                               class="inline-flex items-center gap-xs text-label-sm text-primary font-medium hover:underline shrink-0">
+                                <span class="material-symbols-outlined text-[15px]">download</span>
+                                Download
+                            </a>
                         </div>
                     @endif
                     <div class="border border-dashed border-outline-variant rounded-xl p-md">

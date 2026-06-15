@@ -11,54 +11,90 @@ class ScheduleSeeder extends Seeder
 {
     public function run(): void
     {
-        // Resolve teacher IDs by teacher_id string
-        $t = fn(string $id) => Teacher::where('teacher_id', $id)->value('id');
-
-        // Resolve student IDs by student_id string
-        $s = fn(string $id) => Student::where('student_id', $id)->value('id');
+        $tIds = Teacher::pluck('id', 'teacher_id');
+        $sIds = Student::pluck('id', 'student_id');
 
         $schedules = [
-            // Ann Oliver (TEA101) — Mai Huong (STU1011)
-            ['teacher_id' => $t('TEA101'), 'student_id' => $s('STU1011'), 'day_of_week' => 'mon', 'start_time' => '18:00', 'end_time' => '18:25'],
-            ['teacher_id' => $t('TEA101'), 'student_id' => $s('STU1011'), 'day_of_week' => 'mon', 'start_time' => '18:30', 'end_time' => '18:55'],
-            ['teacher_id' => $t('TEA101'), 'student_id' => $s('STU1011'), 'day_of_week' => 'wed', 'start_time' => '18:00', 'end_time' => '18:25'],
-            ['teacher_id' => $t('TEA101'), 'student_id' => $s('STU1011'), 'day_of_week' => 'thu', 'start_time' => '19:00', 'end_time' => '19:25'],
-            ['teacher_id' => $t('TEA101'), 'student_id' => $s('STU1011'), 'day_of_week' => 'thu', 'start_time' => '19:30', 'end_time' => '19:55'],
+            // ── TEA101 · Ann Oliver ─────────────────────────────────────────
+            // STU1011 · Mai Huong — 50-min, Mon & Wed 18:00–18:50
+            ['TEA101', 'STU1011', 'mon', '18:00', '18:50'],
+            ['TEA101', 'STU1011', 'wed', '18:00', '18:50'],
+            // STU1014 · Kim Hoang — 25-min, Tue & Thu 19:00–19:25
+            ['TEA101', 'STU1014', 'tue', '19:00', '19:25'],
+            ['TEA101', 'STU1014', 'thu', '19:00', '19:25'],
+            // STU1015 · Lan Nguyen — 25-min, Tue 18:00–18:25 & Fri 18:00–18:25
+            ['TEA101', 'STU1015', 'tue', '18:00', '18:25'],
+            ['TEA101', 'STU1015', 'fri', '18:00', '18:25'],
+            // STU1016 · Minh Tran — 25-min, Wed 19:00–19:25 & Fri 18:30–18:55
+            ['TEA101', 'STU1016', 'wed', '19:00', '19:25'],
+            ['TEA101', 'STU1016', 'fri', '18:30', '18:55'],
 
-            // Ann Oliver (TEA101) — Kim Hoang (STU1014)
-            ['teacher_id' => $t('TEA101'), 'student_id' => $s('STU1014'), 'day_of_week' => 'tue', 'start_time' => '19:00', 'end_time' => '19:25'],
-            ['teacher_id' => $t('TEA101'), 'student_id' => $s('STU1014'), 'day_of_week' => 'sat', 'start_time' => '18:30', 'end_time' => '18:55'],
+            // ── TEA102 · Bob Smith ──────────────────────────────────────────
+            // STU1017 · Hoa Le — 25-min, Mon & Thu 17:00–17:25
+            ['TEA102', 'STU1017', 'mon', '17:00', '17:25'],
+            ['TEA102', 'STU1017', 'thu', '17:00', '17:25'],
+            // STU1018 · Nam Pham — 25-min, Tue & Fri 17:00–17:25
+            ['TEA102', 'STU1018', 'tue', '17:00', '17:25'],
+            ['TEA102', 'STU1018', 'fri', '17:00', '17:25'],
+            // STU1022 · Bao Nguyen — 25-min, Mon 17:30–17:55 & Wed 17:00–17:25
+            ['TEA102', 'STU1022', 'mon', '17:30', '17:55'],
+            ['TEA102', 'STU1022', 'wed', '17:00', '17:25'],
+            // STU1025 · Thu Bui — 25-min, Thu 17:30–17:55 & Sat 09:00–09:25
+            ['TEA102', 'STU1025', 'thu', '17:30', '17:55'],
+            ['TEA102', 'STU1025', 'sat', '09:00', '09:25'],
 
-            // Ann Oliver (TEA101) — Lan Nguyen (STU1015)
-            ['teacher_id' => $t('TEA101'), 'student_id' => $s('STU1015'), 'day_of_week' => 'tue', 'start_time' => '18:00', 'end_time' => '18:25'],
-            ['teacher_id' => $t('TEA101'), 'student_id' => $s('STU1015'), 'day_of_week' => 'fri', 'start_time' => '18:00', 'end_time' => '18:25'],
+            // ── TEA103 · Carol White ────────────────────────────────────────
+            // STU1019 · Linh Dao — 25-min, Mon & Wed 20:00–20:25
+            ['TEA103', 'STU1019', 'mon', '20:00', '20:25'],
+            ['TEA103', 'STU1019', 'wed', '20:00', '20:25'],
+            // STU1020 · Tuan Vo — 25-min, Tue 20:00–20:25 & Sat 09:00–09:25
+            ['TEA103', 'STU1020', 'tue', '20:00', '20:25'],
+            ['TEA103', 'STU1020', 'sat', '09:00', '09:25'],
+            // STU1023 · Yen Truong — 25-min, Thu & Fri 20:00–20:25
+            ['TEA103', 'STU1023', 'thu', '20:00', '20:25'],
+            ['TEA103', 'STU1023', 'fri', '20:00', '20:25'],
 
-            // Ann Oliver (TEA101) — Minh Tran (STU1016)
-            ['teacher_id' => $t('TEA101'), 'student_id' => $s('STU1016'), 'day_of_week' => 'wed', 'start_time' => '19:00', 'end_time' => '19:25'],
-            ['teacher_id' => $t('TEA101'), 'student_id' => $s('STU1016'), 'day_of_week' => 'fri', 'start_time' => '18:30', 'end_time' => '18:55'],
+            // ── TEA104 · David Brown ────────────────────────────────────────
+            // STU1021 · Ha Dang — 50-min, Sun 09:00–09:50
+            ['TEA104', 'STU1021', 'sun', '09:00', '09:50'],
+            // STU1024 · Duc Phan — 25-min, Mon & Wed 15:00–15:25
+            ['TEA104', 'STU1024', 'mon', '15:00', '15:25'],
+            ['TEA104', 'STU1024', 'wed', '15:00', '15:25'],
+            // STU1026 · Long Nguyen — 50-min, Tue & Thu 15:00–15:50
+            ['TEA104', 'STU1026', 'tue', '15:00', '15:50'],
+            ['TEA104', 'STU1026', 'thu', '15:00', '15:50'],
 
-            // Bob Smith (TEA102) — Hoa Le (STU1017)
-            ['teacher_id' => $t('TEA102'), 'student_id' => $s('STU1017'), 'day_of_week' => 'mon', 'start_time' => '17:00', 'end_time' => '17:25'],
-            ['teacher_id' => $t('TEA102'), 'student_id' => $s('STU1017'), 'day_of_week' => 'thu', 'start_time' => '17:00', 'end_time' => '17:25'],
+            // ── TEA105 · Emma Davis ─────────────────────────────────────────
+            // STU1027 · Phuong Le — 50-min, Mon & Thu 16:00–16:50
+            ['TEA105', 'STU1027', 'mon', '16:00', '16:50'],
+            ['TEA105', 'STU1027', 'thu', '16:00', '16:50'],
+            // STU1028 · Quang Tran — 25-min, Tue & Fri 16:00–16:25
+            ['TEA105', 'STU1028', 'tue', '16:00', '16:25'],
+            ['TEA105', 'STU1028', 'fri', '16:00', '16:25'],
+            // STU1029 · Van Hoang — 25-min, Wed 16:00–16:25 & Sat 10:00–10:25
+            ['TEA105', 'STU1029', 'wed', '16:00', '16:25'],
+            ['TEA105', 'STU1029', 'sat', '10:00', '10:25'],
 
-            // Bob Smith (TEA102) — Nam Pham (STU1018)
-            ['teacher_id' => $t('TEA102'), 'student_id' => $s('STU1018'), 'day_of_week' => 'tue', 'start_time' => '17:00', 'end_time' => '17:25'],
-            ['teacher_id' => $t('TEA102'), 'student_id' => $s('STU1018'), 'day_of_week' => 'fri', 'start_time' => '17:00', 'end_time' => '17:25'],
-
-            // Carol White (TEA103) — Linh Dao (STU1019)
-            ['teacher_id' => $t('TEA103'), 'student_id' => $s('STU1019'), 'day_of_week' => 'mon', 'start_time' => '20:00', 'end_time' => '20:25'],
-            ['teacher_id' => $t('TEA103'), 'student_id' => $s('STU1019'), 'day_of_week' => 'wed', 'start_time' => '20:00', 'end_time' => '20:25'],
-
-            // Carol White (TEA103) — Tuan Vo (STU1020)
-            ['teacher_id' => $t('TEA103'), 'student_id' => $s('STU1020'), 'day_of_week' => 'tue', 'start_time' => '20:00', 'end_time' => '20:25'],
-            ['teacher_id' => $t('TEA103'), 'student_id' => $s('STU1020'), 'day_of_week' => 'sat', 'start_time' => '09:00', 'end_time' => '09:25'],
-
-            // David Brown (TEA104) — Ha Dang (STU1021)
-            ['teacher_id' => $t('TEA104'), 'student_id' => $s('STU1021'), 'day_of_week' => 'sun', 'start_time' => '09:00', 'end_time' => '09:50'],
+            // ── TEA106 · Frank Wilson ───────────────────────────────────────
+            // STU1030 · Anh Pham — 50-min, Mon & Wed 14:00–14:50
+            ['TEA106', 'STU1030', 'mon', '14:00', '14:50'],
+            ['TEA106', 'STU1030', 'wed', '14:00', '14:50'],
+            // STU1031 · Dung Dao — 25-min, Tue & Thu 14:00–14:25
+            ['TEA106', 'STU1031', 'tue', '14:00', '14:25'],
+            ['TEA106', 'STU1031', 'thu', '14:00', '14:25'],
+            // STU1032 · Thanh Vo — 50-min, Fri 14:00–14:50 & Sun 10:00–10:50
+            ['TEA106', 'STU1032', 'fri', '14:00', '14:50'],
+            ['TEA106', 'STU1032', 'sun', '10:00', '10:50'],
         ];
 
-        foreach ($schedules as $row) {
-            Schedule::create($row);
+        foreach ($schedules as [$tea, $stu, $day, $start, $end]) {
+            Schedule::create([
+                'teacher_id'  => $tIds[$tea],
+                'student_id'  => $sIds[$stu],
+                'day_of_week' => $day,
+                'start_time'  => $start,
+                'end_time'    => $end,
+            ]);
         }
     }
 }

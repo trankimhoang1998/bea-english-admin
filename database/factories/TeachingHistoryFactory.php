@@ -19,10 +19,12 @@ class TeachingHistoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'teacher_id' => Teacher::factory(),
-            'student_id' => Student::factory(),
-            'lesson'     => 'Unit ' . fake()->numberBetween(1, 30) . ': ' . fake()->sentence(3),
-            'taught_at'  => fake()->dateTimeBetween('-6 months', 'now'),
+            'teacher_id'    => Teacher::factory(),
+            'student_id'    => Student::factory(),
+            'lesson_number' => fake()->numberBetween(1, 30),
+            'taught_date'   => fake()->dateTimeBetween('-6 months', 'now')->format('Y-m-d'),
+            'time_from'   => fake()->time('H:i'),
+            'time_to'     => fake()->time('H:i'),
             'duration'   => fake()->randomElement([25, 50]),
             'video_path' => null,
             'note'       => fake()->optional(0.6)->sentence(),

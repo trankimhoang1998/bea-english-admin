@@ -16,7 +16,9 @@ return new class extends Migration
             $table->foreignId('teacher_id')->constrained()->restrictOnDelete();
             $table->foreignId('student_id')->constrained()->restrictOnDelete();
             $table->unsignedSmallInteger('lesson_number');
-            $table->dateTime('taught_at');
+            $table->date('taught_date');
+            $table->time('time_from');
+            $table->time('time_to');
             $table->unsignedSmallInteger('duration');
             $table->string('video_path')->nullable();
             $table->text('note')->nullable();

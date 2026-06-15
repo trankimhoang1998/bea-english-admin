@@ -16,20 +16,10 @@
 
     {{-- Filters --}}
     <form method="GET" action="{{ route('teacher.histories.index') }}"
-          class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm p-md mb-md">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-md items-end">
-            <div class="space-y-xs">
-                <label class="block text-label-sm font-semibold text-secondary uppercase tracking-wide">Student</label>
-                <select name="student_id"
-                        class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all">
-                    <option value="">All Students</option>
-                    @foreach($students as $student)
-                        <option value="{{ $student->id }}" {{ request('student_id') == $student->id ? 'selected' : '' }}>
-                            {{ $student->user->name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
+          class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm p-md mb-md space-y-md">
+
+        {{-- Row 1: Date From, Date To, Time From, Time To --}}
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-md">
             <div class="space-y-xs">
                 <label class="block text-label-sm font-semibold text-secondary uppercase tracking-wide">Date From</label>
                 <input type="date" name="date_from" value="{{ request('date_from') }}"
@@ -41,27 +31,53 @@
                        class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all">
             </div>
             <div class="space-y-xs">
+                <label class="block text-label-sm font-semibold text-secondary uppercase tracking-wide">Time From</label>
+                <input type="time" name="time_from" value="{{ request('time_from') }}"
+                       class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all">
+            </div>
+            <div class="space-y-xs">
+                <label class="block text-label-sm font-semibold text-secondary uppercase tracking-wide">Time To</label>
+                <input type="time" name="time_to" value="{{ request('time_to') }}"
+                       class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all">
+            </div>
+        </div>
+
+        {{-- Row 2: Student, Duration, Buttons --}}
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-md items-end">
+            <div class="space-y-xs">
+                <label class="block text-label-sm font-semibold text-secondary uppercase tracking-wide">Student</label>
+                <select name="student_id"
+                        class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all">
+                    <option value="">All Students</option>
+                    @foreach($students as $student)
+                        <option value="{{ $student->id }}" {{ request('student_id') == $student->id ? 'selected' : '' }}>
+                            {{ $student->user->name }} ({{ $student->student_id }})
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="space-y-xs">
                 <label class="block text-label-sm font-semibold text-secondary uppercase tracking-wide">Duration</label>
-                <div class="flex gap-sm">
-                    <select name="duration"
-                            class="flex-1 border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all">
-                        <option value="">Any</option>
-                        <option value="25" {{ request('duration') == '25' ? 'selected' : '' }}>25 min</option>
-                        <option value="50" {{ request('duration') == '50' ? 'selected' : '' }}>50 min</option>
-                    </select>
-                    <button type="submit"
-                            class="inline-flex items-center gap-xs bg-primary-container text-on-primary font-label-md px-md py-sm rounded-lg hover:brightness-110 transition-all active:scale-95 shrink-0">
-                        <span class="material-symbols-outlined text-[16px]">filter_alt</span>
-                        Filter
-                    </button>
-                    @if(request()->anyFilled(['student_id', 'date_from', 'date_to', 'duration']))
-                        <a href="{{ route('teacher.histories.index') }}"
-                           class="inline-flex items-center px-sm py-sm text-secondary hover:text-on-surface transition-colors shrink-0"
-                           title="Clear filters">
-                            <span class="material-symbols-outlined text-[18px]">close</span>
-                        </a>
-                    @endif
-                </div>
+                <select name="duration"
+                        class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all">
+                    <option value="">All</option>
+                    <option value="25" {{ request('duration') == '25' ? 'selected' : '' }}>25 min</option>
+                    <option value="50" {{ request('duration') == '50' ? 'selected' : '' }}>50 min</option>
+                </select>
+            </div>
+            <div class="md:col-span-2 flex gap-sm items-end">
+                <button type="submit"
+                        class="inline-flex items-center gap-xs bg-primary-container text-on-primary font-label-md px-md py-sm rounded-lg hover:brightness-110 transition-all active:scale-95 shrink-0">
+                    <span class="material-symbols-outlined text-[16px]">filter_alt</span>
+                    Filter
+                </button>
+                @if(request()->anyFilled(['student_id', 'date_from', 'date_to', 'time_from', 'time_to', 'duration']))
+                    <a href="{{ route('teacher.histories.index') }}"
+                       class="inline-flex items-center px-sm py-sm text-secondary hover:text-on-surface transition-colors shrink-0"
+                       title="Clear filters">
+                        <span class="material-symbols-outlined text-[18px]">close</span>
+                    </a>
+                @endif
             </div>
         </div>
     </form>
@@ -76,14 +92,16 @@
                         <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Lesson</th>
                         <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Duration</th>
                         <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Video</th>
+                        <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Note/Homework</th>
                         <th class="px-lg py-md text-right text-label-sm font-semibold text-secondary uppercase tracking-wide">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-outline-variant">
                     @forelse($histories as $history)
                         <tr class="hover:bg-surface-container-low transition-colors">
-                            <td class="px-lg py-md text-body-sm text-secondary whitespace-nowrap">
-                                {{ $history->taught_at->format('d/m/Y H:i') }}
+                            <td class="px-lg py-md whitespace-nowrap">
+                                <p class="text-body-sm text-on-surface">{{ $history->taught_date->format('d/m/Y') }}</p>
+                                <p class="text-label-sm text-secondary">{{ $history->time_from }} – {{ $history->time_to }}</p>
                             </td>
                             <td class="px-lg py-md">
                                 <p class="font-semibold text-body-sm text-on-surface">{{ $history->student->user->name }}</p>
@@ -95,10 +113,21 @@
                             </td>
                             <td class="px-lg py-md">
                                 @if($history->video_path)
-                                    <span class="inline-flex items-center gap-xs text-label-sm text-primary">
-                                        <span class="material-symbols-outlined text-[16px]">videocam</span>
-                                        Yes
+                                    <a href="{{ route('teacher.histories.video', $history) }}"
+                                       class="inline-flex items-center gap-xs text-label-sm text-primary hover:underline">
+                                        <span class="material-symbols-outlined text-[16px]">download</span>
+                                        Download
+                                    </a>
+                                @else
+                                    <span class="inline-flex items-center gap-xs text-label-sm text-secondary/50">
+                                        <span class="material-symbols-outlined text-[14px]">close</span>
+                                        No video
                                     </span>
+                                @endif
+                            </td>
+                            <td class="px-lg py-md">
+                                @if($history->note)
+                                    <span class="block truncate text-body-sm text-on-surface max-w-[180px]">{{ $history->note }}</span>
                                 @else
                                     <span class="text-label-sm text-secondary">—</span>
                                 @endif
@@ -120,7 +149,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-lg py-2xl text-center">
+                            <td colspan="7" class="px-lg py-2xl text-center">
                                 <div class="flex flex-col items-center gap-md text-secondary">
                                     <span class="material-symbols-outlined text-[48px] opacity-30">history_edu</span>
                                     <p class="text-body-md">No teaching history yet.</p>

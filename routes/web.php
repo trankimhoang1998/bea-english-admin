@@ -37,7 +37,8 @@ Route::middleware(['auth'])->group(function () {
             ->name('materials.download');
 
         // Teaching histories (view/manage all)
-        Route::resource('histories', TeachingHistoryManagerController::class)->only(['index', 'show', 'destroy']);
+        Route::resource('histories', TeachingHistoryManagerController::class)->only(['index', 'show', 'edit', 'update', 'destroy']);
+        Route::get('histories/{history}/video', [TeachingHistoryManagerController::class, 'downloadVideo'])->name('histories.video');
     });
 
     // -------------------------
@@ -46,6 +47,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:teacher'])->prefix('teacher')->name('teacher.')->group(function () {
         Route::get('/', [TeachingHistoryController::class, 'dashboard'])->name('dashboard');
         Route::resource('histories', TeachingHistoryController::class);
+        Route::get('histories/{history}/video', [TeachingHistoryController::class, 'downloadVideo'])->name('histories.video');
     });
 
     // -------------------------

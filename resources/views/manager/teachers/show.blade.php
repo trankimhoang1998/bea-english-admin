@@ -49,31 +49,69 @@
         </div>
 
         {{-- Weekly Teaching Schedule --}}
+        @php
+            $days = ['mon','tue','wed','thu','fri','sat','sun'];
+            $dayLabels = ['mon'=>'Mon','tue'=>'Tue','wed'=>'Wed','thu'=>'Thu','fri'=>'Fri','sat'=>'Sat','sun'=>'Sun'];
+
+            $palette = [
+                ['bg'=>'bg-blue-100',   'text'=>'text-blue-800',   'border'=>'border-blue-200',   'dot'=>'bg-blue-400'],
+                ['bg'=>'bg-violet-100', 'text'=>'text-violet-800', 'border'=>'border-violet-200', 'dot'=>'bg-violet-400'],
+                ['bg'=>'bg-emerald-100','text'=>'text-emerald-800','border'=>'border-emerald-200','dot'=>'bg-emerald-400'],
+                ['bg'=>'bg-amber-100',  'text'=>'text-amber-800',  'border'=>'border-amber-200',  'dot'=>'bg-amber-400'],
+                ['bg'=>'bg-rose-100',   'text'=>'text-rose-800',   'border'=>'border-rose-200',   'dot'=>'bg-rose-400'],
+                ['bg'=>'bg-cyan-100',   'text'=>'text-cyan-800',   'border'=>'border-cyan-200',   'dot'=>'bg-cyan-400'],
+                ['bg'=>'bg-orange-100', 'text'=>'text-orange-800', 'border'=>'border-orange-200', 'dot'=>'bg-orange-400'],
+                ['bg'=>'bg-pink-100',   'text'=>'text-pink-800',   'border'=>'border-pink-200',   'dot'=>'bg-pink-400'],
+            ];
+
+            // Assign colors to all students (schedule + history combined for consistency)
+            $allStudentIds = $teacher->schedules->pluck('student_id')
+                ->merge($teacher->teachingHistories->pluck('student_id'))
+                ->unique()->values();
+            $studentColorMap = $allStudentIds->mapWithKeys(
+                fn($id, $idx) => [$id => $palette[$idx % count($palette)]]
+            )->toArray();
+
+            // Legend: students in schedule only
+            $scheduledStudents = $teacher->schedules->unique('student_id')
+                ->map(fn($s) => ['id' => $s->student_id, 'name' => $s->student->user->name, 'code' => $s->student->student_id])
+                ->values();
+
+            $byDaySlot = [];
+            foreach ($teacher->schedules as $s) {
+                $byDaySlot[$s->start_time][$s->day_of_week] = $s;
+            }
+            ksort($byDaySlot);
+        @endphp
         <div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden">
             <div class="flex items-center gap-sm px-lg py-md border-b border-outline-variant">
                 <span class="material-symbols-outlined text-primary text-[20px]">calendar_month</span>
                 <h2 class="font-semibold text-headline-sm text-on-surface">Weekly Teaching Schedule</h2>
             </div>
-            @php
-                $days = ['mon','tue','wed','thu','fri','sat','sun'];
-                $dayLabels = ['mon'=>'Mon','tue'=>'Tue','wed'=>'Wed','thu'=>'Thu','fri'=>'Fri','sat'=>'Sat','sun'=>'Sun'];
-                $byDaySlot = [];
-                foreach ($teacher->schedules as $s) {
-                    $byDaySlot[$s->start_time][$s->day_of_week] = $s;
-                }
-                ksort($byDaySlot);
-            @endphp
             @if(empty($byDaySlot))
                 <div class="flex flex-col items-center py-xl text-secondary">
                     <span class="material-symbols-outlined text-[40px] mb-md opacity-30">calendar_month</span>
                     <p class="text-body-sm">No schedule assigned yet.</p>
                 </div>
             @else
+                {{-- Student legend --}}
+                @if($scheduledStudents->count() > 1)
+                    <div class="flex flex-wrap gap-md px-lg py-sm border-b border-outline-variant bg-surface-container-low/40">
+                        @foreach($scheduledStudents as $sl)
+                            @php $lc = $studentColorMap[$sl['id']] ?? $palette[0]; @endphp
+                            <span class="inline-flex items-center gap-xs text-label-sm {{ $lc['text'] }}">
+                                <span class="w-2.5 h-2.5 rounded-full {{ $lc['dot'] }} shrink-0"></span>
+                                {{ $sl['name'] }}
+                                <span class="opacity-60 text-[11px]">({{ $sl['code'] }})</span>
+                            </span>
+                        @endforeach
+                    </div>
+                @endif
                 <div class="overflow-x-auto">
                     <table class="w-full text-body-sm">
                         <thead class="bg-surface-container-low border-b border-outline-variant">
                             <tr>
-                                <th class="px-md py-sm text-left text-label-sm font-semibold text-secondary w-28">Time</th>
+                                <th class="px-md py-sm text-left text-label-sm font-semibold text-secondary w-16">Time</th>
                                 @foreach($days as $d)
                                     <th class="px-md py-sm text-center text-label-sm font-semibold text-secondary uppercase">{{ $dayLabels[$d] }}</th>
                                 @endforeach
@@ -81,19 +119,24 @@
                         </thead>
                         <tbody class="divide-y divide-outline-variant">
                             @foreach($byDaySlot as $startTime => $dayMap)
-                                <tr class="hover:bg-surface-container-low transition-colors">
-                                    <td class="px-md py-sm font-mono text-label-md text-secondary whitespace-nowrap">
-                                        {{ \Carbon\Carbon::parse($startTime)->format('H:i') }}
+                                @php $endTime = collect($dayMap)->first()->end_time; @endphp
+                                <tr class="hover:bg-surface-container-low/50 transition-colors">
+                                    <td class="px-md py-sm font-mono text-label-sm text-secondary whitespace-nowrap">
+                                        {{ substr($startTime, 0, 5) }}–{{ substr($endTime, 0, 5) }}
                                     </td>
                                     @foreach($days as $d)
                                         <td class="px-md py-sm text-center">
                                             @if(isset($dayMap[$d]))
-                                                <span class="inline-flex flex-col items-center px-sm py-xs bg-secondary-container text-on-secondary-container rounded-lg text-label-sm leading-tight">
-                                                    <span class="font-semibold">{{ $dayMap[$d]->student->user->name }}</span>
-                                                    <span class="text-secondary opacity-80 text-[11px]">{{ $dayMap[$d]->student->student_id }}</span>
-                                                </span>
+                                                @php
+                                                    $sc = $dayMap[$d];
+                                                    $c = $studentColorMap[$sc->student_id] ?? $palette[0];
+                                                @endphp
+                                                <div class="inline-flex flex-col items-center px-sm py-xs {{ $c['bg'] }} {{ $c['text'] }} rounded-lg text-label-sm leading-tight border {{ $c['border'] }}">
+                                                    <span class="font-semibold">{{ $sc->student->user->name }}</span>
+                                                    <span class="text-[11px] opacity-60">{{ $sc->student->student_id }}</span>
+                                                </div>
                                             @else
-                                                <span class="text-outline-variant">—</span>
+                                                <span class="text-outline-variant select-none">—</span>
                                             @endif
                                         </td>
                                     @endforeach
@@ -114,12 +157,14 @@
         @endphp
         <div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden"
              x-data="{
-                 fs: '', fd: '', ft: '', fdu: '',
-                 ok(s, d, du) {
+                 fs: '', fd: '', ft: '', fdu: '', ftf: '', ftt: '',
+                 ok(s, d, du, tf) {
                      if (this.fs  && s  !== this.fs)  return false;
                      if (this.fd  && d  < this.fd)   return false;
                      if (this.ft  && d  > this.ft)   return false;
                      if (this.fdu && du !== this.fdu) return false;
+                     if (this.ftf && tf < this.ftf)  return false;
+                     if (this.ftt && tf > this.ftt)  return false;
                      return true;
                  }
              }">
@@ -129,41 +174,58 @@
             </div>
 
             {{-- Filters --}}
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-md p-md border-b border-outline-variant bg-surface-container-low/50">
-                <div class="space-y-xs">
-                    <label class="block text-label-sm font-semibold text-secondary uppercase tracking-wide">Student</label>
-                    <select x-model="fs"
-                            class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary outline-none transition-all">
-                        <option value="">All</option>
-                        @foreach($historyStudents as $hs)
-                            <option value="{{ $hs['id'] }}">{{ $hs['name'] }}</option>
-                        @endforeach
-                    </select>
+            <div class="p-md border-b border-outline-variant bg-surface-container-low/50 space-y-md">
+                {{-- Row 1: Date From, Date To, Time From, Time To --}}
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-md">
+                    <div class="space-y-xs">
+                        <label class="block text-label-sm font-semibold text-secondary uppercase tracking-wide">Date From</label>
+                        <input type="date" x-model="fd"
+                               class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary outline-none transition-all">
+                    </div>
+                    <div class="space-y-xs">
+                        <label class="block text-label-sm font-semibold text-secondary uppercase tracking-wide">Date To</label>
+                        <input type="date" x-model="ft"
+                               class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary outline-none transition-all">
+                    </div>
+                    <div class="space-y-xs">
+                        <label class="block text-label-sm font-semibold text-secondary uppercase tracking-wide">Time From</label>
+                        <input type="time" x-model="ftf"
+                               class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary outline-none transition-all">
+                    </div>
+                    <div class="space-y-xs">
+                        <label class="block text-label-sm font-semibold text-secondary uppercase tracking-wide">Time To</label>
+                        <input type="time" x-model="ftt"
+                               class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary outline-none transition-all">
+                    </div>
                 </div>
-                <div class="space-y-xs">
-                    <label class="block text-label-sm font-semibold text-secondary uppercase tracking-wide">Date From</label>
-                    <input type="date" x-model="fd"
-                           class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary outline-none transition-all">
-                </div>
-                <div class="space-y-xs">
-                    <label class="block text-label-sm font-semibold text-secondary uppercase tracking-wide">Date To</label>
-                    <input type="date" x-model="ft"
-                           class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary outline-none transition-all">
-                </div>
-                <div class="space-y-xs">
-                    <label class="block text-label-sm font-semibold text-secondary uppercase tracking-wide">Duration</label>
-                    <div class="flex gap-sm">
+                {{-- Row 2: Student, Duration, empty, Clear --}}
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-md items-end">
+                    <div class="space-y-xs">
+                        <label class="block text-label-sm font-semibold text-secondary uppercase tracking-wide">Student</label>
+                        <select x-model="fs"
+                                class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary outline-none transition-all">
+                            <option value="">All</option>
+                            @foreach($historyStudents as $hs)
+                                <option value="{{ $hs['id'] }}">{{ $hs['name'] }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="space-y-xs">
+                        <label class="block text-label-sm font-semibold text-secondary uppercase tracking-wide">Duration</label>
                         <select x-model="fdu"
-                                class="flex-1 border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary outline-none transition-all">
+                                class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary outline-none transition-all">
                             <option value="">Any</option>
                             <option value="25">25 min</option>
                             <option value="50">50 min</option>
                         </select>
-                        <button type="button" @click="fs=''; fd=''; ft=''; fdu=''"
-                                x-show="fs || fd || ft || fdu"
-                                class="inline-flex items-center px-sm py-sm text-secondary hover:text-on-surface transition-colors shrink-0"
-                                title="Clear filters">
+                    </div>
+                    <div class="flex items-end">
+                        <button type="button" @click="fs=''; fd=''; ft=''; fdu=''; ftf=''; ftt=''"
+                                x-show="fs || fd || ft || fdu || ftf || ftt"
+                                x-cloak
+                                class="inline-flex items-center gap-xs text-label-sm text-secondary hover:text-on-surface transition-colors py-sm">
                             <span class="material-symbols-outlined text-[18px]">close</span>
+                            Clear filters
                         </button>
                     </div>
                 </div>
@@ -177,27 +239,65 @@
                             <th class="px-lg py-sm text-left text-label-sm font-semibold text-secondary">Student</th>
                             <th class="px-lg py-sm text-left text-label-sm font-semibold text-secondary">Lesson</th>
                             <th class="px-lg py-sm text-left text-label-sm font-semibold text-secondary">Duration</th>
-                            <th class="px-lg py-sm text-left text-label-sm font-semibold text-secondary">Note</th>
+                            <th class="px-lg py-sm text-left text-label-sm font-semibold text-secondary">Video</th>
+                            <th class="px-lg py-sm text-left text-label-sm font-semibold text-secondary">Note/Homework</th>
+                            <th class="px-lg py-sm text-right text-label-sm font-semibold text-secondary">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-outline-variant">
-                        @forelse($teacher->teachingHistories->sortByDesc('taught_at') as $h)
+                        @forelse($teacher->teachingHistories->sortByDesc('taught_date') as $h)
                             <tr class="hover:bg-surface-container-low transition-colors"
-                                x-show="ok('{{ $h->student_id }}', '{{ $h->taught_at->format('Y-m-d') }}', '{{ $h->duration }}')">
-                                <td class="px-lg py-md text-secondary whitespace-nowrap">{{ $h->taught_at->format('d/m/Y H:i') }}</td>
+                                x-show="ok('{{ $h->student_id }}', '{{ $h->taught_date->format('Y-m-d') }}', '{{ $h->duration }}', '{{ $h->time_from }}')">
+                                <td class="px-lg py-md whitespace-nowrap">
+                                    <p class="text-body-sm text-on-surface">{{ $h->taught_date->format('d/m/Y') }}</p>
+                                    <p class="text-label-sm text-secondary">{{ $h->time_from }} – {{ $h->time_to }}</p>
+                                </td>
                                 <td class="px-lg py-md">
-                                    <p class="font-semibold text-body-sm text-on-surface">{{ $h->student->user->name }}</p>
-                                    <p class="text-label-sm text-secondary">{{ $h->student->student_id }}</p>
+                                    @php $hc = $studentColorMap[$h->student_id] ?? $palette[0]; @endphp
+                                    <div class="flex items-center gap-xs">
+                                        <span class="w-2 h-2 rounded-full {{ $hc['dot'] }} shrink-0"></span>
+                                        <div>
+                                            <p class="font-semibold text-body-sm text-on-surface">{{ $h->student->user->name }}</p>
+                                            <p class="text-label-sm text-secondary">{{ $h->student->student_id }}</p>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td class="px-lg py-md text-on-surface">{{ 'Lesson: ' . str_pad($h->lesson_number, 2, '0', STR_PAD_LEFT) }}</td>
                                 <td class="px-lg py-md">
                                     <span class="text-label-sm bg-surface-container px-sm py-xs rounded-full text-secondary">{{ $h->duration }} min</span>
                                 </td>
-                                <td class="px-lg py-md text-secondary">{{ $h->note ?? '—' }}</td>
+                                <td class="px-lg py-md whitespace-nowrap">
+                                    @if($h->video_path)
+                                        <a href="{{ route('manager.histories.video', $h) }}"
+                                           class="inline-flex items-center gap-xs text-label-sm text-primary hover:underline">
+                                            <span class="material-symbols-outlined text-[16px]">download</span>
+                                            Download
+                                        </a>
+                                    @else
+                                        <span class="inline-flex items-center gap-xs text-label-sm text-secondary/50">
+                                            <span class="material-symbols-outlined text-[14px]">close</span>
+                                            No video
+                                        </span>
+                                    @endif
+                                </td>
+                                <td class="px-lg py-md">
+                                    @if($h->note)
+                                        <span class="block truncate text-body-sm text-secondary max-w-[180px]">{{ $h->note }}</span>
+                                    @else
+                                        <span class="text-secondary">—</span>
+                                    @endif
+                                </td>
+                                <td class="px-lg py-md text-right">
+                                    <a href="{{ route('manager.histories.show', $h) }}"
+                                       class="inline-flex items-center gap-xs text-label-sm text-secondary hover:text-on-surface px-sm py-xs rounded-lg hover:bg-surface-container transition-colors">
+                                        <span class="material-symbols-outlined text-[16px]">visibility</span>
+                                        View
+                                    </a>
+                                </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="px-lg py-xl text-center text-secondary">
+                                <td colspan="7" class="px-lg py-xl text-center text-secondary">
                                     <span class="material-symbols-outlined text-[32px] opacity-30 mb-sm block">history_edu</span>
                                     No history yet.
                                 </td>

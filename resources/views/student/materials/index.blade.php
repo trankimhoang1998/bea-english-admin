@@ -31,7 +31,12 @@
                                         <div class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center shrink-0">
                                             <span class="material-symbols-outlined text-[18px] text-secondary">description</span>
                                         </div>
-                                        <span class="font-semibold text-body-sm text-on-surface">{{ $material->title }}</span>
+                                        <div>
+                                            <span class="font-semibold text-body-sm text-on-surface">{{ $material->title }}</span>
+                                            @if($material->description)
+                                                <p class="text-label-sm text-secondary mt-xs">{{ $material->description }}</p>
+                                            @endif
+                                        </div>
                                     </div>
                                 </td>
                                 <td class="px-lg py-md text-body-sm text-secondary whitespace-nowrap">

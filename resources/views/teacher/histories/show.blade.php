@@ -9,7 +9,7 @@
                 </a>
                 <div>
                     <h1 class="font-bold text-headline-sm text-on-surface">Teaching Record</h1>
-                    <p class="text-label-sm text-secondary mt-xs">{{ $history->taught_at->format('d/m/Y H:i') }}</p>
+                    <p class="text-label-sm text-secondary mt-xs">{{ $history->taught_date->format('d/m/Y') }} &middot; {{ $history->time_from }} – {{ $history->time_to }}</p>
                 </div>
             </div>
             <a href="{{ route('teacher.histories.edit', $history) }}"
@@ -29,7 +29,7 @@
                     </div>
                     <div>
                         <p class="font-semibold text-body-sm text-on-surface">{{ 'Lesson: ' . str_pad($history->lesson_number, 2, '0', STR_PAD_LEFT) }}</p>
-                        <p class="text-label-sm text-secondary">{{ $history->taught_at->format('d/m/Y H:i') }}</p>
+                        <p class="text-label-sm text-secondary">{{ $history->taught_date->format('d/m/Y') }} &middot; {{ $history->time_from }} – {{ $history->time_to }}</p>
                     </div>
                 </div>
             </div>
@@ -48,7 +48,7 @@
                 </div>
                 <div class="px-lg py-md grid grid-cols-1 sm:grid-cols-3 gap-md">
                     <dt class="text-label-sm text-secondary font-medium">Date &amp; Time</dt>
-                    <dd class="col-span-2 text-body-sm text-on-surface">{{ $history->taught_at->format('d/m/Y H:i') }}</dd>
+                    <dd class="col-span-2 text-body-sm text-on-surface">{{ $history->taught_date->format('d/m/Y') }} &middot; {{ $history->time_from }} – {{ $history->time_to }}</dd>
                 </div>
                 <div class="px-lg py-md grid grid-cols-1 sm:grid-cols-3 gap-md">
                     <dt class="text-label-sm text-secondary font-medium">Duration</dt>
@@ -57,19 +57,20 @@
                     </dd>
                 </div>
                 <div class="px-lg py-md grid grid-cols-1 sm:grid-cols-3 gap-md">
-                    <dt class="text-label-sm text-secondary font-medium">Note</dt>
-                    <dd class="col-span-2 text-body-sm text-on-surface">{{ $history->note ?? '—' }}</dd>
+                    <dt class="text-label-sm text-secondary font-medium">Note/Homework</dt>
+                    <dd class="col-span-2 text-body-sm text-on-surface whitespace-pre-wrap">{{ $history->note ?? '—' }}</dd>
                 </div>
                 <div class="px-lg py-md grid grid-cols-1 sm:grid-cols-3 gap-md">
                     <dt class="text-label-sm text-secondary font-medium">Video Log</dt>
                     <dd class="col-span-2">
                         @if($history->video_path)
-                            <span class="inline-flex items-center gap-xs text-label-sm text-primary font-medium">
-                                <span class="material-symbols-outlined text-[16px]">videocam</span>
-                                Video uploaded
-                            </span>
+                            <a href="{{ route('teacher.histories.video', $history) }}"
+                               class="inline-flex items-center gap-xs text-label-sm text-primary font-medium hover:underline">
+                                <span class="material-symbols-outlined text-[16px]">download</span>
+                                Download video
+                            </a>
                         @else
-                            <span class="text-label-sm text-secondary">(no video)</span>
+                            <span class="text-label-sm text-secondary">(none)</span>
                         @endif
                     </dd>
                 </div>

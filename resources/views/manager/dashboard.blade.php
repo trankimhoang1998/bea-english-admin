@@ -16,11 +16,35 @@
         $materialCount = \App\Models\LearningMaterial::count();
         $historyCount  = \App\Models\TeachingHistory::count();
         $recentHistories = \App\Models\TeachingHistory::with(['teacher.user', 'student.user'])
-                            ->latest('taught_at')->limit(5)->get();
+                            ->orderByDesc('taught_date')->orderByDesc('time_from')->limit(5)->get();
     @endphp
 
     {{-- Stats cards --}}
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-md mb-xl">
+    <div class="grid grid-cols-2 lg:grid-cols-5 gap-md mb-xl">
+        <a href="{{ route('manager.schedules.index') }}"
+           class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all group">
+            <div class="flex items-center justify-between mb-md">
+                <div class="w-10 h-10 rounded-lg bg-primary-container/20 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-primary-container text-[22px]">calendar_month</span>
+                </div>
+                <span class="material-symbols-outlined text-secondary text-[18px] group-hover:text-primary transition-colors">arrow_forward</span>
+            </div>
+            <p class="font-bold text-2xl md:text-display-lg text-on-surface leading-none">{{ $scheduleCount }}</p>
+            <p class="text-label-sm text-secondary mt-xs">Schedules</p>
+        </a>
+
+        <a href="{{ route('manager.histories.index') }}"
+           class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all group">
+            <div class="flex items-center justify-between mb-md">
+                <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-primary text-[22px]">history_edu</span>
+                </div>
+                <span class="material-symbols-outlined text-secondary text-[18px] group-hover:text-primary transition-colors">arrow_forward</span>
+            </div>
+            <p class="font-bold text-2xl md:text-display-lg text-on-surface leading-none">{{ $historyCount }}</p>
+            <p class="text-label-sm text-secondary mt-xs">Lessons</p>
+        </a>
+
         <a href="{{ route('manager.teachers.index') }}"
            class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all group">
             <div class="flex items-center justify-between mb-md">
@@ -43,18 +67,6 @@
             </div>
             <p class="font-bold text-2xl md:text-display-lg text-on-surface leading-none">{{ $studentCount }}</p>
             <p class="text-label-sm text-secondary mt-xs">Students</p>
-        </a>
-
-        <a href="{{ route('manager.schedules.index') }}"
-           class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all group">
-            <div class="flex items-center justify-between mb-md">
-                <div class="w-10 h-10 rounded-lg bg-primary-container/20 flex items-center justify-center">
-                    <span class="material-symbols-outlined text-primary-container text-[22px]">calendar_month</span>
-                </div>
-                <span class="material-symbols-outlined text-secondary text-[18px] group-hover:text-primary transition-colors">arrow_forward</span>
-            </div>
-            <p class="font-bold text-2xl md:text-display-lg text-on-surface leading-none">{{ $scheduleCount }}</p>
-            <p class="text-label-sm text-secondary mt-xs">Schedules</p>
         </a>
 
         <a href="{{ route('manager.materials.index') }}"
@@ -105,7 +117,7 @@
                             </p>
                         </div>
                         <div class="text-right shrink-0">
-                            <p class="text-label-sm text-secondary">{{ \Carbon\Carbon::parse($history->taught_at)->format('d M Y') }}</p>
+                            <p class="text-label-sm text-secondary">{{ $history->taught_date->format('d M Y') }}</p>
                             <p class="text-label-sm text-on-surface-variant">{{ $history->duration }} min</p>
                         </div>
                         <a href="{{ route('manager.histories.show', $history) }}"
@@ -119,7 +131,7 @@
     </div>
 
     {{-- Quick actions --}}
-    <div class="mt-xl grid grid-cols-1 sm:grid-cols-3 gap-md">
+    <div class="mt-xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-md">
         <a href="{{ route('manager.teachers.create') }}"
            class="flex items-center gap-md p-lg bg-surface-container-lowest border border-outline-variant rounded-xl hover:border-primary hover:bg-surface-container-low transition-all group">
             <div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-white">
@@ -148,6 +160,16 @@
             <div>
                 <p class="text-body-sm font-semibold text-on-surface group-hover:text-primary transition-colors">New Schedule</p>
                 <p class="text-label-sm text-secondary">Create teaching slot</p>
+            </div>
+        </a>
+        <a href="{{ route('manager.materials.create') }}"
+           class="flex items-center gap-md p-lg bg-surface-container-lowest border border-outline-variant rounded-xl hover:border-primary hover:bg-surface-container-low transition-all group">
+            <div class="w-10 h-10 rounded-lg bg-secondary-container flex items-center justify-center text-white">
+                <span class="material-symbols-outlined text-[20px]">upload_file</span>
+            </div>
+            <div>
+                <p class="text-body-sm font-semibold text-on-surface group-hover:text-primary transition-colors">New Material</p>
+                <p class="text-label-sm text-secondary">Upload learning material</p>
             </div>
         </a>
     </div>

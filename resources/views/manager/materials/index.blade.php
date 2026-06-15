@@ -31,6 +31,7 @@
                     <thead>
                         <tr class="border-b border-outline-variant bg-surface-container-low">
                             <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Title</th>
+                            <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Students</th>
                             <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Uploaded By</th>
                             <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Date</th>
                             <th class="px-lg py-md text-right text-label-sm font-semibold text-secondary uppercase tracking-wide">Actions</th>
@@ -51,6 +52,34 @@
                                             @endif
                                         </div>
                                     </div>
+                                </td>
+                                <td class="px-lg py-md">
+                                    @if($material->students->isEmpty())
+                                        <span class="inline-flex items-center gap-xs text-label-sm text-secondary bg-surface-container px-sm py-xs rounded-full">
+                                            <span class="material-symbols-outlined text-[13px]">public</span>
+                                            All students
+                                        </span>
+                                    @else
+                                        <div class="flex flex-wrap gap-xs max-w-[260px]">
+                                            @foreach($material->students->take(3) as $stu)
+                                                <span class="inline-flex items-center gap-xs text-label-sm bg-primary/10 text-primary px-sm py-xs rounded-full whitespace-nowrap">
+                                                    {{ $stu->user->name }} ({{ $stu->student_id }})
+                                                </span>
+                                            @endforeach
+                                            @if($material->students->count() > 3)
+                                                <div class="relative group">
+                                                    <span class="inline-flex items-center text-label-sm bg-surface-container text-secondary px-sm py-xs rounded-full cursor-default">
+                                                        +{{ $material->students->count() - 3 }} more
+                                                    </span>
+                                                    <div class="absolute z-50 bottom-full left-0 mb-1 hidden group-hover:block bg-on-surface text-surface text-label-sm rounded-lg px-md py-sm shadow-lg w-56 whitespace-normal leading-relaxed pointer-events-none space-y-xs">
+                                                        @foreach($material->students->skip(3) as $stu)
+                                                            <div>{{ $stu->user->name }} ({{ $stu->student_id }})</div>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    @endif
                                 </td>
                                 <td class="px-lg py-md text-body-sm text-secondary">{{ $material->uploader->name ?? '—' }}</td>
                                 <td class="px-lg py-md text-body-sm text-secondary whitespace-nowrap">{{ $material->created_at->format('d/m/Y') }}</td>

@@ -38,6 +38,27 @@
             @php
                 $dayKeys = ['mon','tue','wed','thu','fri','sat','sun'];
                 $dayLabels = ['mon'=>'Mon','tue'=>'Tue','wed'=>'Wed','thu'=>'Thu','fri'=>'Fri','sat'=>'Sat','sun'=>'Sun'];
+
+                $palette = [
+                    ['bg'=>'bg-blue-100',   'text'=>'text-blue-800',   'border'=>'border-blue-200',   'dot'=>'bg-blue-400'],
+                    ['bg'=>'bg-violet-100', 'text'=>'text-violet-800', 'border'=>'border-violet-200', 'dot'=>'bg-violet-400'],
+                    ['bg'=>'bg-emerald-100','text'=>'text-emerald-800','border'=>'border-emerald-200','dot'=>'bg-emerald-400'],
+                    ['bg'=>'bg-amber-100',  'text'=>'text-amber-800',  'border'=>'border-amber-200',  'dot'=>'bg-amber-400'],
+                    ['bg'=>'bg-rose-100',   'text'=>'text-rose-800',   'border'=>'border-rose-200',   'dot'=>'bg-rose-400'],
+                    ['bg'=>'bg-cyan-100',   'text'=>'text-cyan-800',   'border'=>'border-cyan-200',   'dot'=>'bg-cyan-400'],
+                    ['bg'=>'bg-orange-100', 'text'=>'text-orange-800', 'border'=>'border-orange-200', 'dot'=>'bg-orange-400'],
+                    ['bg'=>'bg-pink-100',   'text'=>'text-pink-800',   'border'=>'border-pink-200',   'dot'=>'bg-pink-400'],
+                ];
+
+                $studentIds = $teacher->schedules->pluck('student_id')->unique()->values();
+                $studentColorMap = $studentIds->mapWithKeys(
+                    fn($id, $idx) => [$id => $palette[$idx % count($palette)]]
+                )->toArray();
+
+                $scheduledStudents = $teacher->schedules->unique('student_id')
+                    ->map(fn($s) => ['id' => $s->student_id, 'name' => $s->student->user->name, 'code' => $s->student->student_id])
+                    ->values();
+
                 $slots = $teacher->schedules->map(fn($s) => $s->start_time . '-' . $s->end_time)->unique()->sort()->values();
                 $lookup = [];
                 foreach ($teacher->schedules as $s) {
@@ -52,6 +73,19 @@
                     <p class="text-body-sm">No schedule assigned yet.</p>
                 </div>
             @else
+                {{-- Student legend --}}
+                @if($scheduledStudents->count() > 1)
+                    <div class="flex flex-wrap gap-md px-lg py-sm border-b border-outline-variant bg-surface-container-low/40">
+                        @foreach($scheduledStudents as $sl)
+                            @php $lc = $studentColorMap[$sl['id']] ?? $palette[0]; @endphp
+                            <span class="inline-flex items-center gap-xs text-label-sm {{ $lc['text'] }}">
+                                <span class="w-2.5 h-2.5 rounded-full {{ $lc['dot'] }} shrink-0"></span>
+                                {{ $sl['name'] }}
+                                <span class="opacity-60 text-[11px]">({{ $sl['code'] }})</span>
+                            </span>
+                        @endforeach
+                    </div>
+                @endif
                 <div class="overflow-x-auto">
                     <table class="w-full text-body-sm">
                         <thead class="bg-surface-container-low border-b border-outline-variant">
@@ -69,8 +103,8 @@
                                     $startDisplay = substr($startRaw, 0, 5);
                                     $endDisplay = substr($endRaw, 0, 5);
                                 @endphp
-                                <tr class="hover:bg-surface-container-low transition-colors">
-                                    <td class="px-md py-sm font-mono text-label-md text-secondary whitespace-nowrap">
+                                <tr class="hover:bg-surface-container-low/50 transition-colors">
+                                    <td class="px-md py-sm font-mono text-label-sm text-secondary whitespace-nowrap">
                                         {{ $startDisplay }}–{{ $endDisplay }}
                                     </td>
                                     @foreach($dayKeys as $dayKey)
@@ -80,10 +114,11 @@
                                         @endphp
                                         <td class="px-md py-sm text-center">
                                             @if($schedule)
-                                                <span class="inline-flex flex-col items-center px-sm py-xs bg-secondary-container text-on-secondary-container rounded-lg text-label-sm leading-tight">
+                                                @php $c = $studentColorMap[$schedule->student_id] ?? $palette[0]; @endphp
+                                                <div class="inline-flex flex-col items-center px-sm py-xs {{ $c['bg'] }} {{ $c['text'] }} rounded-lg text-label-sm leading-tight border {{ $c['border'] }}">
                                                     <span class="font-semibold">{{ $schedule->student->user->name }}</span>
-                                                    <span class="text-secondary opacity-80 text-[11px]">{{ $schedule->student->student_id }}</span>
-                                                </span>
+                                                    <span class="text-[11px] opacity-60">{{ $schedule->student->student_id }}</span>
+                                                </div>
                                             @else
                                                 <span class="text-outline-variant">—</span>
                                             @endif

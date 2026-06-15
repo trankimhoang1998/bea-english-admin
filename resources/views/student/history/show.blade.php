@@ -8,7 +8,7 @@
             </a>
             <div>
                 <h1 class="font-bold text-headline-sm text-on-surface">Lesson Detail</h1>
-                <p class="text-label-sm text-secondary mt-xs">{{ \Carbon\Carbon::parse($history->taught_at)->format('d/m/Y H:i') }}</p>
+                <p class="text-label-sm text-secondary mt-xs">{{ $history->taught_date->format('d/m/Y') }} &middot; {{ $history->time_from }} – {{ $history->time_to }}</p>
             </div>
         </div>
     </x-slot>
@@ -22,7 +22,7 @@
                     </div>
                     <div>
                         <p class="font-semibold text-body-sm text-on-surface">{{ 'Lesson: ' . str_pad($history->lesson_number, 2, '0', STR_PAD_LEFT) }}</p>
-                        <p class="text-label-sm text-secondary">{{ $history->taught_at->format('d/m/Y H:i') }}</p>
+                        <p class="text-label-sm text-secondary">{{ $history->taught_date->format('d/m/Y') }} &middot; {{ $history->time_from }} – {{ $history->time_to }}</p>
                     </div>
                 </div>
             </div>
@@ -40,9 +40,9 @@
                     <dd class="col-span-2 text-body-sm text-on-surface">{{ 'Lesson: ' . str_pad($history->lesson_number, 2, '0', STR_PAD_LEFT) }}</dd>
                 </div>
                 <div class="px-lg py-md grid grid-cols-1 sm:grid-cols-3 gap-md">
-                    <dt class="text-label-sm text-secondary font-medium">Date</dt>
+                    <dt class="text-label-sm text-secondary font-medium">Date &amp; Time</dt>
                     <dd class="col-span-2 text-body-sm text-on-surface">
-                        {{ \Carbon\Carbon::parse($history->taught_at)->format('d/m/Y H:i') }}
+                        {{ $history->taught_date->format('d/m/Y') }} &middot; {{ $history->time_from }} – {{ $history->time_to }}
                     </dd>
                 </div>
                 <div class="px-lg py-md grid grid-cols-1 sm:grid-cols-3 gap-md">
@@ -52,20 +52,20 @@
                     </dd>
                 </div>
                 <div class="px-lg py-md grid grid-cols-1 sm:grid-cols-3 gap-md">
-                    <dt class="text-label-sm text-secondary font-medium">Note</dt>
-                    <dd class="col-span-2 text-body-sm text-on-surface">{{ $history->note ?? '—' }}</dd>
+                    <dt class="text-label-sm text-secondary font-medium">Note/Homework</dt>
+                    <dd class="col-span-2 text-body-sm text-on-surface whitespace-pre-wrap">{{ $history->note ?? '—' }}</dd>
                 </div>
                 <div class="px-lg py-md grid grid-cols-1 sm:grid-cols-3 gap-md">
-                    <dt class="text-label-sm text-secondary font-medium">Video Recording</dt>
+                    <dt class="text-label-sm text-secondary font-medium">Video Log</dt>
                     <dd class="col-span-2">
                         @if($history->video_path)
                             <a href="{{ route('student.history.video', $history) }}"
-                               class="inline-flex items-center gap-sm bg-primary-container text-on-primary font-label-md px-md py-sm rounded-lg hover:brightness-110 transition-all active:scale-95">
-                                <span class="material-symbols-outlined text-[18px]">download</span>
-                                Download Video
+                               class="inline-flex items-center gap-xs text-label-sm text-primary font-medium hover:underline">
+                                <span class="material-symbols-outlined text-[16px]">download</span>
+                                Download video
                             </a>
                         @else
-                            <span class="text-label-sm text-secondary">(no recording available)</span>
+                            <span class="text-label-sm text-secondary">(none)</span>
                         @endif
                     </dd>
                 </div>
