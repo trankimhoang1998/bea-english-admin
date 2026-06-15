@@ -205,7 +205,7 @@
                                 <div class="flex items-start gap-xs">
                                     <span class="material-symbols-outlined text-[14px] text-secondary mt-[3px] shrink-0">person</span>
                                     <div>
-                                        <p class="text-body-sm text-on-surface">{{ $history->student->user->name }}</p>
+                                        <p class="text-body-sm font-semibold text-on-surface">{{ $history->student->user->name }}</p>
                                         <p class="text-label-sm text-secondary">{{ $history->student->student_id }}</p>
                                     </div>
                                 </div>
