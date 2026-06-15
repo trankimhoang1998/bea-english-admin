@@ -49,19 +49,19 @@
                     <input type="hidden" name="material_type" :value="tab">
 
                     {{-- Tab buttons --}}
-                    <div class="flex gap-xs bg-surface-container rounded-lg p-xs w-fit">
+                    <div class="flex gap-xs">
                         <button type="button"
                                 @click="tab = 'file'"
-                                :class="tab === 'file' ? 'bg-surface-container-highest text-on-surface shadow-sm' : 'text-secondary hover:text-on-surface'"
-                                class="inline-flex items-center gap-xs px-md py-sm rounded-md text-label-md font-medium transition-all">
-                            <span class="material-symbols-outlined text-[16px]">upload_file</span>
+                                :class="tab === 'file' ? 'bg-primary-container text-on-primary' : 'bg-surface-container text-secondary hover:text-on-surface'"
+                                class="inline-flex items-center gap-xs px-md py-xs rounded-lg text-label-sm font-medium transition-colors">
+                            <span class="material-symbols-outlined text-[15px]">upload</span>
                             Upload File
                         </button>
                         <button type="button"
                                 @click="tab = 'link'"
-                                :class="tab === 'link' ? 'bg-surface-container-highest text-on-surface shadow-sm' : 'text-secondary hover:text-on-surface'"
-                                class="inline-flex items-center gap-xs px-md py-sm rounded-md text-label-md font-medium transition-all">
-                            <span class="material-symbols-outlined text-[16px]">link</span>
+                                :class="tab === 'link' ? 'bg-primary-container text-on-primary' : 'bg-surface-container text-secondary hover:text-on-surface'"
+                                class="inline-flex items-center gap-xs px-md py-xs rounded-lg text-label-sm font-medium transition-colors">
+                            <span class="material-symbols-outlined text-[15px]">link</span>
                             Paste Link
                         </button>
                     </div>
