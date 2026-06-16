@@ -30,9 +30,10 @@ class AuthenticatedSessionController extends Controller
 
         $role = auth()->user()->role;
         return redirect()->route(match($role) {
-            'manager' => 'dashboard',
-            'teacher' => 'teacher.dashboard',
-            default   => 'student.dashboard',
+            'manager'      => 'dashboard',
+            'vice-manager' => 'dashboard',
+            'teacher'      => 'teacher.dashboard',
+            default        => 'student.dashboard',
         });
     }
 

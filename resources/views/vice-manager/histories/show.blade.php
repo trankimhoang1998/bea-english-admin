@@ -1,0 +1,85 @@
+<x-app-layout>
+    <x-slot name="title">Session Detail | BEA English</x-slot>
+    <x-slot name="header">
+        <div class="flex items-center gap-md">
+            <a href="{{ route('vice-manager.histories.index') }}"
+               class="text-secondary hover:text-on-surface transition-colors">
+                <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+            </a>
+            <div>
+                <h1 class="font-bold text-headline-sm text-on-surface">Teaching Record</h1>
+                <p class="text-label-sm text-secondary mt-xs">{{ $history->taught_date->format('d/m/Y') }} &middot; {{ $history->time_from }} – {{ $history->time_to }}</p>
+            </div>
+        </div>
+    </x-slot>
+
+    <div class="max-w-2xl">
+        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden">
+            <div class="px-lg py-md border-b border-outline-variant bg-surface-container-low">
+                <div class="flex items-center gap-md">
+                    <div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center">
+                        <span class="material-symbols-outlined text-[20px] text-on-surface-variant">history_edu</span>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-body-sm text-on-surface">{{ 'Lesson: ' . str_pad($history->lesson_number, 2, '0', STR_PAD_LEFT) }}</p>
+                        <p class="text-label-sm text-secondary">{{ $history->taught_date->format('d/m/Y') }} &middot; {{ $history->time_from }} – {{ $history->time_to }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <dl class="divide-y divide-outline-variant">
+                <div class="px-lg py-md grid grid-cols-1 sm:grid-cols-3 gap-md">
+                    <dt class="text-label-sm text-secondary font-medium">Teacher</dt>
+                    <dd class="col-span-2 text-body-sm text-on-surface font-medium">
+                        {{ $history->teacher->user->name }}
+                        <span class="text-secondary text-label-sm ml-xs">({{ $history->teacher->teacher_id }})</span>
+                    </dd>
+                </div>
+                <div class="px-lg py-md grid grid-cols-1 sm:grid-cols-3 gap-md">
+                    <dt class="text-label-sm text-secondary font-medium">Student</dt>
+                    <dd class="col-span-2 text-body-sm text-on-surface font-medium">
+                        {{ $history->student->user->name }}
+                        <span class="text-secondary text-label-sm ml-xs">({{ $history->student->student_id }})</span>
+                    </dd>
+                </div>
+                <div class="px-lg py-md grid grid-cols-1 sm:grid-cols-3 gap-md">
+                    <dt class="text-label-sm text-secondary font-medium">Lesson</dt>
+                    <dd class="col-span-2 text-body-sm text-on-surface">{{ 'Lesson: ' . str_pad($history->lesson_number, 2, '0', STR_PAD_LEFT) }}</dd>
+                </div>
+                <div class="px-lg py-md grid grid-cols-1 sm:grid-cols-3 gap-md">
+                    <dt class="text-label-sm text-secondary font-medium">Date &amp; Time</dt>
+                    <dd class="col-span-2 text-body-sm text-on-surface">{{ $history->taught_date->format('d/m/Y') }} &middot; {{ $history->time_from }} – {{ $history->time_to }}</dd>
+                </div>
+                <div class="px-lg py-md grid grid-cols-1 sm:grid-cols-3 gap-md">
+                    <dt class="text-label-sm text-secondary font-medium">Duration</dt>
+                    <dd class="col-span-2">
+                        <span class="text-label-sm bg-surface-container px-sm py-xs rounded-full text-secondary">{{ $history->duration }} min</span>
+                    </dd>
+                </div>
+                <div class="px-lg py-md grid grid-cols-1 sm:grid-cols-3 gap-md">
+                    <dt class="text-label-sm text-secondary font-medium">Note/Homework</dt>
+                    <dd class="col-span-2 text-body-sm text-on-surface whitespace-pre-wrap">{{ $history->note ?? '—' }}</dd>
+                </div>
+                <div class="px-lg py-md grid grid-cols-1 sm:grid-cols-3 gap-md">
+                    <dt class="text-label-sm text-secondary font-medium">Video Log</dt>
+                    <dd class="col-span-2">
+                        <x-video-player
+                            :video-path="$history->video_path"
+                            :video-link="$history->video_link"
+                            :stream-url="route('vice-manager.histories.stream', $history)"
+                            :download-url="route('vice-manager.histories.video', $history)"
+                        />
+                    </dd>
+                </div>
+            </dl>
+
+            <div class="px-lg py-md border-t border-outline-variant">
+                <a href="{{ route('vice-manager.histories.index') }}"
+                   class="inline-flex items-center gap-xs text-label-md text-secondary hover:text-on-surface transition-colors">
+                    <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+                    Back to histories
+                </a>
+            </div>
+        </div>
+    </div>
+</x-app-layout>

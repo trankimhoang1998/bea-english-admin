@@ -76,6 +76,7 @@
         <p class="text-label-sm font-semibold text-secondary mb-xs">Demo accounts</p>
         <div class="space-y-xs text-label-sm text-on-surface-variant">
             <p><span class="text-primary font-medium">Manager:</span> manager / password</p>
+            <p><span class="text-primary font-medium">Vice Manager:</span> vicemanager / password</p>
             <p><span class="text-tertiary font-medium">Teacher:</span> annoliver101 / password</p>
             <p><span class="text-secondary font-medium">Student:</span> maihuong1011 / password</p>
         </div>

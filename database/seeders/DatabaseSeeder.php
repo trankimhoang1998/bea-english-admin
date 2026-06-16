@@ -19,6 +19,14 @@ class DatabaseSeeder extends Seeder
             'role'     => 'manager',
         ]);
 
+        // Vice-Manager account
+        User::create([
+            'name'     => 'Vice Manager',
+            'username' => 'vicemanager',
+            'password' => Hash::make('password'),
+            'role'     => 'vice-manager',
+        ]);
+
         $this->call([
             TeacherSeeder::class,
             StudentSeeder::class,

@@ -16,6 +16,10 @@ class DashboardController extends Controller
             return view('manager.dashboard');
         }
 
+        if ($user->isViceManager()) {
+            return view('vice-manager.dashboard');
+        }
+
         if ($user->isTeacher()) {
             return redirect()->route('teacher.dashboard');
         }

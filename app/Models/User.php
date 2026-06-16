@@ -50,6 +50,11 @@ class User extends Authenticatable
         return $this->role === 'teacher';
     }
 
+    public function isViceManager(): bool
+    {
+        return $this->role === 'vice-manager';
+    }
+
     public function isStudent(): bool
     {
         return $this->role === 'student';
