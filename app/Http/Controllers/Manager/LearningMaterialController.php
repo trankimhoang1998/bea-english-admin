@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
 use App\Models\LearningMaterial;
+use App\Models\MaterialCategory;
 use App\Models\Student;
+use App\Models\Teacher;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -14,7 +16,7 @@ class LearningMaterialController extends Controller
 {
     public function index(Request $request): View
     {
-        $query = LearningMaterial::with('uploader', 'students.user');
+        $query = LearningMaterial::with('uploader', 'students.user', 'teachers.user', 'category');
 
         if ($search = $request->input('search')) {
             $query->where('title', 'like', "%{$search}%");
@@ -29,23 +31,32 @@ class LearningMaterialController extends Controller
         }
 
         if ($studentId = $request->input('student_id')) {
-            $query->where(fn($q) => $q
-                ->whereHas('students', fn($q2) => $q2->where('students.id', $studentId))
-                ->orDoesntHave('students')
-            );
+            $query->whereHas('students', fn($q) => $q->where('students.id', $studentId));
         }
 
-        $materials = $query->latest()->paginate(10)->withQueryString();
-        $students = Student::with('user')->orderBy('id')->get();
+        if ($categoryId = $request->input('category_id')) {
+            $query->where('material_category_id', $categoryId);
+        }
 
-        return view('manager.materials.index', compact('materials', 'students'));
+        if ($teacherId = $request->input('teacher_id')) {
+            $query->whereHas('teachers', fn($q) => $q->where('teachers.id', $teacherId));
+        }
+
+        $materials  = $query->latest()->paginate(10)->withQueryString();
+        $students   = Student::with('user')->orderBy('id')->get();
+        $teachers   = Teacher::with('user')->orderBy('id')->get();
+        $categories = $this->flatCategoryOptions();
+
+        return view('manager.materials.index', compact('materials', 'students', 'teachers', 'categories'));
     }
 
     public function create(): View
     {
-        $students = Student::with('user')->orderBy('id')->get();
+        $students   = Student::with('user')->orderBy('id')->get();
+        $teachers   = Teacher::with('user')->orderBy('id')->get();
+        $categories = $this->flatCategoryOptions();
 
-        return view('manager.materials.create', compact('students'));
+        return view('manager.materials.create', compact('students', 'teachers', 'categories'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -53,10 +64,13 @@ class LearningMaterialController extends Controller
         $materialType = $request->input('material_type', 'file');
 
         $rules = [
-            'title'         => ['required', 'string', 'max:255'],
-            'description'   => ['nullable', 'string', 'max:1000'],
-            'student_ids'   => ['nullable', 'array'],
-            'student_ids.*' => ['exists:students,id'],
+            'title'                => ['required', 'string', 'max:255'],
+            'description'          => ['nullable', 'string', 'max:1000'],
+            'material_category_id' => ['nullable', 'exists:material_categories,id'],
+            'student_ids'          => ['nullable', 'array'],
+            'student_ids.*'        => ['exists:students,id'],
+            'teacher_ids'          => ['nullable', 'array'],
+            'teacher_ids.*'        => ['exists:teachers,id'],
         ];
 
         if ($materialType === 'link') {
@@ -68,9 +82,10 @@ class LearningMaterialController extends Controller
         $data = $request->validate($rules);
 
         $createData = [
-            'title'       => $data['title'],
-            'description' => $data['description'] ?? null,
-            'uploaded_by' => auth()->id(),
+            'title'                => $data['title'],
+            'description'          => $data['description'] ?? null,
+            'material_category_id' => $data['material_category_id'] ?? null,
+            'uploaded_by'          => auth()->id(),
         ];
 
         if ($materialType === 'link') {
@@ -81,6 +96,7 @@ class LearningMaterialController extends Controller
 
         $material = LearningMaterial::create($createData);
         $material->students()->sync($data['student_ids'] ?? []);
+        $material->teachers()->sync($data['teacher_ids'] ?? []);
 
         return redirect()->route('manager.materials.index')
             ->with('success', 'Material uploaded successfully.');
@@ -88,10 +104,13 @@ class LearningMaterialController extends Controller
 
     public function edit(LearningMaterial $material): View
     {
-        $students = Student::with('user')->orderBy('id')->get();
-        $assignedIds = $material->students->pluck('id')->toArray();
+        $students           = Student::with('user')->orderBy('id')->get();
+        $assignedStudentIds = $material->students->pluck('id')->toArray();
+        $teachers           = Teacher::with('user')->orderBy('id')->get();
+        $assignedTeacherIds = $material->teachers->pluck('id')->toArray();
+        $categories         = $this->flatCategoryOptions();
 
-        return view('manager.materials.edit', compact('material', 'students', 'assignedIds'));
+        return view('manager.materials.edit', compact('material', 'students', 'assignedStudentIds', 'teachers', 'assignedTeacherIds', 'categories'));
     }
 
     public function update(Request $request, LearningMaterial $material): RedirectResponse
@@ -99,10 +118,13 @@ class LearningMaterialController extends Controller
         $materialType = $request->input('material_type', $material->material_link ? 'link' : 'file');
 
         $rules = [
-            'title'         => ['required', 'string', 'max:255'],
-            'description'   => ['nullable', 'string', 'max:1000'],
-            'student_ids'   => ['nullable', 'array'],
-            'student_ids.*' => ['exists:students,id'],
+            'title'                => ['required', 'string', 'max:255'],
+            'description'          => ['nullable', 'string', 'max:1000'],
+            'material_category_id' => ['nullable', 'exists:material_categories,id'],
+            'student_ids'          => ['nullable', 'array'],
+            'student_ids.*'        => ['exists:students,id'],
+            'teacher_ids'          => ['nullable', 'array'],
+            'teacher_ids.*'        => ['exists:teachers,id'],
         ];
 
         if ($materialType === 'link') {
@@ -114,8 +136,9 @@ class LearningMaterialController extends Controller
         $data = $request->validate($rules);
 
         $updateData = [
-            'title'       => $data['title'],
-            'description' => $data['description'] ?? null,
+            'title'                => $data['title'],
+            'description'          => $data['description'] ?? null,
+            'material_category_id' => $data['material_category_id'] ?? null,
         ];
 
         if ($materialType === 'link') {
@@ -136,6 +159,7 @@ class LearningMaterialController extends Controller
 
         $material->update($updateData);
         $material->students()->sync($data['student_ids'] ?? []);
+        $material->teachers()->sync($data['teacher_ids'] ?? []);
 
         return redirect()->route('manager.materials.index')
             ->with('success', 'Material updated successfully.');
@@ -152,6 +176,27 @@ class LearningMaterialController extends Controller
         }
 
         return Storage::disk('local')->download($material->file_path, $material->title);
+    }
+
+    private function flatCategoryOptions(): array
+    {
+        $all  = MaterialCategory::orderBy('sort_order')->orderBy('name')->get();
+        $flat = $this->flattenCategoryTree($all);
+
+        return array_map(fn($row) => [
+            'id'    => $row['item']->id,
+            'label' => str_repeat('└─ ', $row['depth']) . $row['item']->name,
+        ], $flat);
+    }
+
+    private function flattenCategoryTree($categories, ?int $parentId = null, int $depth = 0): array
+    {
+        $result = [];
+        foreach ($categories->where('parent_id', $parentId) as $cat) {
+            $result[] = ['item' => $cat, 'depth' => $depth];
+            $result   = array_merge($result, $this->flattenCategoryTree($categories, $cat->id, $depth + 1));
+        }
+        return $result;
     }
 
     public function destroy(LearningMaterial $material): RedirectResponse

@@ -13,6 +13,7 @@ class LearningMaterial extends Model
     protected $fillable = [
         'title',
         'description',
+        'material_category_id',
         'file_path',
         'material_link',
         'uploaded_by',
@@ -23,8 +24,18 @@ class LearningMaterial extends Model
         return $this->belongsTo(User::class, 'uploaded_by');
     }
 
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(MaterialCategory::class, 'material_category_id');
+    }
+
     public function students(): BelongsToMany
     {
         return $this->belongsToMany(Student::class);
+    }
+
+    public function teachers(): BelongsToMany
+    {
+        return $this->belongsToMany(Teacher::class);
     }
 }

@@ -3,12 +3,12 @@
     <x-slot name="header">
         <div>
             <h1 class="font-bold text-headline-sm text-on-surface">Learning Materials</h1>
-            <p class="text-label-sm text-secondary mt-xs">Download resources uploaded by your teachers</p>
+            <p class="text-label-sm text-secondary mt-xs">Resources available for your teaching</p>
         </div>
     </x-slot>
 
     {{-- Filters --}}
-    <form method="GET" action="{{ route('student.materials.index') }}"
+    <form method="GET" action="{{ route('teacher.materials.index') }}"
           class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm p-md mb-md">
         <div class="flex flex-wrap gap-md items-end">
             <div class="space-y-xs flex-1 min-w-[180px]">
@@ -50,7 +50,7 @@
                     Filter
                 </button>
                 @if(request()->anyFilled(['search', 'type', 'category_id']))
-                    <a href="{{ route('student.materials.index') }}"
+                    <a href="{{ route('teacher.materials.index') }}"
                        class="inline-flex items-center px-sm py-sm text-secondary hover:text-on-surface transition-colors"
                        title="Clear filters">
                         <span class="material-symbols-outlined text-[18px]">close</span>
@@ -66,7 +66,7 @@
                 <span class="material-symbols-outlined text-[48px] mb-md opacity-30">folder_open</span>
                 @if(request()->anyFilled(['search', 'type', 'category_id']))
                     <p class="text-body-md mb-md">No materials match your filters.</p>
-                    <a href="{{ route('student.materials.index') }}"
+                    <a href="{{ route('teacher.materials.index') }}"
                        class="inline-flex items-center gap-xs text-label-sm text-primary hover:underline">
                         <span class="material-symbols-outlined text-[16px]">close</span>
                         Clear filters
@@ -124,7 +124,7 @@
                                             Open Link
                                         </a>
                                     @elseif($material->file_path)
-                                        <a href="{{ route('student.materials.download', $material) }}"
+                                        <a href="{{ route('teacher.materials.download', $material) }}"
                                            class="inline-flex items-center gap-xs whitespace-nowrap bg-primary-container text-on-primary font-label-sm px-sm py-xs rounded-lg hover:brightness-110 transition-all active:scale-95">
                                             <span class="material-symbols-outlined text-[15px]">download</span>
                                             Download

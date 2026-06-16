@@ -2,12 +2,14 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Manager\LearningMaterialController;
+use App\Http\Controllers\Manager\MaterialCategoryController;
 use App\Http\Controllers\Manager\ScheduleController;
 use App\Http\Controllers\Manager\StudentController;
 use App\Http\Controllers\Manager\TeacherController;
 use App\Http\Controllers\Manager\TeachingHistoryManagerController;
 use App\Http\Controllers\Student\LearningHistoryController;
 use App\Http\Controllers\Student\MaterialDownloadController;
+use App\Http\Controllers\Teacher\TeacherMaterialController;
 use App\Http\Controllers\Teacher\TeachingHistoryController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +33,12 @@ Route::middleware(['auth'])->group(function () {
         // Schedules
         Route::resource('schedules', ScheduleController::class)->except(['show']);
 
+        // Material categories (nested under materials/ for clarity)
+        Route::prefix('materials')->name('materials.')->group(function () {
+            Route::resource('categories', MaterialCategoryController::class)->except(['show'])
+                ->parameters(['categories' => 'category']);
+        });
+
         // Learning materials
         Route::resource('materials', LearningMaterialController::class)->except(['show']);
         Route::get('materials/{material}/download', [LearningMaterialController::class, 'download'])
@@ -50,6 +58,8 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('histories', TeachingHistoryController::class);
         Route::get('histories/{history}/video', [TeachingHistoryController::class, 'downloadVideo'])->name('histories.video');
         Route::get('histories/{history}/stream', [TeachingHistoryController::class, 'streamVideo'])->name('histories.stream');
+        Route::get('materials', [TeacherMaterialController::class, 'index'])->name('materials.index');
+        Route::get('materials/{material}/download', [TeacherMaterialController::class, 'download'])->name('materials.download');
     });
 
     // -------------------------

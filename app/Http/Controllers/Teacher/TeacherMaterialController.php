@@ -1,23 +1,23 @@
 <?php
 
-namespace App\Http\Controllers\Student;
+namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
 use App\Models\LearningMaterial;
 use App\Models\MaterialCategory;
-use App\Models\Student;
+use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class MaterialDownloadController extends Controller
+class TeacherMaterialController extends Controller
 {
     public function index(Request $request)
     {
-        $student = Student::where('user_id', auth()->id())->firstOrFail();
+        $teacher = Teacher::where('user_id', auth()->id())->firstOrFail();
 
-        $query = LearningMaterial::where(function ($q) use ($student) {
-            $q->whereDoesntHave('students')
-              ->orWhereHas('students', fn($q) => $q->where('students.id', $student->id));
+        $query = LearningMaterial::where(function ($q) use ($teacher) {
+            $q->whereDoesntHave('teachers')
+              ->orWhereHas('teachers', fn($q) => $q->where('teachers.id', $teacher->id));
         });
 
         if ($search = $request->input('search')) {
@@ -39,7 +39,26 @@ class MaterialDownloadController extends Controller
         $materials  = $query->with('category')->latest()->paginate(10)->withQueryString();
         $categories = $this->flatCategoryOptions();
 
-        return view('student.materials.index', compact('materials', 'categories'));
+        return view('teacher.materials.index', compact('materials', 'categories'));
+    }
+
+    public function download(LearningMaterial $material)
+    {
+        $teacher = Teacher::where('user_id', auth()->id())->firstOrFail();
+
+        if ($material->teachers()->exists() && !$material->teachers()->where('teachers.id', $teacher->id)->exists()) {
+            abort(403);
+        }
+
+        if ($material->material_link) {
+            return redirect($material->material_link);
+        }
+
+        if (!$material->file_path) {
+            abort(404);
+        }
+
+        return Storage::disk('local')->download($material->file_path, $material->title);
     }
 
     private function flatCategoryOptions(): array
@@ -61,25 +80,5 @@ class MaterialDownloadController extends Controller
             $result   = array_merge($result, $this->flattenTree($categories, $cat->id, $depth + 1));
         }
         return $result;
-    }
-
-    public function download(LearningMaterial $material)
-    {
-        $student = Student::where('user_id', auth()->id())->firstOrFail();
-
-        // Abort if material is restricted and student is not in the list
-        if ($material->students()->exists() && !$material->students()->where('students.id', $student->id)->exists()) {
-            abort(403);
-        }
-
-        if ($material->material_link) {
-            return redirect($material->material_link);
-        }
-
-        if (!$material->file_path) {
-            abort(404);
-        }
-
-        return Storage::disk('local')->download($material->file_path, $material->title);
     }
 }

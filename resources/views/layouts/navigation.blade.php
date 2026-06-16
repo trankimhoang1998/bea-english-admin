@@ -53,11 +53,29 @@
                 <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('manager.students*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>group</span>
                 <span class="text-label-md">Students</span>
             </a>
-            <a href="{{ route('manager.materials.index') }}" @click="sidebarOpen = false"
-               class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('manager.materials*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
-                <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('manager.materials*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>folder_open</span>
-                <span class="text-label-md">Materials</span>
-            </a>
+            {{-- Materials group --}}
+            <div x-data="{ open: {{ request()->routeIs('manager.materials*') ? 'true' : 'false' }} }">
+                <button type="button" @click="open = !open"
+                        class="w-full flex items-center gap-md py-md px-lg rounded-lg transition-all duration-200 {{ request()->routeIs('manager.materials*') ? 'text-on-surface font-semibold' : 'text-secondary hover:bg-surface-container-low' }}">
+                    <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('manager.materials*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>folder_open</span>
+                    <span class="text-label-md flex-1 text-left">Materials</span>
+                    <span class="material-symbols-outlined text-[16px] transition-transform duration-200"
+                          :class="open ? 'rotate-180' : ''">expand_more</span>
+                </button>
+                <div x-show="open" x-cloak x-transition:enter="transition-all duration-150"
+                     class="ml-[42px] mt-xs space-y-xs">
+                    <a href="{{ route('manager.materials.categories.index') }}" @click="sidebarOpen = false"
+                       class="flex items-center gap-sm py-sm px-md rounded-lg transition-all duration-200 text-label-md {{ request()->routeIs('manager.materials.categories*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low' }}">
+                        <span class="material-symbols-outlined text-[17px]">folder_special</span>
+                        Categories
+                    </a>
+                    <a href="{{ route('manager.materials.index') }}" @click="sidebarOpen = false"
+                       class="flex items-center gap-sm py-sm px-md rounded-lg transition-all duration-200 text-label-md {{ request()->routeIs('manager.materials.index', 'manager.materials.create', 'manager.materials.edit', 'manager.materials.update', 'manager.materials.store', 'manager.materials.destroy', 'manager.materials.download') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low' }}">
+                        <span class="material-symbols-outlined text-[17px]">description</span>
+                        All Materials
+                    </a>
+                </div>
+            </div>
 
         @elseif(Auth::user()->isTeacher())
             <a href="{{ route('teacher.dashboard') }}" @click="sidebarOpen = false"
@@ -69,6 +87,11 @@
                class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('teacher.histories*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
                 <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('teacher.histories*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>history_edu</span>
                 <span class="text-label-md">Teaching History</span>
+            </a>
+            <a href="{{ route('teacher.materials.index') }}" @click="sidebarOpen = false"
+               class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('teacher.materials*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
+                <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('teacher.materials*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>folder_open</span>
+                <span class="text-label-md">Materials</span>
             </a>
 
         @elseif(Auth::user()->isStudent())

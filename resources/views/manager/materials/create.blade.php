@@ -43,6 +43,25 @@
                     @enderror
                 </div>
 
+                {{-- Category --}}
+                <div class="space-y-xs">
+                    <label for="material_category_id" class="block text-label-md font-semibold text-on-surface">
+                        Category <span class="text-secondary font-normal">(optional)</span>
+                    </label>
+                    <select id="material_category_id" name="material_category_id"
+                            class="w-full border border-outline-variant rounded-lg px-md py-sm focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all text-body-sm text-on-surface bg-surface-container-lowest">
+                        <option value="">— No category —</option>
+                        @foreach($categories as $cat)
+                            <option value="{{ $cat['id'] }}" {{ old('material_category_id') == $cat['id'] ? 'selected' : '' }}>
+                                {{ $cat['label'] }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('material_category_id')
+                        <p class="text-label-sm text-error">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 {{-- Material (Upload File or Paste Link) --}}
                 <div class="space-y-sm" x-data="{ tab: '{{ old('material_type', 'file') }}' }">
                     <label class="block text-label-md font-semibold text-on-surface">Material</label>
@@ -99,11 +118,11 @@
                 </div>
 
                 {{-- Student Access --}}
-                @php $oldIds = old('student_ids', []); @endphp
+                @php $oldStudentIds = old('student_ids', []); @endphp
                 <div class="space-y-xs"
                      x-data="{
                          search: '',
-                         selected: {{ json_encode(array_map('intval', (array) $oldIds)) }},
+                         selected: {{ json_encode(array_map('intval', (array) $oldStudentIds)) }},
                          options: {{ $students->map(fn($s) => ['id' => $s->id, 'name' => $s->user->name, 'code' => $s->student_id])->values()->toJson() }},
                          get filtered() {
                              if (!this.search) return this.options;
@@ -121,12 +140,10 @@
                         <span class="text-secondary font-normal">(leave empty = all students can access)</span>
                     </label>
 
-                    {{-- Hidden inputs for selected --}}
                     <template x-for="id in selected" :key="id">
                         <input type="hidden" name="student_ids[]" :value="id">
                     </template>
 
-                    {{-- Selected chips --}}
                     <div class="flex flex-wrap gap-xs min-h-[32px]" x-show="selected.length > 0">
                         <template x-for="id in selected" :key="id">
                             <span class="inline-flex items-center gap-xs bg-primary/10 text-primary text-label-sm px-sm py-xs rounded-full">
@@ -138,7 +155,6 @@
                         </template>
                     </div>
 
-                    {{-- Search + list --}}
                     <div class="border border-outline-variant rounded-lg overflow-hidden">
                         <div class="relative border-b border-outline-variant">
                             <span class="absolute left-sm top-1/2 -translate-y-1/2 text-secondary pointer-events-none">
@@ -167,6 +183,76 @@
                         </div>
                     </div>
                     @error('student_ids')
+                        <p class="text-label-sm text-error">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                {{-- Teacher Access --}}
+                @php $oldTeacherIds = old('teacher_ids', []); @endphp
+                <div class="space-y-xs"
+                     x-data="{
+                         search: '',
+                         selected: {{ json_encode(array_map('intval', (array) $oldTeacherIds)) }},
+                         options: {{ $teachers->map(fn($t) => ['id' => $t->id, 'name' => $t->user->name, 'code' => $t->teacher_id])->values()->toJson() }},
+                         get filtered() {
+                             if (!this.search) return this.options;
+                             const q = this.search.toLowerCase();
+                             return this.options.filter(o => o.name.toLowerCase().includes(q) || o.code.toLowerCase().includes(q));
+                         },
+                         toggle(id) {
+                             const i = this.selected.indexOf(id);
+                             i === -1 ? this.selected.push(id) : this.selected.splice(i, 1);
+                         },
+                         isSelected(id) { return this.selected.includes(id); }
+                     }">
+                    <label class="block text-label-md font-semibold text-on-surface">
+                        Teacher Access
+                        <span class="text-secondary font-normal">(leave empty = all teachers can access)</span>
+                    </label>
+
+                    <template x-for="id in selected" :key="id">
+                        <input type="hidden" name="teacher_ids[]" :value="id">
+                    </template>
+
+                    <div class="flex flex-wrap gap-xs min-h-[32px]" x-show="selected.length > 0">
+                        <template x-for="id in selected" :key="id">
+                            <span class="inline-flex items-center gap-xs bg-tertiary/10 text-tertiary text-label-sm px-sm py-xs rounded-full">
+                                <span x-text="options.find(o => o.id === id)?.name + ' (' + options.find(o => o.id === id)?.code + ')'"></span>
+                                <button type="button" @click="toggle(id)" class="hover:text-error transition-colors">
+                                    <span class="material-symbols-outlined text-[14px]">close</span>
+                                </button>
+                            </span>
+                        </template>
+                    </div>
+
+                    <div class="border border-outline-variant rounded-lg overflow-hidden">
+                        <div class="relative border-b border-outline-variant">
+                            <span class="absolute left-sm top-1/2 -translate-y-1/2 text-secondary pointer-events-none">
+                                <span class="material-symbols-outlined text-[16px]">search</span>
+                            </span>
+                            <input type="text" x-model="search" placeholder="Search by name or teacher ID..."
+                                   class="w-full pl-xl pr-md py-sm text-body-sm text-on-surface bg-surface-container-lowest outline-none">
+                        </div>
+                        <div class="max-h-48 overflow-y-auto divide-y divide-outline-variant">
+                            <template x-if="filtered.length === 0">
+                                <div class="px-md py-sm text-label-sm text-secondary">No teachers found.</div>
+                            </template>
+                            <template x-for="opt in filtered" :key="opt.id">
+                                <label class="flex items-center gap-sm px-md py-sm hover:bg-surface-container-low cursor-pointer transition-colors">
+                                    <input type="checkbox" :checked="isSelected(opt.id)" @change="toggle(opt.id)"
+                                           class="rounded border-outline-variant text-primary focus:ring-primary/20 shrink-0">
+                                    <span class="text-body-sm text-on-surface" x-text="opt.name"></span>
+                                    <span class="text-label-sm text-secondary ml-auto shrink-0" x-text="opt.code"></span>
+                                </label>
+                            </template>
+                        </div>
+                        <div class="px-md py-xs border-t border-outline-variant bg-surface-container-low/40 flex items-center justify-between">
+                            <span class="text-label-sm text-secondary" x-text="selected.length === 0 ? 'All teachers' : selected.length + ' teacher(s) selected'"></span>
+                            <button type="button" x-show="selected.length > 0" @click="selected = []"
+                                    class="text-label-sm text-secondary hover:text-error transition-colors">Clear all</button>
+                        </div>
+                    </div>
+                    @error('teacher_ids')
                         <p class="text-label-sm text-error">{{ $message }}</p>
                     @enderror
                 </div>
