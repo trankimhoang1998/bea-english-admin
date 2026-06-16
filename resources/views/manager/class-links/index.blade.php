@@ -137,7 +137,7 @@
                                             </div>
                                             <div>
                                                 <input type="url" name="class_link" value="{{ $cl->class_link }}"
-                                                       required maxlength="500" placeholder="https://voovmeeting.com/dm/LngItGq4Ga1L"
+                                                       maxlength="500" placeholder="https://voovmeeting.com/dm/LngItGq4Ga1L"
                                                        class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all">
                                                 <p class="text-[10px] text-secondary mt-xs">Format: https://voovmeeting.com/dm/LngItGq4Ga1L</p>
                                             </div>

@@ -28,7 +28,7 @@ class ClassLinkController extends Controller
     {
         $data = $request->validate([
             'class_id'   => ['nullable', 'string', 'max:100'],
-            'class_link' => ['required', 'url', 'max:500'],
+            'class_link' => ['nullable', 'string', 'max:500'],
         ]);
         $classLink->update($data);
 

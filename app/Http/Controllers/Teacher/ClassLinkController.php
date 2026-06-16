@@ -24,7 +24,7 @@ class ClassLinkController extends Controller
         $data = $request->validate([
             'student_id' => ['required', 'integer', 'exists:students,id'],
             'class_id'   => ['nullable', 'string', 'max:100'],
-            'class_link' => ['required', 'url', 'max:500'],
+            'class_link' => ['nullable', 'string', 'max:500'],
         ]);
 
         // Ensure this student is actually taught by this teacher
@@ -48,7 +48,7 @@ class ClassLinkController extends Controller
 
         $data = $request->validate([
             'class_id'   => ['nullable', 'string', 'max:100'],
-            'class_link' => ['required', 'url', 'max:500'],
+            'class_link' => ['nullable', 'string', 'max:500'],
         ]);
         $classLink->update($data);
 

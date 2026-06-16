@@ -13,7 +13,7 @@ return new class extends Migration
             $table->foreignId('teacher_id')->constrained()->cascadeOnDelete();
             $table->foreignId('student_id')->constrained()->cascadeOnDelete();
             $table->string('class_id', 100)->nullable();
-            $table->string('class_link', 500);
+            $table->string('class_link', 500)->nullable();
             $table->timestamps();
 
             $table->unique(['teacher_id', 'student_id']);
