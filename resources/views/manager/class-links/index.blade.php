@@ -113,16 +113,22 @@
                                 {{-- Class ID / Class Link --}}
                                 <td class="px-lg py-md">
                                     <div x-show="!editing" class="space-y-xs">
-                                        @if($cl->class_id)
-                                            <span class="inline-flex items-center gap-xs bg-surface-container-low border border-outline-variant rounded-lg px-sm py-xs font-mono text-label-sm font-semibold text-on-surface">
-                                                <span class="material-symbols-outlined text-[13px] text-secondary">tag</span>{{ $cl->class_id }}
-                                            </span>
+                                        @if($cl->class_id || $cl->class_link)
+                                            @if($cl->class_id)
+                                                <span class="inline-flex items-center gap-xs bg-surface-container-low border border-outline-variant rounded-lg px-sm py-xs font-mono text-label-sm font-semibold text-on-surface">
+                                                    <span class="material-symbols-outlined text-[13px] text-secondary">tag</span>{{ $cl->class_id }}
+                                                </span>
+                                            @endif
+                                            @if($cl->class_link)
+                                            <div class="flex items-center gap-xs">
+                                                <span class="material-symbols-outlined text-[16px] text-primary shrink-0">video_call</span>
+                                                <a href="{{ $cl->class_link }}" target="_blank" rel="noopener"
+                                                   class="text-body-sm text-primary hover:underline truncate max-w-xs">{{ $cl->class_link }}</a>
+                                            </div>
+                                            @endif
+                                        @else
+                                            <span class="text-body-sm text-secondary/60 italic">Not available yet</span>
                                         @endif
-                                        <div class="flex items-center gap-xs">
-                                            <span class="material-symbols-outlined text-[16px] text-primary shrink-0">video_call</span>
-                                            <a href="{{ $cl->class_link }}" target="_blank" rel="noopener"
-                                               class="text-body-sm text-primary hover:underline truncate max-w-xs">{{ $cl->class_link }}</a>
-                                        </div>
                                     </div>
                                     <form x-show="editing" x-cloak method="POST"
                                           action="{{ route('manager.class-links.update', $cl) }}"
@@ -164,12 +170,14 @@
                                         <form id="del-cl-{{ $cl->id }}" method="POST" action="{{ route('manager.class-links.destroy', $cl) }}">
                                             @csrf @method('DELETE')
                                         </form>
+                                        @if($cl->class_id || $cl->class_link)
                                         <button type="button"
                                                 @click="$store.confirmModal.show('Remove class link for {{ addslashes($cl->student->user->name) }}?', 'del-cl-{{ $cl->id }}')"
                                                 class="inline-flex items-center gap-xs text-label-sm text-error hover:text-on-surface px-sm py-xs rounded-lg hover:bg-error-container/30 transition-colors">
                                             <span class="material-symbols-outlined text-[16px]">link_off</span>
                                             Remove
                                         </button>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>

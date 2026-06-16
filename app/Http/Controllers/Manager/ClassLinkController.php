@@ -28,7 +28,7 @@ class ClassLinkController extends Controller
     {
         $data = $request->validate([
             'class_id'   => ['nullable', 'string', 'max:100'],
-            'class_link' => ['nullable', 'string', 'max:500'],
+            'class_link' => ['nullable', 'url', 'max:500'],
         ]);
         $classLink->update($data);
 
@@ -37,7 +37,7 @@ class ClassLinkController extends Controller
 
     public function destroy(ClassLink $classLink): RedirectResponse
     {
-        $classLink->delete();
-        return back()->with('success', 'Class link deleted.');
+        $classLink->update(['class_id' => null, 'class_link' => null]);
+        return back()->with('success', 'Class link cleared.');
     }
 }

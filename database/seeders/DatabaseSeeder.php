@@ -34,7 +34,6 @@ class DatabaseSeeder extends Seeder
             TeachingHistorySeeder::class,
             MaterialCategorySeeder::class,
             LearningMaterialSeeder::class,
-            ClassLinkSeeder::class,
         ]);
     }
 }

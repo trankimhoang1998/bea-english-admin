@@ -170,103 +170,74 @@
                                         </div>
                                     </td>
                                     <td class="px-lg py-md">
-                                        @if($link)
-                                            <div x-show="!editing" class="space-y-xs">
+                                        {{-- Display --}}
+                                        <div x-show="!editing" class="space-y-xs">
+                                            @if($link && ($link->class_id || $link->class_link))
                                                 @if($link->class_id)
                                                     <span class="inline-flex items-center gap-xs bg-surface-container-low border border-outline-variant rounded-lg px-sm py-xs font-mono text-label-sm font-semibold text-on-surface">
                                                         <span class="material-symbols-outlined text-[13px] text-secondary">tag</span>{{ $link->class_id }}
                                                     </span>
                                                 @endif
+                                                @if($link->class_link)
                                                 <div class="flex items-center gap-xs">
                                                     <span class="material-symbols-outlined text-[16px] text-primary shrink-0">video_call</span>
                                                     <a href="{{ $link->class_link }}" target="_blank" rel="noopener"
                                                        class="text-body-sm text-primary hover:underline truncate max-w-xs">{{ $link->class_link }}</a>
                                                 </div>
+                                                @endif
+                                            @else
+                                                <span class="text-body-sm text-secondary/60 italic">Not available yet</span>
+                                            @endif
+                                        </div>
+                                        {{-- Edit form (store or update) --}}
+                                        <form x-show="editing" x-cloak method="POST"
+                                              action="{{ $link ? route('teacher.class-links.update', $link) : route('teacher.class-links.store') }}"
+                                              class="flex items-center gap-sm">
+                                            @csrf
+                                            @if($link) @method('PUT') @endif
+                                            @if(!$link) <input type="hidden" name="student_id" value="{{ $student->id }}"> @endif
+                                            <div class="flex-1 min-w-0 space-y-xs">
+                                                <div>
+                                                    <input type="text" name="class_id" value="{{ $link?->class_id }}"
+                                                           maxlength="100" placeholder="Class ID (e.g. 536-053-706)"
+                                                           class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all">
+                                                    <p class="text-[10px] text-secondary mt-xs">Format: 536-053-706</p>
+                                                </div>
+                                                <div>
+                                                    <input type="url" name="class_link" value="{{ $link?->class_link }}"
+                                                           maxlength="500" placeholder="https://voovmeeting.com/dm/LngItGq4Ga1L"
+                                                           class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all">
+                                                    <p class="text-[10px] text-secondary mt-xs">Format: https://voovmeeting.com/dm/LngItGq4Ga1L</p>
+                                                </div>
                                             </div>
-                                            <form x-show="editing" x-cloak method="POST"
-                                                  action="{{ route('teacher.class-links.update', $link) }}"
-                                                  class="flex items-center gap-sm">
-                                                @csrf @method('PUT')
-                                                <div class="flex-1 min-w-0 space-y-xs">
-                                                    <div>
-                                                        <input type="text" name="class_id" value="{{ $link->class_id }}"
-                                                               maxlength="100" placeholder="Class ID (e.g. 536-053-706)"
-                                                               class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all">
-                                                        <p class="text-[10px] text-secondary mt-xs">Format: 536-053-706</p>
-                                                    </div>
-                                                    <div>
-                                                        <input type="url" name="class_link" value="{{ $link->class_link }}"
-                                                               maxlength="500" placeholder="https://voovmeeting.com/dm/LngItGq4Ga1L"
-                                                               class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all">
-                                                        <p class="text-[10px] text-secondary mt-xs">Format: https://voovmeeting.com/dm/LngItGq4Ga1L</p>
-                                                    </div>
-                                                </div>
-                                                <div class="flex items-center gap-xs shrink-0">
-                                                    <button type="submit"
-                                                            class="inline-flex items-center gap-xs text-label-sm bg-primary-container text-on-primary px-md py-sm rounded-lg hover:brightness-110 transition-all">
-                                                        <span class="material-symbols-outlined text-[16px]">save</span>Save
-                                                    </button>
-                                                    <button type="button" @click="editing = false"
-                                                            class="inline-flex items-center justify-center text-secondary hover:text-on-surface px-sm py-sm rounded-lg hover:bg-surface-container transition-colors">
-                                                        <span class="material-symbols-outlined text-[16px]">close</span>
-                                                    </button>
-                                                </div>
-                                            </form>
-                                        @else
-                                            <span x-show="!editing" class="text-label-sm text-secondary">No link set</span>
-                                            <form x-show="editing" x-cloak method="POST"
-                                                  action="{{ route('teacher.class-links.store') }}"
-                                                  class="flex items-center gap-sm">
-                                                @csrf
-                                                <input type="hidden" name="student_id" value="{{ $student->id }}">
-                                                <div class="flex-1 min-w-0 space-y-xs">
-                                                    <div>
-                                                        <input type="text" name="class_id"
-                                                               maxlength="100" placeholder="Class ID (e.g. 536-053-706)"
-                                                               class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all">
-                                                        <p class="text-[10px] text-secondary mt-xs">Format: 536-053-706</p>
-                                                    </div>
-                                                    <div>
-                                                        <input type="url" name="class_link"
-                                                               maxlength="500" placeholder="https://voovmeeting.com/dm/LngItGq4Ga1L"
-                                                               class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all">
-                                                        <p class="text-[10px] text-secondary mt-xs">Format: https://voovmeeting.com/dm/LngItGq4Ga1L</p>
-                                                    </div>
-                                                </div>
-                                                <div class="flex flex-col gap-xs shrink-0">
-                                                    <button type="submit"
-                                                            class="inline-flex items-center gap-xs text-label-sm bg-primary-container text-on-primary px-md py-sm rounded-lg hover:brightness-110 transition-all">
-                                                        <span class="material-symbols-outlined text-[16px]">add_link</span>Add
-                                                    </button>
-                                                    <button type="button" @click="editing = false"
-                                                            class="inline-flex items-center justify-center text-secondary hover:text-on-surface px-md py-sm rounded-lg hover:bg-surface-container transition-colors">
-                                                        <span class="material-symbols-outlined text-[16px]">close</span>
-                                                    </button>
-                                                </div>
-                                            </form>
-                                        @endif
+                                            <div class="flex items-center gap-xs shrink-0">
+                                                <button type="submit"
+                                                        class="inline-flex items-center gap-xs text-label-sm bg-primary-container text-on-primary px-md py-sm rounded-lg hover:brightness-110 transition-all">
+                                                    <span class="material-symbols-outlined text-[16px]">save</span>Save
+                                                </button>
+                                                <button type="button" @click="editing = false"
+                                                        class="inline-flex items-center justify-center text-secondary hover:text-on-surface px-sm py-sm rounded-lg hover:bg-surface-container transition-colors">
+                                                    <span class="material-symbols-outlined text-[16px]">close</span>
+                                                </button>
+                                            </div>
+                                        </form>
                                     </td>
                                     <td class="px-lg py-md">
                                         <div class="flex items-center justify-end gap-sm">
-                                            @if($link)
-                                                <button type="button" x-show="!editing" @click="editing = true"
-                                                        class="inline-flex items-center gap-xs text-label-sm text-primary hover:text-on-surface px-sm py-xs rounded-lg hover:bg-surface-container transition-colors">
-                                                    <span class="material-symbols-outlined text-[16px]">edit</span>Edit
-                                                </button>
-                                                <form id="del-link-{{ $link->id }}" method="POST"
-                                                      action="{{ route('teacher.class-links.destroy', $link) }}">
-                                                    @csrf @method('DELETE')
-                                                </form>
-                                                <button type="button"
-                                                        @click="$store.confirmModal.show('Remove class link for {{ addslashes($student->user->name) }}?', 'del-link-{{ $link->id }}')"
-                                                        class="inline-flex items-center gap-xs text-label-sm text-error hover:text-on-surface px-sm py-xs rounded-lg hover:bg-error-container/30 transition-colors">
-                                                    <span class="material-symbols-outlined text-[16px]">link_off</span>Remove
-                                                </button>
-                                            @else
-                                                <button type="button" @click="editing = true"
-                                                        class="inline-flex items-center gap-xs text-label-sm text-primary hover:text-on-surface px-sm py-xs rounded-lg hover:bg-surface-container transition-colors">
-                                                    <span class="material-symbols-outlined text-[16px]">add_link</span>Set Link
-                                                </button>
+                                            <button type="button" x-show="!editing" @click="editing = true"
+                                                    class="inline-flex items-center gap-xs text-label-sm text-primary hover:text-on-surface px-sm py-xs rounded-lg hover:bg-surface-container transition-colors">
+                                                <span class="material-symbols-outlined text-[16px]">edit</span>Edit
+                                            </button>
+                                            @if($link && ($link->class_id || $link->class_link))
+                                            <form id="del-link-{{ $link->id }}" method="POST"
+                                                  action="{{ route('teacher.class-links.destroy', $link) }}">
+                                                @csrf @method('DELETE')
+                                            </form>
+                                            <button type="button"
+                                                    @click="$store.confirmModal.show('Remove class link for {{ addslashes($student->user->name) }}?', 'del-link-{{ $link->id }}')"
+                                                    class="inline-flex items-center gap-xs text-label-sm text-error hover:text-on-surface px-sm py-xs rounded-lg hover:bg-error-container/30 transition-colors">
+                                                <span class="material-symbols-outlined text-[16px]">link_off</span>Remove
+                                            </button>
                                             @endif
                                         </div>
                                     </td>

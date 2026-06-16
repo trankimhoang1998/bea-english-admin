@@ -111,16 +111,22 @@
                                 </td>
                                 <td class="px-lg py-md">
                                     <div class="space-y-xs">
-                                        @if($cl->class_id)
-                                            <span class="inline-flex items-center gap-xs bg-surface-container-low border border-outline-variant rounded-lg px-sm py-xs font-mono text-label-sm font-semibold text-on-surface">
-                                                <span class="material-symbols-outlined text-[13px] text-secondary">tag</span>{{ $cl->class_id }}
-                                            </span>
+                                        @if($cl->class_id || $cl->class_link)
+                                            @if($cl->class_id)
+                                                <span class="inline-flex items-center gap-xs bg-surface-container-low border border-outline-variant rounded-lg px-sm py-xs font-mono text-label-sm font-semibold text-on-surface">
+                                                    <span class="material-symbols-outlined text-[13px] text-secondary">tag</span>{{ $cl->class_id }}
+                                                </span>
+                                            @endif
+                                            @if($cl->class_link)
+                                            <div class="flex items-center gap-xs">
+                                                <span class="material-symbols-outlined text-[16px] text-primary shrink-0">video_call</span>
+                                                <a href="{{ $cl->class_link }}" target="_blank" rel="noopener"
+                                                   class="text-body-sm text-primary hover:underline truncate max-w-xs">{{ $cl->class_link }}</a>
+                                            </div>
+                                            @endif
+                                        @else
+                                            <span class="text-body-sm text-secondary/60 italic">Not available yet</span>
                                         @endif
-                                        <div class="flex items-center gap-xs">
-                                            <span class="material-symbols-outlined text-[16px] text-primary shrink-0">video_call</span>
-                                            <a href="{{ $cl->class_link }}" target="_blank" rel="noopener"
-                                               class="text-body-sm text-primary hover:underline truncate max-w-xs">{{ $cl->class_link }}</a>
-                                        </div>
                                     </div>
                                 </td>
                             </tr>

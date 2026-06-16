@@ -154,10 +154,10 @@
                                 <p class="font-semibold text-body-sm text-on-surface">{{ $cl->teacher->user->name }}</p>
                             </div>
                             {{-- Class ID --}}
-                            @if($cl->class_id)
-                            <div class="space-y-xs">
-                                <p class="text-label-xs font-semibold text-secondary">Class ID</p>
-                                <div class="flex items-center gap-xs bg-surface-container-low border border-outline-variant rounded-lg px-sm py-xs w-fit">
+                            <div class="flex items-center gap-sm">
+                                <p class="text-[10px] font-semibold text-secondary shrink-0">Class ID:</p>
+                                @if($cl->class_id)
+                                <div class="flex items-center gap-xs bg-surface-container-low border border-outline-variant rounded-lg px-sm py-xs">
                                     <span class="font-mono text-body-sm font-bold text-on-surface tracking-wider">{{ $cl->class_id }}</span>
                                     <button type="button"
                                             @click="navigator.clipboard.writeText('{{ $cl->class_id }}'); copied = true; setTimeout(() => copied = false, 2000)"
@@ -168,23 +168,26 @@
                                         <span x-text="copied ? 'Copied!' : 'Copy'"></span>
                                     </button>
                                 </div>
+                                @else
+                                <p class="text-body-sm text-secondary/60 italic">Not available yet</p>
+                                @endif
                             </div>
-                            @endif
                             {{-- Class Link + Join --}}
-                            <div class="space-y-xs">
-                                <p class="text-label-xs font-semibold text-secondary">Class Link</p>
-                                <div class="flex items-center gap-sm">
-                                    <div class="flex items-center gap-xs min-w-0">
-                                        <span class="material-symbols-outlined text-[15px] text-primary shrink-0">link</span>
-                                        <a href="{{ $cl->class_link }}" target="_blank" rel="noopener"
-                                           class="text-body-sm text-primary hover:underline break-all">{{ $cl->class_link }}</a>
-                                    </div>
+                            <div class="flex items-center gap-sm">
+                                <p class="text-[10px] font-semibold text-secondary shrink-0">Class Link:</p>
+                                @if($cl->class_link)
+                                <div class="flex items-center gap-sm min-w-0 flex-1">
+                                    <a href="{{ $cl->class_link }}" target="_blank" rel="noopener"
+                                       class="text-body-sm text-primary hover:underline break-all min-w-0">{{ $cl->class_link }}</a>
                                     <a href="{{ $cl->class_link }}" target="_blank" rel="noopener"
                                        class="inline-flex items-center gap-xs bg-primary-container text-on-primary font-semibold text-label-md px-md py-sm rounded-xl hover:brightness-110 transition-all active:scale-95 shrink-0">
                                         <span class="material-symbols-outlined text-[18px]">video_call</span>
                                         Join
                                     </a>
                                 </div>
+                                @else
+                                <p class="text-body-sm text-secondary/60 italic">Not available yet</p>
+                                @endif
                             </div>
                         </div>
                     @endforeach
