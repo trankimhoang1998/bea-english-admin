@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ClassLink extends Model
 {
-    protected $fillable = ['teacher_id', 'student_id', 'link'];
+    protected $fillable = ['teacher_id', 'student_id', 'class_id', 'class_link'];
 
     public function teacher(): BelongsTo
     {

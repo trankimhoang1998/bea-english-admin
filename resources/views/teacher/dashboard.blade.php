@@ -150,7 +150,7 @@
                         <thead>
                             <tr class="border-b border-outline-variant bg-surface-container-low">
                                 <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Student</th>
-                                <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Class Link</th>
+                                <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Class ID / Class Link</th>
                                 <th class="px-lg py-md text-right text-label-sm font-semibold text-secondary uppercase tracking-wide">Actions</th>
                             </tr>
                         </thead>
@@ -171,51 +171,78 @@
                                     </td>
                                     <td class="px-lg py-md">
                                         @if($link)
-                                            <div x-show="!editing" class="flex items-center gap-xs">
-                                                <span class="material-symbols-outlined text-[16px] text-primary shrink-0">video_call</span>
-                                                <a href="{{ $link->link }}" target="_blank" rel="noopener"
-                                                   class="text-body-sm text-primary hover:underline truncate max-w-xs">{{ $link->link }}</a>
+                                            <div x-show="!editing" class="space-y-xs">
+                                                @if($link->class_id)
+                                                    <span class="inline-flex items-center gap-xs bg-surface-container-low border border-outline-variant rounded-lg px-sm py-xs font-mono text-label-sm font-semibold text-on-surface">
+                                                        <span class="material-symbols-outlined text-[13px] text-secondary">tag</span>{{ $link->class_id }}
+                                                    </span>
+                                                @endif
+                                                <div class="flex items-center gap-xs">
+                                                    <span class="material-symbols-outlined text-[16px] text-primary shrink-0">video_call</span>
+                                                    <a href="{{ $link->class_link }}" target="_blank" rel="noopener"
+                                                       class="text-body-sm text-primary hover:underline truncate max-w-xs">{{ $link->class_link }}</a>
+                                                </div>
                                             </div>
                                             <form x-show="editing" x-cloak method="POST"
                                                   action="{{ route('teacher.class-links.update', $link) }}"
-                                                  class="space-y-xs">
+                                                  class="flex items-center gap-sm">
                                                 @csrf @method('PUT')
-                                                <div class="flex items-center gap-sm">
-                                                    <input type="url" name="link" value="{{ $link->link }}"
-                                                           required maxlength="500" placeholder="https://meet.google.com/abc-defg-hij"
-                                                           class="flex-1 border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all min-w-0">
+                                                <div class="flex-1 min-w-0 space-y-xs">
+                                                    <div>
+                                                        <input type="text" name="class_id" value="{{ $link->class_id }}"
+                                                               maxlength="100" placeholder="Class ID (e.g. 536-053-706)"
+                                                               class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all">
+                                                        <p class="text-[10px] text-secondary mt-xs">Format: 536-053-706</p>
+                                                    </div>
+                                                    <div>
+                                                        <input type="url" name="class_link" value="{{ $link->class_link }}"
+                                                               required maxlength="500" placeholder="https://voovmeeting.com/dm/LngItGq4Ga1L"
+                                                               class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all">
+                                                        <p class="text-[10px] text-secondary mt-xs">Format: https://voovmeeting.com/dm/LngItGq4Ga1L</p>
+                                                    </div>
+                                                </div>
+                                                <div class="flex items-center gap-xs shrink-0">
                                                     <button type="submit"
-                                                            class="inline-flex items-center gap-xs text-label-sm bg-primary-container text-on-primary px-md py-sm rounded-lg hover:brightness-110 transition-all shrink-0">
+                                                            class="inline-flex items-center gap-xs text-label-sm bg-primary-container text-on-primary px-md py-sm rounded-lg hover:brightness-110 transition-all">
                                                         <span class="material-symbols-outlined text-[16px]">save</span>Save
                                                     </button>
                                                     <button type="button" @click="editing = false"
-                                                            class="text-secondary hover:text-on-surface transition-colors shrink-0">
+                                                            class="inline-flex items-center justify-center text-secondary hover:text-on-surface px-sm py-sm rounded-lg hover:bg-surface-container transition-colors">
                                                         <span class="material-symbols-outlined text-[16px]">close</span>
                                                     </button>
                                                 </div>
-                                                <p class="text-label-sm text-secondary">Format: <span class="font-mono">https://meet.google.com/abc-defg-hij</span></p>
                                             </form>
                                         @else
                                             <span x-show="!editing" class="text-label-sm text-secondary">No link set</span>
                                             <form x-show="editing" x-cloak method="POST"
                                                   action="{{ route('teacher.class-links.store') }}"
-                                                  class="space-y-xs">
+                                                  class="flex items-center gap-sm">
                                                 @csrf
                                                 <input type="hidden" name="student_id" value="{{ $student->id }}">
-                                                <div class="flex items-center gap-sm">
-                                                    <input type="url" name="link"
-                                                           required maxlength="500" placeholder="https://meet.google.com/abc-defg-hij"
-                                                           class="flex-1 border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all min-w-0">
+                                                <div class="flex-1 min-w-0 space-y-xs">
+                                                    <div>
+                                                        <input type="text" name="class_id"
+                                                               maxlength="100" placeholder="Class ID (e.g. 536-053-706)"
+                                                               class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all">
+                                                        <p class="text-[10px] text-secondary mt-xs">Format: 536-053-706</p>
+                                                    </div>
+                                                    <div>
+                                                        <input type="url" name="class_link"
+                                                               required maxlength="500" placeholder="https://voovmeeting.com/dm/LngItGq4Ga1L"
+                                                               class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all">
+                                                        <p class="text-[10px] text-secondary mt-xs">Format: https://voovmeeting.com/dm/LngItGq4Ga1L</p>
+                                                    </div>
+                                                </div>
+                                                <div class="flex flex-col gap-xs shrink-0">
                                                     <button type="submit"
-                                                            class="inline-flex items-center gap-xs text-label-sm bg-primary-container text-on-primary px-md py-sm rounded-lg hover:brightness-110 transition-all shrink-0">
+                                                            class="inline-flex items-center gap-xs text-label-sm bg-primary-container text-on-primary px-md py-sm rounded-lg hover:brightness-110 transition-all">
                                                         <span class="material-symbols-outlined text-[16px]">add_link</span>Add
                                                     </button>
                                                     <button type="button" @click="editing = false"
-                                                            class="text-secondary hover:text-on-surface transition-colors shrink-0">
+                                                            class="inline-flex items-center justify-center text-secondary hover:text-on-surface px-md py-sm rounded-lg hover:bg-surface-container transition-colors">
                                                         <span class="material-symbols-outlined text-[16px]">close</span>
                                                     </button>
                                                 </div>
-                                                <p class="text-label-sm text-secondary">Format: <span class="font-mono">https://meet.google.com/abc-defg-hij</span></p>
                                             </form>
                                         @endif
                                     </td>

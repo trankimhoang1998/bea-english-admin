@@ -95,13 +95,11 @@
                         <tr class="border-b border-outline-variant bg-surface-container-low">
                             <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Teacher</th>
                             <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Student</th>
-                            <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Meeting ID</th>
-                            <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Link</th>
+                            <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Class ID / Class Link</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-outline-variant">
                         @foreach($classLinks as $cl)
-                            @php $meetingId = basename(parse_url($cl->link, PHP_URL_PATH)); @endphp
                             <tr class="hover:bg-surface-container-low transition-colors">
                                 <td class="px-lg py-md">
                                     <p class="font-semibold text-body-sm text-on-surface">{{ $cl->teacher->user->name }}</p>
@@ -112,23 +110,18 @@
                                     <p class="text-label-sm text-secondary">{{ $cl->student->student_id }}</p>
                                 </td>
                                 <td class="px-lg py-md">
-                                    <div x-data="{ copied: false }" class="flex items-center gap-sm bg-surface-container-low rounded-lg px-md py-sm w-fit">
-                                        <span class="font-mono text-body-sm font-semibold text-on-surface tracking-wider">{{ $meetingId }}</span>
-                                        <button type="button"
-                                                @click="navigator.clipboard.writeText('{{ $meetingId }}'); copied = true; setTimeout(() => copied = false, 2000)"
-                                                class="inline-flex items-center gap-xs text-label-sm transition-colors"
-                                                :class="copied ? 'text-primary' : 'text-secondary hover:text-on-surface'"
-                                                title="Copy Meeting ID">
-                                            <span class="material-symbols-outlined text-[16px]" x-text="copied ? 'check' : 'content_copy'">content_copy</span>
-                                        </button>
+                                    <div class="space-y-xs">
+                                        @if($cl->class_id)
+                                            <span class="inline-flex items-center gap-xs bg-surface-container-low border border-outline-variant rounded-lg px-sm py-xs font-mono text-label-sm font-semibold text-on-surface">
+                                                <span class="material-symbols-outlined text-[13px] text-secondary">tag</span>{{ $cl->class_id }}
+                                            </span>
+                                        @endif
+                                        <div class="flex items-center gap-xs">
+                                            <span class="material-symbols-outlined text-[16px] text-primary shrink-0">video_call</span>
+                                            <a href="{{ $cl->class_link }}" target="_blank" rel="noopener"
+                                               class="text-body-sm text-primary hover:underline truncate max-w-xs">{{ $cl->class_link }}</a>
+                                        </div>
                                     </div>
-                                </td>
-                                <td class="px-lg py-md">
-                                    <a href="{{ $cl->link }}" target="_blank" rel="noopener"
-                                       class="inline-flex items-center gap-xs text-body-sm text-primary hover:underline max-w-xs truncate">
-                                        <span class="material-symbols-outlined text-[16px] shrink-0">video_call</span>
-                                        {{ $cl->link }}
-                                    </a>
                                 </td>
                             </tr>
                         @endforeach

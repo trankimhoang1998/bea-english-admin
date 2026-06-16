@@ -145,41 +145,47 @@
                 </div>
                 <div class="divide-y divide-outline-variant">
                     @foreach($student->classLinks as $cl)
-                        @php $meetingId = basename(parse_url($cl->link, PHP_URL_PATH)); @endphp
-                        <div class="flex items-center gap-lg px-lg py-md" x-data="{ copied: false }">
-                            {{-- Icon --}}
-                            <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                                <span class="material-symbols-outlined text-[20px] text-primary">video_call</span>
-                            </div>
-
-                            {{-- Teacher + Meeting ID --}}
-                            <div class="flex-1 min-w-0">
-                                <div class="flex items-center gap-xs">
-                                    <span class="material-symbols-outlined text-[16px] text-secondary">person</span>
-                                    <p class="font-semibold text-body-sm text-on-surface">{{ $cl->teacher->user->name }}</p>
+                        <div class="px-lg py-md space-y-sm" x-data="{ copied: false }">
+                            {{-- Teacher --}}
+                            <div class="flex items-center gap-sm">
+                                <div class="w-7 h-7 rounded-full bg-tertiary/10 flex items-center justify-center shrink-0">
+                                    <span class="material-symbols-outlined text-[14px] text-tertiary">person</span>
                                 </div>
-                                <div class="flex items-center gap-xs mt-xs">
-                                    <div class="flex items-center gap-xs bg-surface-container-low border border-outline-variant rounded-lg px-sm py-xs">
-                                        <span class="font-mono text-body-sm font-bold text-on-surface tracking-wider">{{ $meetingId }}</span>
-                                        <button type="button"
-                                                @click="navigator.clipboard.writeText('{{ $meetingId }}'); copied = true; setTimeout(() => copied = false, 2000)"
-                                                :class="copied ? 'text-primary' : 'text-secondary hover:text-on-surface'"
-                                                class="inline-flex items-center gap-xs text-label-sm transition-colors pl-xs border-l border-outline-variant"
-                                                title="Copy Meeting ID">
-                                            <span class="material-symbols-outlined text-[14px]" x-text="copied ? 'check' : 'content_copy'">content_copy</span>
-                                            <span x-text="copied ? 'Copied!' : 'Copy'"></span>
-                                        </button>
+                                <p class="font-semibold text-body-sm text-on-surface">{{ $cl->teacher->user->name }}</p>
+                            </div>
+                            {{-- Class ID --}}
+                            @if($cl->class_id)
+                            <div class="space-y-xs">
+                                <p class="text-label-xs font-semibold text-secondary">Class ID</p>
+                                <div class="flex items-center gap-xs bg-surface-container-low border border-outline-variant rounded-lg px-sm py-xs w-fit">
+                                    <span class="font-mono text-body-sm font-bold text-on-surface tracking-wider">{{ $cl->class_id }}</span>
+                                    <button type="button"
+                                            @click="navigator.clipboard.writeText('{{ $cl->class_id }}'); copied = true; setTimeout(() => copied = false, 2000)"
+                                            :class="copied ? 'text-primary' : 'text-secondary hover:text-on-surface'"
+                                            class="inline-flex items-center gap-xs text-label-sm transition-colors pl-xs border-l border-outline-variant"
+                                            title="Copy Class ID">
+                                        <span class="material-symbols-outlined text-[14px]" x-text="copied ? 'check' : 'content_copy'">content_copy</span>
+                                        <span x-text="copied ? 'Copied!' : 'Copy'"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            @endif
+                            {{-- Class Link + Join --}}
+                            <div class="space-y-xs">
+                                <p class="text-label-xs font-semibold text-secondary">Class Link</p>
+                                <div class="flex items-center gap-sm">
+                                    <div class="flex items-center gap-xs min-w-0">
+                                        <span class="material-symbols-outlined text-[15px] text-primary shrink-0">link</span>
+                                        <a href="{{ $cl->class_link }}" target="_blank" rel="noopener"
+                                           class="text-body-sm text-primary hover:underline break-all">{{ $cl->class_link }}</a>
                                     </div>
+                                    <a href="{{ $cl->class_link }}" target="_blank" rel="noopener"
+                                       class="inline-flex items-center gap-xs bg-primary-container text-on-primary font-semibold text-label-md px-md py-sm rounded-xl hover:brightness-110 transition-all active:scale-95 shrink-0">
+                                        <span class="material-symbols-outlined text-[18px]">video_call</span>
+                                        Join
+                                    </a>
                                 </div>
-                                <p class="text-label-xs text-secondary truncate mt-xs">{{ $cl->link }}</p>
                             </div>
-
-                            {{-- Join button --}}
-                            <a href="{{ $cl->link }}" target="_blank" rel="noopener"
-                               class="inline-flex items-center gap-xs bg-primary-container text-on-primary font-semibold text-label-md px-md py-sm rounded-xl hover:brightness-110 transition-all active:scale-95 shrink-0">
-                                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
-                                Join
-                            </a>
                         </div>
                     @endforeach
                 </div>

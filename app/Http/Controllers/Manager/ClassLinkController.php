@@ -26,7 +26,10 @@ class ClassLinkController extends Controller
 
     public function update(Request $request, ClassLink $classLink): RedirectResponse
     {
-        $data = $request->validate(['link' => ['required', 'url', 'max:500']]);
+        $data = $request->validate([
+            'class_id'   => ['nullable', 'string', 'max:100'],
+            'class_link' => ['required', 'url', 'max:500'],
+        ]);
         $classLink->update($data);
 
         return redirect()->route('manager.class-links.index')->with('success', 'Class link updated.');
