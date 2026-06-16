@@ -6,11 +6,14 @@ use App\Http\Controllers\Manager\MaterialCategoryController;
 use App\Http\Controllers\Manager\ScheduleController;
 use App\Http\Controllers\Manager\StudentController;
 use App\Http\Controllers\Manager\TeacherController;
+use App\Http\Controllers\Manager\ClassLinkController as ManagerClassLinkController;
 use App\Http\Controllers\Manager\TeachingHistoryManagerController;
 use App\Http\Controllers\Student\LearningHistoryController;
 use App\Http\Controllers\Student\MaterialDownloadController;
+use App\Http\Controllers\Teacher\ClassLinkController as TeacherClassLinkController;
 use App\Http\Controllers\Teacher\TeacherMaterialController;
 use App\Http\Controllers\Teacher\TeachingHistoryController;
+use App\Http\Controllers\ViceManager\ClassLinkController as VMClassLinkController;
 use App\Http\Controllers\ViceManager\LearningMaterialController as VMLearningMaterialController;
 use App\Http\Controllers\ViceManager\MaterialCategoryController as VMMaterialCategoryController;
 use App\Http\Controllers\ViceManager\ScheduleController as VMScheduleController;
@@ -54,6 +57,9 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('histories', TeachingHistoryManagerController::class)->only(['index', 'show', 'edit', 'update', 'destroy']);
         Route::get('histories/{history}/video', [TeachingHistoryManagerController::class, 'downloadVideo'])->name('histories.video');
         Route::get('histories/{history}/stream', [TeachingHistoryManagerController::class, 'streamVideo'])->name('histories.stream');
+
+        // Class links
+        Route::resource('class-links', ManagerClassLinkController::class)->only(['index', 'update', 'destroy']);
     });
 
     // -------------------------
@@ -73,6 +79,9 @@ Route::middleware(['auth'])->group(function () {
         });
         Route::get('materials', [VMLearningMaterialController::class, 'index'])->name('materials.index');
         Route::get('materials/{material}/download', [VMLearningMaterialController::class, 'download'])->name('materials.download');
+
+        // Class links
+        Route::get('class-links', [VMClassLinkController::class, 'index'])->name('class-links.index');
     });
 
     // -------------------------
@@ -85,6 +94,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('histories/{history}/stream', [TeachingHistoryController::class, 'streamVideo'])->name('histories.stream');
         Route::get('materials', [TeacherMaterialController::class, 'index'])->name('materials.index');
         Route::get('materials/{material}/download', [TeacherMaterialController::class, 'download'])->name('materials.download');
+
+        // Class links
+        Route::post('class-links', [TeacherClassLinkController::class, 'store'])->name('class-links.store');
+        Route::put('class-links/{classLink}', [TeacherClassLinkController::class, 'update'])->name('class-links.update');
+        Route::delete('class-links/{classLink}', [TeacherClassLinkController::class, 'destroy'])->name('class-links.destroy');
     });
 
     // -------------------------

@@ -39,4 +39,9 @@ class Student extends Model
     {
         return $this->belongsToMany(LearningMaterial::class);
     }
+
+    public function classLinks(): HasMany
+    {
+        return $this->hasMany(ClassLink::class);
+    }
 }

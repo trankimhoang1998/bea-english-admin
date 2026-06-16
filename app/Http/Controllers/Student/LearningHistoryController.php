@@ -20,7 +20,7 @@ class LearningHistoryController extends Controller
 
     public function dashboard()
     {
-        $student = $this->student()->load('schedules.teacher.user');
+        $student = $this->student()->load('schedules.teacher.user', 'classLinks.teacher.user');
 
         $days = [
             'mon' => 'Mon',

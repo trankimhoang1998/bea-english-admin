@@ -53,6 +53,11 @@
                 <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('manager.students*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>group</span>
                 <span class="text-label-md">Students</span>
             </a>
+            <a href="{{ route('manager.class-links.index') }}" @click="sidebarOpen = false"
+               class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('manager.class-links*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
+                <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('manager.class-links*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>video_call</span>
+                <span class="text-label-md">Class Links</span>
+            </a>
             <div x-data="{ open: {{ request()->routeIs('manager.materials*') ? 'true' : 'false' }} }">
                 <button type="button" @click="open = !open"
                         class="w-full flex items-center gap-md py-md px-lg rounded-lg transition-all duration-200 {{ request()->routeIs('manager.materials*') ? 'text-on-surface font-semibold' : 'text-secondary hover:bg-surface-container-low' }}">
@@ -99,6 +104,11 @@
                class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('vice-manager.students*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
                 <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('vice-manager.students*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>group</span>
                 <span class="text-label-md">Students</span>
+            </a>
+            <a href="{{ route('vice-manager.class-links.index') }}" @click="sidebarOpen = false"
+               class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('vice-manager.class-links*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
+                <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('vice-manager.class-links*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>video_call</span>
+                <span class="text-label-md">Class Links</span>
             </a>
             <div x-data="{ open: {{ request()->routeIs('vice-manager.materials*') ? 'true' : 'false' }} }">
                 <button type="button" @click="open = !open"

@@ -59,7 +59,7 @@
                    type="checkbox"
                    class="w-5 h-5 rounded border-outline-variant text-primary-container focus:ring-primary-container/20 cursor-pointer">
             <label for="remember_me" class="text-body-sm text-secondary cursor-pointer select-none">
-                Remember this device for 30 days
+                Keep me signed in
             </label>
         </div>
 

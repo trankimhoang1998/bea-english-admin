@@ -14,13 +14,6 @@
         </div>
     </x-slot>
 
-    @if(session('success'))
-        <div class="flex items-center gap-sm p-md bg-secondary-container border border-secondary-container rounded-xl mb-md">
-            <span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
-            <p class="text-label-md text-on-secondary-container">{{ session('success') }}</p>
-        </div>
-    @endif
-
     @if($errors->any())
         <div class="flex items-start gap-sm p-md bg-error-container border border-error/20 rounded-xl mb-md">
             <span class="material-symbols-outlined text-error text-[18px] shrink-0">error</span>

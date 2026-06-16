@@ -136,6 +136,56 @@
             @endif
         </div>
 
+        {{-- Class Links --}}
+        @if($student->classLinks->isNotEmpty())
+            <div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden">
+                <div class="flex items-center gap-sm px-lg py-md border-b border-outline-variant">
+                    <span class="material-symbols-outlined text-primary text-[20px]">video_call</span>
+                    <h2 class="font-semibold text-headline-sm text-on-surface">Your Class Link{{ $student->classLinks->count() > 1 ? 's' : '' }}</h2>
+                </div>
+                <div class="divide-y divide-outline-variant">
+                    @foreach($student->classLinks as $cl)
+                        @php $meetingId = basename(parse_url($cl->link, PHP_URL_PATH)); @endphp
+                        <div class="flex items-center gap-lg px-lg py-md" x-data="{ copied: false }">
+                            {{-- Icon --}}
+                            <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                                <span class="material-symbols-outlined text-[20px] text-primary">video_call</span>
+                            </div>
+
+                            {{-- Teacher + Meeting ID --}}
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-xs">
+                                    <span class="material-symbols-outlined text-[16px] text-secondary">person</span>
+                                    <p class="font-semibold text-body-sm text-on-surface">{{ $cl->teacher->user->name }}</p>
+                                </div>
+                                <div class="flex items-center gap-xs mt-xs">
+                                    <div class="flex items-center gap-xs bg-surface-container-low border border-outline-variant rounded-lg px-sm py-xs">
+                                        <span class="font-mono text-body-sm font-bold text-on-surface tracking-wider">{{ $meetingId }}</span>
+                                        <button type="button"
+                                                @click="navigator.clipboard.writeText('{{ $meetingId }}'); copied = true; setTimeout(() => copied = false, 2000)"
+                                                :class="copied ? 'text-primary' : 'text-secondary hover:text-on-surface'"
+                                                class="inline-flex items-center gap-xs text-label-sm transition-colors pl-xs border-l border-outline-variant"
+                                                title="Copy Meeting ID">
+                                            <span class="material-symbols-outlined text-[14px]" x-text="copied ? 'check' : 'content_copy'">content_copy</span>
+                                            <span x-text="copied ? 'Copied!' : 'Copy'"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <p class="text-label-xs text-secondary truncate mt-xs">{{ $cl->link }}</p>
+                            </div>
+
+                            {{-- Join button --}}
+                            <a href="{{ $cl->link }}" target="_blank" rel="noopener"
+                               class="inline-flex items-center gap-xs bg-primary-container text-on-primary font-semibold text-label-md px-md py-sm rounded-xl hover:brightness-110 transition-all active:scale-95 shrink-0">
+                                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                                Join
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
         {{-- Quick links --}}
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-md">
             <a href="{{ route('student.history.index') }}"

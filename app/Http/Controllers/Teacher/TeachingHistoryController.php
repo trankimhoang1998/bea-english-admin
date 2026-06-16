@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
+use App\Models\Schedule;
 use App\Models\Student;
 use App\Models\TeachingHistory;
 use Illuminate\Http\RedirectResponse;
@@ -35,7 +36,13 @@ class TeachingHistoryController extends Controller
             'sun' => 'Sun',
         ];
 
-        return view('teacher.dashboard', compact('teacher', 'days'));
+        $studentIds = Schedule::where('teacher_id', $teacher->id)->distinct()->pluck('student_id');
+        $students = Student::whereIn('id', $studentIds)
+            ->with(['user', 'classLinks' => fn($q) => $q->where('teacher_id', $teacher->id)])
+            ->orderBy('student_id')
+            ->get();
+
+        return view('teacher.dashboard', compact('teacher', 'days', 'students'));
     }
 
     public function index(Request $request): View

@@ -132,6 +132,125 @@
             @endif
         </div>
 
+        {{-- Class Links --}}
+        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden">
+            <div class="flex items-center gap-sm px-lg py-md border-b border-outline-variant">
+                <span class="material-symbols-outlined text-primary text-[20px]">video_call</span>
+                <h2 class="font-semibold text-headline-sm text-on-surface">Class Links</h2>
+            </div>
+
+            @if($students->isEmpty())
+                <div class="flex flex-col items-center py-xl text-secondary">
+                    <span class="material-symbols-outlined text-[40px] mb-md opacity-30">group_off</span>
+                    <p class="text-body-sm">No students assigned yet.</p>
+                </div>
+            @else
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-outline-variant bg-surface-container-low">
+                                <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Student</th>
+                                <th class="px-lg py-md text-left text-label-sm font-semibold text-secondary uppercase tracking-wide">Class Link</th>
+                                <th class="px-lg py-md text-right text-label-sm font-semibold text-secondary uppercase tracking-wide">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-outline-variant">
+                            @foreach($students as $student)
+                                @php $link = $student->classLinks->first(); @endphp
+                                <tr class="hover:bg-surface-container-low transition-colors" x-data="{ editing: false }">
+                                    <td class="px-lg py-md">
+                                        <div class="flex items-center gap-md">
+                                            <div class="w-8 h-8 rounded-full bg-tertiary/10 flex items-center justify-center shrink-0">
+                                                <span class="material-symbols-outlined text-[16px] text-tertiary">person</span>
+                                            </div>
+                                            <div>
+                                                <p class="font-semibold text-body-sm text-on-surface">{{ $student->user->name }}</p>
+                                                <p class="text-label-sm text-secondary">{{ $student->student_id }}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-lg py-md">
+                                        @if($link)
+                                            <div x-show="!editing" class="flex items-center gap-xs">
+                                                <span class="material-symbols-outlined text-[16px] text-primary shrink-0">video_call</span>
+                                                <a href="{{ $link->link }}" target="_blank" rel="noopener"
+                                                   class="text-body-sm text-primary hover:underline truncate max-w-xs">{{ $link->link }}</a>
+                                            </div>
+                                            <form x-show="editing" x-cloak method="POST"
+                                                  action="{{ route('teacher.class-links.update', $link) }}"
+                                                  class="space-y-xs">
+                                                @csrf @method('PUT')
+                                                <div class="flex items-center gap-sm">
+                                                    <input type="url" name="link" value="{{ $link->link }}"
+                                                           required maxlength="500" placeholder="https://meet.google.com/abc-defg-hij"
+                                                           class="flex-1 border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all min-w-0">
+                                                    <button type="submit"
+                                                            class="inline-flex items-center gap-xs text-label-sm bg-primary-container text-on-primary px-md py-sm rounded-lg hover:brightness-110 transition-all shrink-0">
+                                                        <span class="material-symbols-outlined text-[16px]">save</span>Save
+                                                    </button>
+                                                    <button type="button" @click="editing = false"
+                                                            class="text-secondary hover:text-on-surface transition-colors shrink-0">
+                                                        <span class="material-symbols-outlined text-[16px]">close</span>
+                                                    </button>
+                                                </div>
+                                                <p class="text-label-sm text-secondary">Format: <span class="font-mono">https://meet.google.com/abc-defg-hij</span></p>
+                                            </form>
+                                        @else
+                                            <span x-show="!editing" class="text-label-sm text-secondary">No link set</span>
+                                            <form x-show="editing" x-cloak method="POST"
+                                                  action="{{ route('teacher.class-links.store') }}"
+                                                  class="space-y-xs">
+                                                @csrf
+                                                <input type="hidden" name="student_id" value="{{ $student->id }}">
+                                                <div class="flex items-center gap-sm">
+                                                    <input type="url" name="link"
+                                                           required maxlength="500" placeholder="https://meet.google.com/abc-defg-hij"
+                                                           class="flex-1 border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all min-w-0">
+                                                    <button type="submit"
+                                                            class="inline-flex items-center gap-xs text-label-sm bg-primary-container text-on-primary px-md py-sm rounded-lg hover:brightness-110 transition-all shrink-0">
+                                                        <span class="material-symbols-outlined text-[16px]">add_link</span>Add
+                                                    </button>
+                                                    <button type="button" @click="editing = false"
+                                                            class="text-secondary hover:text-on-surface transition-colors shrink-0">
+                                                        <span class="material-symbols-outlined text-[16px]">close</span>
+                                                    </button>
+                                                </div>
+                                                <p class="text-label-sm text-secondary">Format: <span class="font-mono">https://meet.google.com/abc-defg-hij</span></p>
+                                            </form>
+                                        @endif
+                                    </td>
+                                    <td class="px-lg py-md">
+                                        <div class="flex items-center justify-end gap-sm">
+                                            @if($link)
+                                                <button type="button" x-show="!editing" @click="editing = true"
+                                                        class="inline-flex items-center gap-xs text-label-sm text-primary hover:text-on-surface px-sm py-xs rounded-lg hover:bg-surface-container transition-colors">
+                                                    <span class="material-symbols-outlined text-[16px]">edit</span>Edit
+                                                </button>
+                                                <form id="del-link-{{ $link->id }}" method="POST"
+                                                      action="{{ route('teacher.class-links.destroy', $link) }}">
+                                                    @csrf @method('DELETE')
+                                                </form>
+                                                <button type="button"
+                                                        @click="$store.confirmModal.show('Remove class link for {{ addslashes($student->user->name) }}?', 'del-link-{{ $link->id }}')"
+                                                        class="inline-flex items-center gap-xs text-label-sm text-error hover:text-on-surface px-sm py-xs rounded-lg hover:bg-error-container/30 transition-colors">
+                                                    <span class="material-symbols-outlined text-[16px]">link_off</span>Remove
+                                                </button>
+                                            @else
+                                                <button type="button" @click="editing = true"
+                                                        class="inline-flex items-center gap-xs text-label-sm text-primary hover:text-on-surface px-sm py-xs rounded-lg hover:bg-surface-container transition-colors">
+                                                    <span class="material-symbols-outlined text-[16px]">add_link</span>Set Link
+                                                </button>
+                                            @endif
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endif
+        </div>
+
         {{-- Quick actions --}}
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-md">
             <a href="{{ route('teacher.histories.index') }}"
