@@ -126,6 +126,7 @@
                             class="w-full border border-outline-variant rounded-lg px-md py-sm focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all text-body-sm text-on-surface bg-surface-container-lowest">
                         <option value="25" {{ old('duration', $history->duration) == 25 ? 'selected' : '' }}>25 min</option>
                         <option value="50" {{ old('duration', $history->duration) == 50 ? 'selected' : '' }}>50 min</option>
+                        <option value="90" {{ old('duration', $history->duration) == 90 ? 'selected' : '' }}>90 min</option>
                     </select>
                     @error('duration')
                         <p class="text-label-sm text-error">{{ $message }}</p>

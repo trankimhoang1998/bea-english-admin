@@ -97,7 +97,7 @@ class TeachingHistoryController extends Controller
             'taught_date' => ['required', 'date'],
             'time_from'   => ['required', 'date_format:H:i'],
             'time_to'     => ['required', 'date_format:H:i', 'after:time_from'],
-            'duration'    => ['required', 'in:25,50'],
+            'duration'    => ['required', 'in:25,50,90'],
             'note'        => ['nullable', 'string', 'max:2000'],
             'video_type'  => ['required', 'in:file,link'],
         ];
@@ -183,7 +183,7 @@ class TeachingHistoryController extends Controller
             'taught_date' => ['required', 'date'],
             'time_from'   => ['required', 'date_format:H:i'],
             'time_to'     => ['required', 'date_format:H:i', 'after:time_from'],
-            'duration'    => ['required', 'in:25,50'],
+            'duration'    => ['required', 'in:25,50,90'],
             'note'        => ['nullable', 'string', 'max:2000'],
             'video_type'  => ['required', 'in:file,link'],
         ];

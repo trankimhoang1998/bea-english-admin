@@ -118,6 +118,7 @@
                         <option value="">— Select Duration —</option>
                         <option value="25" {{ old('duration') == '25' ? 'selected' : '' }}>25 min</option>
                         <option value="50" {{ old('duration') == '50' ? 'selected' : '' }}>50 min</option>
+                        <option value="90" {{ old('duration') == '90' ? 'selected' : '' }}>90 min</option>
                     </select>
                     @error('duration')
                         <p class="text-label-sm text-error">{{ $message }}</p>

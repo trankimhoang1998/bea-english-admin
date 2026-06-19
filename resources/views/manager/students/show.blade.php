@@ -205,6 +205,7 @@
                             <option value="">Any</option>
                             <option value="25" @selected(request('duration') == '25')>25 min</option>
                             <option value="50" @selected(request('duration') == '50')>50 min</option>
+                            <option value="90" @selected(request('duration') == '90')>90 min</option>
                         </select>
                     </div>
                     <div class="flex items-end gap-sm">

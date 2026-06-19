@@ -146,6 +146,7 @@
                     <option value="">All</option>
                     <option value="25" {{ request('duration') == '25' ? 'selected' : '' }}>25 min</option>
                     <option value="50" {{ request('duration') == '50' ? 'selected' : '' }}>50 min</option>
+                    <option value="90" {{ request('duration') == '90' ? 'selected' : '' }}>90 min</option>
                 </select>
             </div>
 

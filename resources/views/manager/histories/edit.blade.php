@@ -213,6 +213,7 @@
                             class="w-full border border-outline-variant rounded-lg px-md py-sm focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all text-body-sm text-on-surface bg-surface-container-lowest">
                         <option value="25" {{ old('duration', $history->duration) == 25 ? 'selected' : '' }}>25 min</option>
                         <option value="50" {{ old('duration', $history->duration) == 50 ? 'selected' : '' }}>50 min</option>
+                        <option value="90" {{ old('duration', $history->duration) == 90 ? 'selected' : '' }}>90 min</option>
                     </select>
                     @error('duration')
                         <p class="text-label-sm text-error">{{ $message }}</p>
@@ -234,7 +235,17 @@
                 {{-- Video --}}
                 @php $initVtype = old('video_type', $history->video_link ? 'link' : 'file'); @endphp
                 <div class="space-y-xs" x-data="{ vtype: '{{ $initVtype }}' }">
-                    <label class="block text-label-md font-semibold text-on-surface">Video Log</label>
+                    <div class="flex items-center justify-between">
+                        <label class="block text-label-md font-semibold text-on-surface">Video Log</label>
+                        @if($history->video_path || $history->video_link)
+                            <button type="button"
+                                    @click="$store.confirmModal.show('Remove this video?', 'delete-video-form')"
+                                    class="inline-flex items-center gap-xs text-label-sm text-error hover:text-error/80 transition-colors">
+                                <span class="material-symbols-outlined text-[16px]">delete</span>
+                                Remove Video
+                            </button>
+                        @endif
+                    </div>
                     <div class="flex gap-xs">
                         <button type="button" @click="vtype = 'file'"
                                 :class="vtype === 'file' ? 'bg-primary-container text-on-primary' : 'bg-surface-container text-secondary hover:text-on-surface'"
@@ -323,4 +334,11 @@
             </form>
         </div>
     </div>
+
+    @if($history->video_path || $history->video_link)
+        <form method="POST" action="{{ route('manager.histories.deleteVideo', $history) }}"
+              id="delete-video-form" class="hidden">
+            @csrf @method('DELETE')
+        </form>
+    @endif
 </x-app-layout>

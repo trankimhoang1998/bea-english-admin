@@ -57,6 +57,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('histories', TeachingHistoryManagerController::class)->only(['index', 'show', 'edit', 'update', 'destroy']);
         Route::get('histories/{history}/video', [TeachingHistoryManagerController::class, 'downloadVideo'])->name('histories.video');
         Route::get('histories/{history}/stream', [TeachingHistoryManagerController::class, 'streamVideo'])->name('histories.stream');
+        Route::delete('histories/{history}/video', [TeachingHistoryManagerController::class, 'deleteVideo'])->name('histories.deleteVideo');
 
         // Class links
         Route::resource('class-links', ManagerClassLinkController::class)->only(['index', 'update', 'destroy']);

@@ -198,6 +198,7 @@
                             <option value="">Any</option>
                             <option value="25">25 min</option>
                             <option value="50">50 min</option>
+                            <option value="90">90 min</option>
                         </select>
                     </div>
                     <div class="flex items-end">

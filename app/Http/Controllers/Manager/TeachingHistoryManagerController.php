@@ -71,7 +71,7 @@ class TeachingHistoryManagerController extends Controller
             'taught_date' => ['required', 'date'],
             'time_from'   => ['required', 'date_format:H:i'],
             'time_to'     => ['required', 'date_format:H:i', 'after:time_from'],
-            'duration'    => ['required', 'in:25,50'],
+            'duration'    => ['required', 'in:25,50,90'],
             'note'        => ['nullable', 'string', 'max:2000'],
             'video_type'  => ['required', 'in:file,link'],
         ];
@@ -138,6 +138,16 @@ class TeachingHistoryManagerController extends Controller
         }
 
         return Storage::disk('local')->download($history->video_path, basename($history->video_path));
+    }
+
+    public function deleteVideo(TeachingHistory $history): RedirectResponse
+    {
+        if ($history->video_path) {
+            Storage::disk('local')->delete($history->video_path);
+        }
+        $history->update(['video_path' => null, 'video_link' => null]);
+
+        return back()->with('success', 'Video removed.');
     }
 
     public function destroy(TeachingHistory $history): RedirectResponse
