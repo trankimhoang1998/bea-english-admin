@@ -47,7 +47,7 @@
                 </div>
                 <div class="bg-surface-container-low rounded-xl p-md">
                     <dt class="text-label-sm text-secondary mb-xs">Total Lessons</dt>
-                    <dd class="font-semibold text-body-sm text-on-surface">{{ $student->teachingHistories->count() }} lessons</dd>
+                    <dd class="font-semibold text-body-sm text-on-surface">{{ $totalHistories }} lessons</dd>
                 </div>
             </dl>
         </div>
@@ -74,7 +74,7 @@
                 ];
 
                 $allTeacherIds = $student->schedules->pluck('teacher_id')
-                    ->merge($student->teachingHistories->pluck('teacher_id'))
+                    ->merge($historyTeacherIds)
                     ->unique()->values();
                 $teacherColorMap = $allTeacherIds->mapWithKeys(
                     fn($id, $idx) => [$id => $palette[$idx % count($palette)]]
@@ -154,87 +154,75 @@
         </div>
 
         {{-- Learning History --}}
-        @php
-            $historyTeachers = $student->teachingHistories
-                ->sortBy('teacher.user.name')
-                ->unique('teacher_id')
-                ->map(fn($h) => ['id' => $h->teacher_id, 'name' => $h->teacher->user->name]);
-        @endphp
-        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden"
-             x-data="{
-                 ft: '', fd: '', fte: '', fdu: '', ftf: '', ftt: '',
-                 ok(t, d, du, tf) {
-                     if (this.ft  && t  !== this.ft)  return false;
-                     if (this.fd  && d  < this.fd)   return false;
-                     if (this.fte && d  > this.fte)  return false;
-                     if (this.fdu && du !== this.fdu) return false;
-                     if (this.ftf && tf < this.ftf)  return false;
-                     if (this.ftt && tf > this.ftt)  return false;
-                     return true;
-                 }
-             }">
+        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden">
             <div class="flex items-center gap-sm px-lg py-md border-b border-outline-variant">
                 <span class="material-symbols-outlined text-primary text-[20px]">history_edu</span>
                 <h2 class="font-semibold text-headline-sm text-on-surface">Learning History</h2>
             </div>
 
             {{-- Filters --}}
-            <div class="p-md border-b border-outline-variant bg-surface-container-low/50 space-y-md">
+            <form method="GET" action="{{ route('manager.students.show', $student) }}"
+                  class="p-md border-b border-outline-variant bg-surface-container-low/50 space-y-md">
                 {{-- Row 1: Date From, Date To, Time From, Time To --}}
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-md">
                     <div class="space-y-xs">
                         <label class="block text-label-sm font-semibold text-secondary uppercase tracking-wide">Date From</label>
-                        <input type="date" x-model="fd"
+                        <input type="date" name="date_from" value="{{ request('date_from') }}"
                                class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary outline-none transition-all">
                     </div>
                     <div class="space-y-xs">
                         <label class="block text-label-sm font-semibold text-secondary uppercase tracking-wide">Date To</label>
-                        <input type="date" x-model="fte"
+                        <input type="date" name="date_to" value="{{ request('date_to') }}"
                                class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary outline-none transition-all">
                     </div>
                     <div class="space-y-xs">
                         <label class="block text-label-sm font-semibold text-secondary uppercase tracking-wide">Time From</label>
-                        <input type="time" x-model="ftf"
+                        <input type="time" name="time_from" value="{{ request('time_from') }}"
                                class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary outline-none transition-all">
                     </div>
                     <div class="space-y-xs">
                         <label class="block text-label-sm font-semibold text-secondary uppercase tracking-wide">Time To</label>
-                        <input type="time" x-model="ftt"
+                        <input type="time" name="time_to" value="{{ request('time_to') }}"
                                class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary outline-none transition-all">
                     </div>
                 </div>
-                {{-- Row 2: Teacher, Duration + Clear --}}
+                {{-- Row 2: Teacher, Duration, Apply, Clear --}}
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-md items-end">
                     <div class="space-y-xs">
                         <label class="block text-label-sm font-semibold text-secondary uppercase tracking-wide">Teacher</label>
-                        <select x-model="ft"
+                        <select name="teacher_id"
                                 class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary outline-none transition-all">
                             <option value="">All</option>
                             @foreach($historyTeachers as $ht)
-                                <option value="{{ $ht['id'] }}">{{ $ht['name'] }}</option>
+                                <option value="{{ $ht['id'] }}" @selected(request('teacher_id') == $ht['id'])>{{ $ht['name'] }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="space-y-xs">
                         <label class="block text-label-sm font-semibold text-secondary uppercase tracking-wide">Duration</label>
-                        <select x-model="fdu"
+                        <select name="duration"
                                 class="w-full border border-outline-variant rounded-lg px-md py-sm text-body-sm text-on-surface bg-surface-container-lowest focus:border-primary outline-none transition-all">
                             <option value="">Any</option>
-                            <option value="25">25 min</option>
-                            <option value="50">50 min</option>
+                            <option value="25" @selected(request('duration') == '25')>25 min</option>
+                            <option value="50" @selected(request('duration') == '50')>50 min</option>
                         </select>
                     </div>
-                    <div class="md:col-span-2 flex items-end">
-                        <button type="button" @click="ft=''; fd=''; fte=''; fdu=''; ftf=''; ftt=''"
-                                x-show="ft || fd || fte || fdu || ftf || ftt"
-                                x-cloak
-                                class="inline-flex items-center gap-xs text-label-sm text-secondary hover:text-on-surface transition-colors py-sm">
-                            <span class="material-symbols-outlined text-[18px]">close</span>
-                            Clear filters
+                    <div class="flex items-end gap-sm">
+                        <button type="submit"
+                                class="inline-flex items-center gap-xs text-label-sm bg-primary-container text-on-primary px-md py-sm rounded-lg hover:brightness-110 transition-all">
+                            <span class="material-symbols-outlined text-[16px]">filter_list</span>
+                            Apply
                         </button>
+                        @if(request()->hasAny(['teacher_id','date_from','date_to','duration','time_from','time_to']))
+                            <a href="{{ route('manager.students.show', $student) }}"
+                               class="inline-flex items-center gap-xs text-label-sm text-secondary hover:text-on-surface transition-colors py-sm">
+                                <span class="material-symbols-outlined text-[18px]">close</span>
+                                Clear
+                            </a>
+                        @endif
                     </div>
                 </div>
-            </div>
+            </form>
 
             <div class="overflow-x-auto">
                 <table class="w-full text-body-sm">
@@ -250,9 +238,8 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-outline-variant">
-                        @forelse($student->teachingHistories->sortByDesc('taught_date') as $h)
-                            <tr class="hover:bg-surface-container-low transition-colors"
-                                x-show="ok('{{ $h->teacher_id }}', '{{ $h->taught_date->format('Y-m-d') }}', '{{ $h->duration }}', '{{ $h->time_from }}')">
+                        @forelse($histories as $h)
+                            <tr class="hover:bg-surface-container-low transition-colors">
                                 <td class="px-lg py-md">
                                     @php $hc = $teacherColorMap[$h->teacher_id] ?? $palette[0]; @endphp
                                     <div class="flex items-center gap-xs">
@@ -317,6 +304,11 @@
                     </tbody>
                 </table>
             </div>
+            @if($histories->hasPages())
+                <div class="px-lg py-md border-t border-outline-variant">
+                    {{ $histories->links() }}
+                </div>
+            @endif
         </div>
     </div>
 </x-app-layout>

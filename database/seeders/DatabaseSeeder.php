@@ -50,13 +50,13 @@ class DatabaseSeeder extends Seeder
             'role'     => 'vice-manager',
         ]);
 
-        // $this->call([
-        //     TeacherSeeder::class,
-        //     StudentSeeder::class,
-        //     ScheduleSeeder::class,
-        //     TeachingHistorySeeder::class,
-        //     MaterialCategorySeeder::class,
-        //     LearningMaterialSeeder::class,
-        // ]);
+        $this->call([
+            TeacherSeeder::class,
+            StudentSeeder::class,
+            ScheduleSeeder::class,
+            TeachingHistorySeeder::class,
+            MaterialCategorySeeder::class,
+            LearningMaterialSeeder::class,
+        ]);
     }
 }

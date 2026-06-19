@@ -64,11 +64,32 @@ class StudentController extends Controller
             ->with('success', 'Student created successfully.');
     }
 
-    public function show(Student $student): View
+    public function show(Student $student, Request $request): View
     {
-        $student->load('user', 'schedules.teacher.user', 'teachingHistories.teacher.user');
+        $student->load('user', 'schedules.teacher.user');
 
-        return view('manager.students.show', compact('student'));
+        $historyTeacherIds = $student->teachingHistories()->distinct()->pluck('teacher_id');
+
+        $historyTeachers = \App\Models\Teacher::with('user')
+            ->whereIn('id', $historyTeacherIds)
+            ->get()
+            ->map(fn($t) => ['id' => $t->id, 'name' => $t->user->name])
+            ->sortBy('name')
+            ->values();
+
+        $totalHistories = $student->teachingHistories()->count();
+
+        $query = $student->teachingHistories()->with('teacher.user')->orderByDesc('taught_date')->orderByDesc('time_from');
+        if ($request->filled('teacher_id')) $query->where('teacher_id', $request->teacher_id);
+        if ($request->filled('date_from'))  $query->whereDate('taught_date', '>=', $request->date_from);
+        if ($request->filled('date_to'))    $query->whereDate('taught_date', '<=', $request->date_to);
+        if ($request->filled('duration'))   $query->where('duration', $request->duration);
+        if ($request->filled('time_from'))  $query->where('time_from', '>=', $request->time_from);
+        if ($request->filled('time_to'))    $query->where('time_to', '<=', $request->time_to);
+
+        $histories = $query->paginate(20)->withQueryString();
+
+        return view('manager.students.show', compact('student', 'histories', 'historyTeachers', 'historyTeacherIds', 'totalHistories'));
     }
 
     public function edit(Student $student): View

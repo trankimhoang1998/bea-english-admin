@@ -13,7 +13,7 @@ class LearningMaterialSeeder extends Seeder
 {
     public function run(): void
     {
-        $managerId = User::where('username', 'manager')->value('id');
+        $managerId = User::where('username', 'bea.manager')->value('id');
         $s  = fn(string $id) => Student::where('student_id', $id)->value('id');
         $t  = fn(string $id) => Teacher::where('teacher_id', $id)->value('id');
         $c  = fn(string $slug) => MaterialCategory::where('slug', $slug)->value('id');
