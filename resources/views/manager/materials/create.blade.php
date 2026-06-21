@@ -137,7 +137,7 @@
                      }">
                     <label class="block text-label-md font-semibold text-on-surface">
                         Student Access
-                        <span class="text-secondary font-normal">(leave empty = all students can access)</span>
+                        <span class="text-secondary font-normal">(leave empty = no access)</span>
                     </label>
 
                     <template x-for="id in selected" :key="id">
@@ -177,7 +177,13 @@
                             </template>
                         </div>
                         <div class="px-md py-xs border-t border-outline-variant bg-surface-container-low/40 flex items-center justify-between">
-                            <span class="text-label-sm text-secondary" x-text="selected.length === 0 ? 'All students' : selected.length + ' student(s) selected'"></span>
+                            <label class="flex items-center gap-xs cursor-pointer">
+                                <input type="checkbox"
+                                       :checked="options.length > 0 && selected.length === options.length"
+                                       @change="selected.length === options.length ? selected = [] : selected = options.map(o => o.id)"
+                                       class="rounded border-outline-variant text-primary focus:ring-primary/20">
+                                <span class="text-label-sm text-secondary" x-text="selected.length === 0 ? 'No one selected' : selected.length + ' student(s) selected'"></span>
+                            </label>
                             <button type="button" x-show="selected.length > 0" @click="selected = []"
                                     class="text-label-sm text-secondary hover:text-error transition-colors">Clear all</button>
                         </div>
@@ -207,7 +213,7 @@
                      }">
                     <label class="block text-label-md font-semibold text-on-surface">
                         Teacher Access
-                        <span class="text-secondary font-normal">(leave empty = all teachers can access)</span>
+                        <span class="text-secondary font-normal">(leave empty = no access)</span>
                     </label>
 
                     <template x-for="id in selected" :key="id">
@@ -247,7 +253,13 @@
                             </template>
                         </div>
                         <div class="px-md py-xs border-t border-outline-variant bg-surface-container-low/40 flex items-center justify-between">
-                            <span class="text-label-sm text-secondary" x-text="selected.length === 0 ? 'All teachers' : selected.length + ' teacher(s) selected'"></span>
+                            <label class="flex items-center gap-xs cursor-pointer">
+                                <input type="checkbox"
+                                       :checked="options.length > 0 && selected.length === options.length"
+                                       @change="selected.length === options.length ? selected = [] : selected = options.map(o => o.id)"
+                                       class="rounded border-outline-variant text-primary focus:ring-primary/20">
+                                <span class="text-label-sm text-secondary" x-text="selected.length === 0 ? 'No one selected' : selected.length + ' teacher(s) selected'"></span>
+                            </label>
                             <button type="button" x-show="selected.length > 0" @click="selected = []"
                                     class="text-label-sm text-secondary hover:text-error transition-colors">Clear all</button>
                         </div>

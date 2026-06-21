@@ -15,10 +15,7 @@ class TeacherMaterialController extends Controller
     {
         $teacher = Teacher::where('user_id', auth()->id())->firstOrFail();
 
-        $query = LearningMaterial::where(function ($q) use ($teacher) {
-            $q->whereDoesntHave('teachers')
-              ->orWhereHas('teachers', fn($q) => $q->where('teachers.id', $teacher->id));
-        });
+        $query = LearningMaterial::whereHas('teachers', fn($q) => $q->where('teachers.id', $teacher->id));
 
         if ($search = $request->input('search')) {
             $query->where('title', 'like', "%{$search}%");
@@ -46,7 +43,7 @@ class TeacherMaterialController extends Controller
     {
         $teacher = Teacher::where('user_id', auth()->id())->firstOrFail();
 
-        if ($material->teachers()->exists() && !$material->teachers()->where('teachers.id', $teacher->id)->exists()) {
+        if (!$material->teachers()->where('teachers.id', $teacher->id)->exists()) {
             abort(403);
         }
 

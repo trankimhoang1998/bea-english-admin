@@ -15,10 +15,7 @@ class MaterialDownloadController extends Controller
     {
         $student = Student::where('user_id', auth()->id())->firstOrFail();
 
-        $query = LearningMaterial::where(function ($q) use ($student) {
-            $q->whereDoesntHave('students')
-              ->orWhereHas('students', fn($q) => $q->where('students.id', $student->id));
-        });
+        $query = LearningMaterial::whereHas('students', fn($q) => $q->where('students.id', $student->id));
 
         if ($search = $request->input('search')) {
             $query->where('title', 'like', "%{$search}%");
@@ -67,8 +64,7 @@ class MaterialDownloadController extends Controller
     {
         $student = Student::where('user_id', auth()->id())->firstOrFail();
 
-        // Abort if material is restricted and student is not in the list
-        if ($material->students()->exists() && !$material->students()->where('students.id', $student->id)->exists()) {
+        if (!$material->students()->where('students.id', $student->id)->exists()) {
             abort(403);
         }
 

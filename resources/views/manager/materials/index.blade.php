@@ -233,9 +233,9 @@
                                 <td class="px-lg py-md">
                                     <div class="flex flex-col gap-xs">
                                         @if($material->students->isEmpty())
-                                            <span class="inline-flex items-center gap-xs text-label-sm text-secondary whitespace-nowrap">
-                                                <span class="material-symbols-outlined text-[14px]">group</span>
-                                                All students
+                                            <span class="inline-flex items-center gap-xs text-label-sm text-secondary/50 whitespace-nowrap">
+                                                <span class="material-symbols-outlined text-[14px]">group_off</span>
+                                                No students
                                             </span>
                                         @else
                                             <div class="relative group inline-flex">
@@ -251,9 +251,9 @@
                                             </div>
                                         @endif
                                         @if($material->teachers->isEmpty())
-                                            <span class="inline-flex items-center gap-xs text-label-sm text-secondary whitespace-nowrap">
-                                                <span class="material-symbols-outlined text-[14px]">school</span>
-                                                All teachers
+                                            <span class="inline-flex items-center gap-xs text-label-sm text-secondary/50 whitespace-nowrap">
+                                                <span class="material-symbols-outlined text-[14px]">no_accounts</span>
+                                                No teachers
                                             </span>
                                         @else
                                             <div class="relative group inline-flex">
