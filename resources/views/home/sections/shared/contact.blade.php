@@ -77,7 +77,56 @@
 
             {{-- RIGHT: form --}}
             <div class="reveal reveal-delay-2"
-                 x-data="{ submitted: false, loading: false }">
+                 x-data="{
+                     submitted: false,
+                     loading: false,
+                     name: '',
+                     phone: '',
+                     audience: '',
+                     errors: {},
+                     async submit() {
+                         if (this.loading) return;
+                         this.errors = {};
+
+                         // Client-side validation
+                         if (!this.name.trim()) {
+                             this.errors.name = ['Vui lòng nhập họ tên.'];
+                         }
+                         if (!this.phone.trim()) {
+                             this.errors.phone = ['Vui lòng nhập số điện thoại.'];
+                         } else if (!/^0[3-9]\d{8}$/.test(this.phone.trim())) {
+                             this.errors.phone = ['Số điện thoại không hợp lệ (10 số, bắt đầu bằng 03–09).'];
+                         }
+                         if (Object.keys(this.errors).length > 0) return;
+
+                         this.loading = true;
+                         try {
+                             const res = await fetch('{{ route('registration.store') }}', {
+                                 method: 'POST',
+                                 headers: {
+                                     'Content-Type': 'application/json',
+                                     'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
+                                     'Accept': 'application/json',
+                                 },
+                                 body: JSON.stringify({
+                                     name:     this.name.trim(),
+                                     phone:    this.phone.trim(),
+                                     audience: this.audience || null,
+                                 }),
+                             });
+                             if (res.ok) {
+                                 this.submitted = true;
+                             } else {
+                                 const data = await res.json();
+                                 if (data.errors) this.errors = data.errors;
+                             }
+                         } catch (e) {
+                             this.errors = { name: ['Lỗi kết nối, vui lòng thử lại.'] };
+                         } finally {
+                             this.loading = false;
+                         }
+                     }
+                 }">
 
                 {{-- Form card --}}
                 <div x-show="!submitted"
@@ -95,25 +144,35 @@
 
                     {{-- Form body --}}
                     <div class="bg-white px-6 pb-6 pt-5">
-                        <form x-on:submit.prevent="
-                                if (loading) return;
-                                loading = true;
-                                setTimeout(() => { submitted = true; loading = false; }, 800);
-                              "
-                              class="space-y-3">
+                        <form @submit.prevent="submit" class="space-y-3">
 
-                            <input type="text" required placeholder="Mời nhập họ tên (*)"
-                                   class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-400 text-[14px] focus:outline-none focus:border-primary-container focus:bg-white transition-colors">
+                            <div>
+                                <input type="text" x-model="name" placeholder="Mời nhập họ tên (*)"
+                                       :class="errors.name ? 'border-red-400 bg-red-50' : 'border-gray-200 bg-gray-50'"
+                                       class="w-full px-4 py-3 rounded-xl text-gray-800 placeholder-gray-400 text-[14px] focus:outline-none focus:border-primary-container focus:bg-white transition-colors border">
+                                <p x-show="errors.name" x-text="errors.name?.[0]"
+                                   class="text-red-500 text-[12px] mt-1 ml-1"></p>
+                            </div>
 
-                            <input type="tel" required placeholder="Mời nhập số điện thoại (*)"
-                                   class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-400 text-[14px] focus:outline-none focus:border-primary-container focus:bg-white transition-colors">
+                            <div>
+                                <input type="tel" x-model="phone" placeholder="Mời nhập số điện thoại (*)"
+                                       :class="errors.phone ? 'border-red-400 bg-red-50' : 'border-gray-200 bg-gray-50'"
+                                       class="w-full px-4 py-3 rounded-xl text-gray-800 placeholder-gray-400 text-[14px] focus:outline-none focus:border-primary-container focus:bg-white transition-colors border">
+                                <p x-show="errors.phone" x-text="errors.phone?.[0]"
+                                   class="text-red-500 text-[12px] mt-1 ml-1"></p>
+                            </div>
 
-                            <select class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-500 text-[14px] focus:outline-none focus:border-primary-container focus:bg-white transition-colors"
+                            <select x-model="audience"
+                                    class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-500 text-[14px] focus:outline-none focus:border-primary-container focus:bg-white transition-colors"
                                     style="-webkit-appearance:none;-moz-appearance:none;appearance:none;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%239ca3af'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E&quot;);background-repeat:no-repeat;background-position:right 0.75rem center;background-size:1.2em;padding-right:2.5rem;">
                                 <option value="">Mời chọn đối tượng</option>
-                                <option value="hoc-sinh">Học sinh (6–18 tuổi)</option>
-                                <option value="nguoi-lon">Người lớn / Đi làm</option>
+                                <option value="hoc-sinh-tieu-hoc">Học sinh tiểu học</option>
+                                <option value="hoc-sinh-thcs">Học sinh THCS</option>
+                                <option value="hoc-sinh-thpt">Học sinh THPT</option>
+                                <option value="sinh-vien">Sinh viên đại học</option>
+                                <option value="nguoi-di-lam">Người đi làm</option>
                                 <option value="ielts">Luyện thi IELTS</option>
+                                <option value="khac">Khác</option>
                             </select>
 
                             <button type="submit"
@@ -146,7 +205,7 @@
                     </div>
                     <h3 class="font-black text-white text-xl mb-2">Đăng ký thành công!</h3>
                     <p class="text-white/60 text-sm leading-relaxed max-w-xs mx-auto">
-                        Chuyên viên tư vấn sẽ liên hệ bạn trong vòng 30 phút. Hẹn gặp bạn tại BEA English!
+                        Chuyên viên tư vấn sẽ liên hệ bạn sớm nhất có thể. Hẹn gặp bạn tại BEA English!
                     </p>
                 </div>
 

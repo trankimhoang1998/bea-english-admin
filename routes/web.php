@@ -27,6 +27,8 @@ use App\Http\Controllers\Manager\ArticleController as ManagerArticleController;
 use App\Http\Controllers\ViceManager\ArticleController as VMArticleController;
 use App\Http\Controllers\ViceManager\ArticleCategoryController as VMArticleCategoryController;
 use App\Http\Controllers\ViceManager\ArticleTagController as VMArticleTagController;
+use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\Manager\RegistrationController as ManagerRegistrationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/',                        [HomeController::class, 'index'])->name('home');
@@ -38,6 +40,7 @@ Route::get('/luyen-thi-ielts',         [HomeController::class, 'luyenThiIelts'])
 Route::get('/tin-tuc',                 [HomeController::class, 'tinTuc'])->name('home.tin-tuc');
 Route::get('/tin-tuc/{slug}',          [HomeController::class, 'articleDetail'])->name('home.article-detail');
 Route::get('/sitemap.xml',             [HomeController::class, 'sitemap'])->name('sitemap');
+Route::post('/dang-ky-tu-van',         [RegistrationController::class, 'store'])->name('registration.store');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -86,6 +89,11 @@ Route::middleware(['auth'])->group(function () {
         // Articles
         Route::post('articles/upload-image', [ManagerArticleController::class, 'uploadImage'])->name('articles.upload-image');
         Route::resource('articles', ManagerArticleController::class);
+
+        // Registrations
+        Route::patch('registrations/{registration}/quick-status', [ManagerRegistrationController::class, 'quickStatus'])->name('registrations.quick-status');
+        Route::patch('registrations/{registration}/update-status', [ManagerRegistrationController::class, 'updateStatus'])->name('registrations.update-status');
+        Route::resource('registrations', ManagerRegistrationController::class)->only(['index', 'show', 'destroy']);
     });
 
     // -------------------------

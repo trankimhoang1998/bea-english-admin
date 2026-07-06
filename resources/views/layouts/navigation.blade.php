@@ -104,6 +104,16 @@
                 </div>
             </div>
 
+            <a href="{{ route('manager.registrations.index') }}" @click="sidebarOpen = false"
+               class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('manager.registrations*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">
+                <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('manager.registrations*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>contact_phone</span>
+                <span class="text-label-md">Đăng Ký Tư Vấn</span>
+                @php $pending = \App\Models\Registration::where('status', 'pending')->count(); @endphp
+                @if($pending > 0)
+                <span class="ml-auto bg-primary-container text-white text-[11px] font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center">{{ $pending }}</span>
+                @endif
+            </a>
+
         @elseif(Auth::user()->isViceManager())
             <a href="{{ route('dashboard') }}" @click="sidebarOpen = false"
                class="flex items-center gap-md py-md rounded-lg transition-all duration-200 {{ request()->routeIs('dashboard') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low px-lg' }}">

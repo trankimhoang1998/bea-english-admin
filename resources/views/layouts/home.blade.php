@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="index, follow">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title ?? 'BEA English – Nền Tảng Vững Vàng, Tương Lai Rộng Mở' }}</title>
     <meta name="description" content="{{ $description ?? 'BEA English cung cấp các khóa học tiếng Anh chất lượng cao, luyện thi IELTS và chương trình học thử miễn phí.' }}">
 
