@@ -78,6 +78,31 @@
                     </a>
                 </div>
             </div>
+            <div x-data="{ open: {{ request()->routeIs('manager.articles*') ? 'true' : 'false' }} }">
+                <button type="button" @click="open = !open"
+                        class="w-full flex items-center gap-md py-md px-lg rounded-lg transition-all duration-200 {{ request()->routeIs('manager.articles*') ? 'text-on-surface font-semibold' : 'text-secondary hover:bg-surface-container-low' }}">
+                    <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('manager.articles*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>newspaper</span>
+                    <span class="text-label-md flex-1 text-left">News</span>
+                    <span class="material-symbols-outlined text-[16px] transition-transform duration-200" :class="open ? 'rotate-180' : ''">expand_more</span>
+                </button>
+                <div x-show="open" x-cloak x-transition:enter="transition-all duration-150" class="ml-[42px] mt-xs space-y-xs">
+                    <a href="{{ route('manager.articles.index') }}" @click="sidebarOpen = false"
+                       class="flex items-center gap-sm py-sm px-md rounded-lg transition-all duration-200 text-label-md {{ request()->routeIs('manager.articles.index', 'manager.articles.create', 'manager.articles.show', 'manager.articles.edit') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low' }}">
+                        <span class="material-symbols-outlined text-[17px]">article</span>
+                        Articles
+                    </a>
+                    <a href="{{ route('manager.articles.categories.index') }}" @click="sidebarOpen = false"
+                       class="flex items-center gap-sm py-sm px-md rounded-lg transition-all duration-200 text-label-md {{ request()->routeIs('manager.articles.categories*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low' }}">
+                        <span class="material-symbols-outlined text-[17px]">category</span>
+                        Categories
+                    </a>
+                    <a href="{{ route('manager.articles.tags.index') }}" @click="sidebarOpen = false"
+                       class="flex items-center gap-sm py-sm px-md rounded-lg transition-all duration-200 text-label-md {{ request()->routeIs('manager.articles.tags*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low' }}">
+                        <span class="material-symbols-outlined text-[17px]">label</span>
+                        Tags
+                    </a>
+                </div>
+            </div>
 
         @elseif(Auth::user()->isViceManager())
             <a href="{{ route('dashboard') }}" @click="sidebarOpen = false"
@@ -127,6 +152,31 @@
                        class="flex items-center gap-sm py-sm px-md rounded-lg transition-all duration-200 text-label-md {{ request()->routeIs('vice-manager.materials.index', 'vice-manager.materials.download') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low' }}">
                         <span class="material-symbols-outlined text-[17px]">description</span>
                         All Materials
+                    </a>
+                </div>
+            </div>
+            <div x-data="{ open: {{ request()->routeIs('vice-manager.articles*') ? 'true' : 'false' }} }">
+                <button type="button" @click="open = !open"
+                        class="w-full flex items-center gap-md py-md px-lg rounded-lg transition-all duration-200 {{ request()->routeIs('vice-manager.articles*') ? 'text-on-surface font-semibold' : 'text-secondary hover:bg-surface-container-low' }}">
+                    <span class="material-symbols-outlined text-[22px]" @if(request()->routeIs('vice-manager.articles*')) style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;" @endif>newspaper</span>
+                    <span class="text-label-md flex-1 text-left">News</span>
+                    <span class="material-symbols-outlined text-[16px] transition-transform duration-200" :class="open ? 'rotate-180' : ''">expand_more</span>
+                </button>
+                <div x-show="open" x-cloak x-transition:enter="transition-all duration-150" class="ml-[42px] mt-xs space-y-xs">
+                    <a href="{{ route('vice-manager.articles.index') }}" @click="sidebarOpen = false"
+                       class="flex items-center gap-sm py-sm px-md rounded-lg transition-all duration-200 text-label-md {{ request()->routeIs('vice-manager.articles.index', 'vice-manager.articles.show') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low' }}">
+                        <span class="material-symbols-outlined text-[17px]">article</span>
+                        Articles
+                    </a>
+                    <a href="{{ route('vice-manager.articles.categories.index') }}" @click="sidebarOpen = false"
+                       class="flex items-center gap-sm py-sm px-md rounded-lg transition-all duration-200 text-label-md {{ request()->routeIs('vice-manager.articles.categories*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low' }}">
+                        <span class="material-symbols-outlined text-[17px]">category</span>
+                        Categories
+                    </a>
+                    <a href="{{ route('vice-manager.articles.tags.index') }}" @click="sidebarOpen = false"
+                       class="flex items-center gap-sm py-sm px-md rounded-lg transition-all duration-200 text-label-md {{ request()->routeIs('vice-manager.articles.tags*') ? 'nav-active font-semibold' : 'text-secondary hover:bg-surface-container-low' }}">
+                        <span class="material-symbols-outlined text-[17px]">label</span>
+                        Tags
                     </a>
                 </div>
             </div>

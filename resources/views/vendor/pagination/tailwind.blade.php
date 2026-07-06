@@ -1,5 +1,5 @@
 @if ($paginator->hasPages())
-<nav role="navigation" aria-label="{{ __('Pagination Navigation') }}" class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-sm py-md">
+<nav role="navigation" aria-label="{{ __('Pagination Navigation') }}" class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 py-4">
 
     {{-- Result count --}}
     <p class="text-label-sm text-secondary">
@@ -17,7 +17,7 @@
     </p>
 
     {{-- Page links --}}
-    <div class="flex items-center gap-xs">
+    <div class="flex items-center gap-1.5">
 
         {{-- Previous --}}
         @if ($paginator->onFirstPage())

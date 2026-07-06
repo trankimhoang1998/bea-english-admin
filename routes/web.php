@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Manager\LearningMaterialController;
 use App\Http\Controllers\Manager\MaterialCategoryController;
 use App\Http\Controllers\Manager\ScheduleController;
@@ -20,11 +21,23 @@ use App\Http\Controllers\ViceManager\ScheduleController as VMScheduleController;
 use App\Http\Controllers\ViceManager\StudentController as VMStudentController;
 use App\Http\Controllers\ViceManager\TeacherController as VMTeacherController;
 use App\Http\Controllers\ViceManager\TeachingHistoryController as VMTeachingHistoryController;
+use App\Http\Controllers\Manager\ArticleCategoryController;
+use App\Http\Controllers\Manager\ArticleTagController as ManagerArticleTagController;
+use App\Http\Controllers\Manager\ArticleController as ManagerArticleController;
+use App\Http\Controllers\ViceManager\ArticleController as VMArticleController;
+use App\Http\Controllers\ViceManager\ArticleCategoryController as VMArticleCategoryController;
+use App\Http\Controllers\ViceManager\ArticleTagController as VMArticleTagController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return redirect()->route('dashboard');
-});
+Route::get('/',                        [HomeController::class, 'index'])->name('home');
+Route::get('/gioi-thieu',              [HomeController::class, 'gioiThieu'])->name('home.gioi-thieu');
+Route::get('/phuong-phap',             [HomeController::class, 'phuongPhap'])->name('home.phuong-phap');
+Route::get('/tieng-anh-hoc-sinh',      [HomeController::class, 'khoaHoc'])->name('home.khoa-hoc');
+Route::get('/tieng-anh-nguoi-lon',     [HomeController::class, 'nguoiLon'])->name('home.nguoi-lon');
+Route::get('/luyen-thi-ielts',         [HomeController::class, 'luyenThiIelts'])->name('home.ielts');
+Route::get('/tin-tuc',                 [HomeController::class, 'tinTuc'])->name('home.tin-tuc');
+Route::get('/tin-tuc/{slug}',          [HomeController::class, 'articleDetail'])->name('home.article-detail');
+Route::get('/sitemap.xml',             [HomeController::class, 'sitemap'])->name('sitemap');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -61,13 +74,25 @@ Route::middleware(['auth'])->group(function () {
 
         // Class links
         Route::resource('class-links', ManagerClassLinkController::class)->only(['index', 'update', 'destroy']);
+
+        // Article categories & tags (nested under articles/ for clarity)
+        Route::prefix('articles')->name('articles.')->group(function () {
+            Route::resource('categories', ArticleCategoryController::class)->except(['show'])
+                ->parameters(['categories' => 'articleCategory']);
+            Route::resource('tags', ManagerArticleTagController::class)->except(['show'])
+                ->parameters(['tags' => 'articleTag']);
+        });
+
+        // Articles
+        Route::post('articles/upload-image', [ManagerArticleController::class, 'uploadImage'])->name('articles.upload-image');
+        Route::resource('articles', ManagerArticleController::class);
     });
 
     // -------------------------
     // Vice Manager routes
     // -------------------------
     Route::middleware(['role:vice-manager'])->prefix('vice-manager')->name('vice-manager.')->group(function () {
-        Route::get('/', fn() => redirect()->route('dashboard'))->name('home');
+        Route::get('/', fn() => redirect()->route('dashboard'));
         Route::resource('teachers', VMTeacherController::class)->only(['index', 'show']);
         Route::resource('students', VMStudentController::class)->only(['index', 'show']);
         Route::get('schedules', [VMScheduleController::class, 'index'])->name('schedules.index');
@@ -83,6 +108,13 @@ Route::middleware(['auth'])->group(function () {
 
         // Class links
         Route::get('class-links', [VMClassLinkController::class, 'index'])->name('class-links.index');
+
+        Route::prefix('articles')->name('articles.')->group(function () {
+            Route::get('categories', [VMArticleCategoryController::class, 'index'])->name('categories.index');
+            Route::get('tags', [VMArticleTagController::class, 'index'])->name('tags.index');
+        });
+        Route::get('articles', [VMArticleController::class, 'index'])->name('articles.index');
+        Route::get('articles/{article}', [VMArticleController::class, 'show'])->name('articles.show');
     });
 
     // -------------------------

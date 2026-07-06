@@ -57,6 +57,9 @@ class DatabaseSeeder extends Seeder
             TeachingHistorySeeder::class,
             MaterialCategorySeeder::class,
             LearningMaterialSeeder::class,
+            ArticleCategorySeeder::class,
+            ArticleTagSeeder::class,
+            ArticleSeeder::class,
         ]);
     }
 }

@@ -1,2 +1,13 @@
 User-agent: *
-Disallow:
+Allow: /
+
+# Khu vực quản trị — không index
+Disallow: /dashboard
+Disallow: /manager/
+Disallow: /vice-manager/
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
+Disallow: /reset-password
+
+Sitemap: https://www.beaenglish.vn/sitemap.xml
