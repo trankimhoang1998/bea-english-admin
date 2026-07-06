@@ -111,6 +111,13 @@
                                 @else
                                     <span class="text-label-sm text-secondary">—</span>
                                 @endif
+                                @if($history->homework_link)
+                                    <a href="{{ $history->homework_link }}" target="_blank" rel="noopener noreferrer"
+                                       class="inline-flex items-center gap-xs text-label-sm text-primary hover:underline mt-xs">
+                                        <span class="material-symbols-outlined text-[14px]">link</span>
+                                        Homework link
+                                    </a>
+                                @endif
                             </td>
                             <td class="px-lg py-md">
                                 @if($history->video_path)

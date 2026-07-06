@@ -232,6 +232,20 @@
                     @enderror
                 </div>
 
+                {{-- Homework Link --}}
+                <div class="space-y-xs">
+                    <label for="homework_link" class="block text-label-md font-semibold text-on-surface">
+                        Homework Link <span class="text-secondary font-normal">(optional)</span>
+                    </label>
+                    <input type="url" id="homework_link" name="homework_link"
+                           placeholder="https://..."
+                           value="{{ old('homework_link', $history->homework_link) }}"
+                           class="w-full border border-outline-variant rounded-lg px-md py-sm focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all text-body-sm text-on-surface bg-surface-container-lowest">
+                    @error('homework_link')
+                        <p class="text-label-sm text-error">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 {{-- Video --}}
                 @php $initVtype = old('video_type', $history->video_link ? 'link' : 'file'); @endphp
                 <div class="space-y-xs" x-data="{ vtype: '{{ $initVtype }}' }">
