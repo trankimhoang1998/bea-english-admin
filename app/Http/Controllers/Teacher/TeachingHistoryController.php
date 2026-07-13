@@ -98,8 +98,9 @@ class TeachingHistoryController extends Controller
             'time_from'   => ['required', 'date_format:H:i'],
             'time_to'     => ['required', 'date_format:H:i', 'after:time_from'],
             'duration'    => ['required', 'in:25,50,90'],
-            'note'        => ['nullable', 'string', 'max:2000'],
-            'video_type'  => ['required', 'in:file,link'],
+            'note'          => ['nullable', 'string', 'max:2000'],
+            'homework_link' => ['nullable', 'url', 'max:500'],
+            'video_type'    => ['required', 'in:file,link'],
         ];
         if ($request->input('video_type') === 'link') {
             $rules['video_link'] = ['required', 'url', 'max:500'];
@@ -136,6 +137,7 @@ class TeachingHistoryController extends Controller
             'time_to'       => $data['time_to'],
             'duration'      => $data['duration'],
             'note'          => $data['note'] ?? null,
+            'homework_link' => $data['homework_link'] ?? null,
             'video_path'    => $videoPath,
             'video_link'    => $videoLink,
         ]);
@@ -184,8 +186,9 @@ class TeachingHistoryController extends Controller
             'time_from'   => ['required', 'date_format:H:i'],
             'time_to'     => ['required', 'date_format:H:i', 'after:time_from'],
             'duration'    => ['required', 'in:25,50,90'],
-            'note'        => ['nullable', 'string', 'max:2000'],
-            'video_type'  => ['required', 'in:file,link'],
+            'note'          => ['nullable', 'string', 'max:2000'],
+            'homework_link' => ['nullable', 'url', 'max:500'],
+            'video_type'    => ['required', 'in:file,link'],
         ];
         if ($request->input('video_type') === 'link') {
             $rules['video_link'] = ['required', 'url', 'max:500'];
@@ -225,9 +228,10 @@ class TeachingHistoryController extends Controller
             'time_from'   => $data['time_from'],
             'time_to'     => $data['time_to'],
             'duration'    => $data['duration'],
-            'note'        => $data['note'] ?? null,
-            'video_path'  => $videoPath,
-            'video_link'  => $videoLink,
+            'note'          => $data['note'] ?? null,
+            'homework_link' => $data['homework_link'] ?? null,
+            'video_path'    => $videoPath,
+            'video_link'    => $videoLink,
         ]);
 
         return redirect()->route('teacher.histories.index')

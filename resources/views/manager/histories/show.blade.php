@@ -69,6 +69,17 @@
                     <dd class="col-span-2 text-body-sm text-on-surface whitespace-pre-wrap">{{ $history->note ?? '—' }}</dd>
                 </div>
                 <div class="px-lg py-md grid grid-cols-1 sm:grid-cols-3 gap-md">
+                    <dt class="text-label-sm text-secondary font-medium">Homework Link</dt>
+                    <dd class="col-span-2 text-body-sm text-on-surface">
+                        @if($history->homework_link)
+                            <a href="{{ $history->homework_link }}" target="_blank" rel="noopener noreferrer"
+                               class="text-primary underline break-all">{{ $history->homework_link }}</a>
+                        @else
+                            —
+                        @endif
+                    </dd>
+                </div>
+                <div class="px-lg py-md grid grid-cols-1 sm:grid-cols-3 gap-md">
                     <dt class="text-label-sm text-secondary font-medium">Video Log</dt>
                     <dd class="col-span-2">
                         <x-video-player

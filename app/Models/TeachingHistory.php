@@ -22,6 +22,7 @@ class TeachingHistory extends Model
         'video_path',
         'video_link',
         'note',
+        'homework_link',
     ];
 
     protected function casts(): array
