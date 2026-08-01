@@ -12,7 +12,13 @@ class ClassLinkController extends Controller
 {
     public function index(Request $request): View
     {
-        $query = ClassLink::with('teacher.user', 'student.user');
+        $query = ClassLink::with('teacher.user', 'student.user')
+            ->whereExists(function ($q) {
+                $q->selectRaw('1')
+                    ->from('schedules')
+                    ->whereColumn('schedules.teacher_id', 'class_links.teacher_id')
+                    ->whereColumn('schedules.student_id', 'class_links.student_id');
+            });
 
         if ($request->filled('teacher_id')) {
             $query->where('teacher_id', $request->teacher_id);
