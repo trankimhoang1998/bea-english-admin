@@ -31,8 +31,7 @@
                         </p>
                         <h1 class="slide-title text-white font-black text-[1.75rem] lg:text-[3.2rem] uppercase leading-[1.2] mb-3 lg:mb-6">
                             BEA ENGLISH.<br>
-                            NỀN TẢNG VỮNG VÀNG –<br>
-                            TƯƠNG LAI RỘNG MỞ!
+                            HƯỚNG TỚI TƯƠNG LAI!
                         </h1>
                         <p class="slide-desc text-white/85 text-sm lg:text-[17px] leading-relaxed mb-5 lg:mb-9 max-w-[520px]">
                             Tiền thân là cộng đồng giáo viên tiếng Anh người Philippines, BeA English đã đồng hành và giúp hàng trăm nghìn học sinh, sinh viên Việt Nam học tập hiệu quả, tự tin chinh phục thành công các chứng chỉ quốc tế như IELTS, TOEIC, Cambridge...

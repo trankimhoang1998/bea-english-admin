@@ -37,8 +37,7 @@
                 <h1 class="font-black uppercase leading-[1.1] mb-5 gt-in-title"
                     style="font-size: clamp(1.65rem, 3.8vw, 2.75rem);">
                     <span class="text-white">BEA ENGLISH.</span><br>
-                    <span class="gt-shine-text">Nền tảng vững vàng</span>
-                    <span class="text-white/85"> – Tương lai rộng mở!</span>
+                    <span class="gt-shine-text">Hướng tới tương lai!</span>
                 </h1>
 
                 {{-- Para 1 --}}
