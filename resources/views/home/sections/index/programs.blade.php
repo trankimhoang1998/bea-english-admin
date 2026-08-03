@@ -62,7 +62,7 @@
                 </div>
                 <div class="flex-1 p-6 flex flex-col gap-6">
                     {{-- Illustration --}}
-                    <div class="rounded-2xl bg-primary-container/5 flex items-center justify-center px-4 pt-5">
+                    <div class="flex-1 rounded-2xl bg-primary-container/5 flex items-center justify-center px-4 pt-5">
                         <svg viewBox="0 0 300 200" class="w-full max-w-[260px] h-auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Học sinh học tiếng Anh trực tuyến">
                             <ellipse cx="150" cy="175" rx="120" ry="14" fill="#fed7aa" opacity="0.5"/>
                             <rect x="60" y="150" width="180" height="10" rx="5" fill="#fdba74"/>
@@ -140,7 +140,7 @@
                 </div>
                 <div class="flex-1 p-6 flex flex-col gap-6">
                     {{-- Illustration --}}
-                    <div class="rounded-2xl bg-primary-container/5 flex items-center justify-center px-4 pt-5">
+                    <div class="flex-1 rounded-2xl bg-primary-container/5 flex items-center justify-center px-4 pt-5">
                         <svg viewBox="0 0 300 200" class="w-full max-w-[260px] h-auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Người lớn học tiếng Anh trực tuyến">
                             <ellipse cx="150" cy="175" rx="120" ry="14" fill="#fed7aa" opacity="0.5"/>
                             <rect x="60" y="150" width="180" height="10" rx="5" fill="#fdba74"/>
@@ -166,7 +166,7 @@
                     <div>
                         <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-5">Lộ trình học 04 cấp độ</p>
                         <div class="grid grid-cols-4 gap-2">
-                            @foreach(['A1-A2', 'B1', 'B2', 'C1'] as $code)
+                            @foreach(['A1–A2', 'B1', 'B2', 'C1'] as $code)
                             <div class="flex items-center justify-center py-2.5 rounded-xl bg-primary-container/10">
                                 <span class="text-[13px] font-black text-primary-container">{{ $code }}</span>
                             </div>
@@ -209,7 +209,7 @@
                     @foreach([
                         ['auto_awesome', 'Chương trình gồm 04 cấp độ với 10 khóa học chuyên sâu',       'Phù hợp cả với người mới bắt đầu và người muốn học nâng cao toàn diện.'],
                         ['timer',        'Phát triển toàn diện 4 kỹ năng Nghe – Nói – Đọc – Viết',      'Rèn luyện phát âm và ngữ điệu chuẩn xác, nâng cao khả năng nghe hiểu, giúp phản xạ nhanh trong hội thoại công việc và giao tiếp hàng ngày.'],
-                        ['menu_book',   'Tích lũy lên đến 5.000+ từ vựng thông dụng',                   'Về các chủ đề xung quanh cuộc sống và công việc thường ngày. Làm chủ hàng trăm cấu trúc câu phổ biến trong giao tiếp, giúp bạn tự tin bắt đầu và duy trì cuộc trò chuyện.'],
+                        ['menu_book',   'Tích lũy lên đến 5.000+ từ vựng thông dụng',                   'Chủ đề xoay quanh cuộc sống và công việc thường ngày. Làm chủ hàng trăm cấu trúc câu phổ biến trong giao tiếp, giúp bạn tự tin bắt đầu và duy trì cuộc trò chuyện.'],
                         ['star',        'Cam kết chuẩn đầu ra theo khung CEFR từ A2 đến B2',            'Hướng đến mục tiêu chinh phục các kỳ thi IELTS, TOEIC, VSTEP... tạo lợi thế du học và cơ hội nghề nghiệp trong môi trường quốc tế.'],
                     ] as [$icon, $bold, $text])
                     <div class="group flex gap-4 py-4 px-3 -mx-3 rounded-2xl transition-colors duration-300 hover:bg-primary-container/5">
