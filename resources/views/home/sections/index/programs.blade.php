@@ -35,12 +35,12 @@
                         ['verified_user', 'Xây dựng nền tảng vững chắc với 6.000+ từ vựng',         'Hàng trăm cấu trúc câu phổ biến, sử dụng hàng ngày trong học tập và cuộc sống.'],
                         ['star',          'Chuẩn bị cho kỳ thi Cambridge',                           'Đạt điểm cao với phương pháp luyện thi hiệu quả. Hướng đến mục tiêu IELTS 6.0+, tạo lợi thế du học và cơ hội phát triển trong môi trường quốc tế.'],
                     ] as [$icon, $bold, $text])
-                    <div class="flex gap-4 py-4">
-                        <div class="shrink-0 w-10 h-10 rounded-xl bg-primary-container/10 flex items-center justify-center mt-0.5">
+                    <div class="group flex gap-4 py-4 px-3 -mx-3 rounded-2xl transition-colors duration-300 hover:bg-primary-container/5">
+                        <div class="shrink-0 w-10 h-10 rounded-xl bg-primary-container/10 flex items-center justify-center mt-0.5 transition-transform duration-300 group-hover:scale-110">
                             <span class="material-symbols-outlined ms-filled text-primary-container text-[20px]">{{ $icon }}</span>
                         </div>
                         <div>
-                            <p class="font-bold text-gray-900 text-[14px] mb-1">{{ $bold }}</p>
+                            <p class="font-bold text-gray-900 text-[14px] mb-1 transition-colors duration-300 group-hover:text-primary-container">{{ $bold }}</p>
                             <p class="text-[13px] text-gray-500 leading-relaxed">{{ $text }}</p>
                         </div>
                     </div>
@@ -186,12 +186,12 @@
                         ['menu_book',   'Tích lũy lên đến 5.000+ từ vựng thông dụng',                   'Về các chủ đề xung quanh cuộc sống và công việc thường ngày. Làm chủ hàng trăm cấu trúc câu phổ biến trong giao tiếp, giúp bạn tự tin bắt đầu và duy trì cuộc trò chuyện.'],
                         ['star',        'Cam kết chuẩn đầu ra theo khung CEFR từ A2 đến B2',            'Hướng đến mục tiêu chinh phục các kỳ thi IELTS, TOEIC, VSTEP... tạo lợi thế du học và cơ hội nghề nghiệp trong môi trường quốc tế.'],
                     ] as [$icon, $bold, $text])
-                    <div class="flex gap-4 py-4">
-                        <div class="shrink-0 w-10 h-10 rounded-xl bg-primary-container/10 flex items-center justify-center mt-0.5">
+                    <div class="group flex gap-4 py-4 px-3 -mx-3 rounded-2xl transition-colors duration-300 hover:bg-primary-container/5">
+                        <div class="shrink-0 w-10 h-10 rounded-xl bg-primary-container/10 flex items-center justify-center mt-0.5 transition-transform duration-300 group-hover:scale-110">
                             <span class="material-symbols-outlined ms-filled text-primary-container text-[20px]">{{ $icon }}</span>
                         </div>
                         <div>
-                            <p class="font-bold text-gray-900 text-[14px] mb-1">{{ $bold }}</p>
+                            <p class="font-bold text-gray-900 text-[14px] mb-1 transition-colors duration-300 group-hover:text-primary-container">{{ $bold }}</p>
                             <p class="text-[13px] text-gray-500 leading-relaxed">{{ $text }}</p>
                         </div>
                     </div>
