@@ -20,7 +20,18 @@ class LearningHistoryController extends Controller
 
     public function dashboard()
     {
-        $student = $this->student()->load('schedules.teacher.user', 'classLinks.teacher.user');
+        $student = $this->student()->load([
+            'schedules.teacher.user',
+            'classLinks' => function ($query) {
+                $query->whereExists(function ($sub) {
+                    $sub->selectRaw('1')
+                        ->from('schedules')
+                        ->whereColumn('schedules.teacher_id', 'class_links.teacher_id')
+                        ->whereColumn('schedules.student_id', 'class_links.student_id');
+                });
+            },
+            'classLinks.teacher.user',
+        ]);
 
         $days = [
             'mon' => 'Mon',
