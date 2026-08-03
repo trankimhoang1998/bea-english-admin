@@ -22,7 +22,7 @@
                     <span class="material-symbols-outlined ms-filled text-primary-container text-[16px]">school</span>
                     <span class="text-sm font-semibold text-primary-container uppercase tracking-wide">Dành cho học sinh</span>
                 </div>
-                <h3 class="text-2xl lg:text-[1.9rem] font-black text-gray-900 uppercase leading-tight mb-4">
+                <h3 class="text-2xl lg:text-[1.9rem] font-black text-primary-container uppercase leading-tight mb-4">
                     Các Khóa Học Tiếng Anh<br>Cho Học Sinh
                 </h3>
                 <p class="text-gray-500 text-[15px] leading-relaxed mb-7">
@@ -30,10 +30,10 @@
                 </p>
                 <div class="divide-y divide-gray-100 mb-8">
                     @foreach([
-                        ['menu_book',     'Chương trình gồm 10 khóa học',                            'nội dung giáo trình giảng dạy bám sát khung chuẩn Cambridge Young Learners và phù hợp với khung tham chiếu ngôn ngữ chung châu Âu CEFR.'],
-                        ['task_alt',      'Phát triển toàn diện 4 kỹ năng Nghe – Nói – Đọc – Viết', 'luyện phát âm chuẩn, tăng phản xạ giao tiếp và thuyết trình tự tin. Rèn luyện tư duy phản biện, kỹ năng suy luận bằng tiếng Anh, hỗ trợ học tập ở các cấp độ cao hơn.'],
-                        ['verified_user', 'Xây dựng nền tảng vững chắc với 6.000+ từ vựng',         'hàng trăm cấu trúc câu phổ biến, sử dụng hàng ngày trong học tập và cuộc sống.'],
-                        ['star',          'Chuẩn bị cho kỳ thi Cambridge',                           'đạt điểm cao với phương pháp luyện thi hiệu quả. Hướng đến mục tiêu IELTS 6.0+, tạo lợi thế du học và cơ hội phát triển trong môi trường quốc tế.'],
+                        ['menu_book',     'Chương trình gồm 10 khóa học',                            'Nội dung giáo trình giảng dạy bám sát khung chuẩn Cambridge Young Learners và phù hợp với khung tham chiếu ngôn ngữ chung châu Âu CEFR.'],
+                        ['task_alt',      'Phát triển toàn diện 4 kỹ năng Nghe – Nói – Đọc – Viết', 'Luyện phát âm chuẩn, tăng phản xạ giao tiếp và thuyết trình tự tin. Rèn luyện tư duy phản biện, kỹ năng suy luận bằng tiếng Anh, hỗ trợ học tập ở các cấp độ cao hơn.'],
+                        ['verified_user', 'Xây dựng nền tảng vững chắc với 6.000+ từ vựng',         'Hàng trăm cấu trúc câu phổ biến, sử dụng hàng ngày trong học tập và cuộc sống.'],
+                        ['star',          'Chuẩn bị cho kỳ thi Cambridge',                           'Đạt điểm cao với phương pháp luyện thi hiệu quả. Hướng đến mục tiêu IELTS 6.0+, tạo lợi thế du học và cơ hội phát triển trong môi trường quốc tế.'],
                     ] as [$icon, $bold, $text])
                     <div class="flex gap-4 py-4">
                         <div class="shrink-0 w-10 h-10 rounded-xl bg-primary-container/10 flex items-center justify-center mt-0.5">
@@ -173,7 +173,7 @@
                     <span class="material-symbols-outlined ms-filled text-primary-container text-[16px]">person</span>
                     <span class="text-sm font-semibold text-primary-container uppercase tracking-wide">Dành cho người lớn</span>
                 </div>
-                <h3 class="text-2xl lg:text-[1.9rem] font-black text-gray-900 uppercase leading-tight mb-4">
+                <h3 class="text-2xl lg:text-[1.9rem] font-black text-primary-container uppercase leading-tight mb-4">
                     Các Khóa Học Tiếng Anh<br>Cho Người Lớn
                 </h3>
                 <p class="text-gray-500 text-[15px] leading-relaxed mb-7">
@@ -181,9 +181,9 @@
                 </p>
                 <div class="divide-y divide-gray-100 mb-8">
                     @foreach([
-                        ['auto_awesome', 'Chương trình gồm 04 cấp độ với 10 khóa học chuyên sâu',       'phù hợp cả với người mới bắt đầu và người muốn học nâng cao toàn diện.'],
-                        ['timer',        'Phát triển toàn diện 4 kỹ năng Nghe – Nói – Đọc – Viết',      'rèn luyện phát âm và ngữ điệu chuẩn xác lên đến 90%; nâng cao khả năng nghe hiểu lên đến 80%, giúp phản xạ nhanh trong hội thoại công việc và giao tiếp hàng ngày.'],
-                        ['menu_book',   'Tích lũy lên đến 5.000+ từ vựng thông dụng',                   'về các chủ đề xung quanh cuộc sống và công việc thường ngày. Làm chủ hàng trăm cấu trúc câu phổ biến trong giao tiếp, giúp bạn tự tin bắt đầu và duy trì cuộc trò chuyện.'],
+                        ['auto_awesome', 'Chương trình gồm 04 cấp độ với 10 khóa học chuyên sâu',       'Phù hợp cả với người mới bắt đầu và người muốn học nâng cao toàn diện.'],
+                        ['timer',        'Phát triển toàn diện 4 kỹ năng Nghe – Nói – Đọc – Viết',      'Rèn luyện phát âm và ngữ điệu chuẩn xác, nâng cao khả năng nghe hiểu, giúp phản xạ nhanh trong hội thoại công việc và giao tiếp hàng ngày.'],
+                        ['menu_book',   'Tích lũy lên đến 5.000+ từ vựng thông dụng',                   'Về các chủ đề xung quanh cuộc sống và công việc thường ngày. Làm chủ hàng trăm cấu trúc câu phổ biến trong giao tiếp, giúp bạn tự tin bắt đầu và duy trì cuộc trò chuyện.'],
                         ['star',        'Cam kết chuẩn đầu ra theo khung CEFR từ A2 đến B2',            'Hướng đến mục tiêu chinh phục các kỳ thi IELTS, TOEIC, VSTEP... tạo lợi thế du học và cơ hội nghề nghiệp trong môi trường quốc tế.'],
                     ] as [$icon, $bold, $text])
                     <div class="flex gap-4 py-4">
