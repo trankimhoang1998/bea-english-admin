@@ -14,7 +14,7 @@
         </div>
 
         {{-- ===== PHẦN 1: HỌC SINH ===== --}}
-        <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center mb-16 lg:mb-24 reveal">
+        <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-stretch mb-16 lg:mb-24 reveal">
 
             {{-- Content --}}
             <div class="order-2 lg:order-1">
@@ -61,17 +61,37 @@
                     <span class="text-white font-black text-[15px] uppercase tracking-wide">Khóa Học Tiếng Anh Học Sinh</span>
                 </div>
                 <div class="flex-1 p-6 flex flex-col gap-6">
-                    {{-- 4 Skill circles --}}
+                    {{-- Illustration --}}
+                    <div class="rounded-2xl bg-primary-container/5 flex items-center justify-center px-4 pt-5">
+                        <svg viewBox="0 0 300 200" class="w-full max-w-[260px] h-auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Học sinh học tiếng Anh trực tuyến">
+                            <ellipse cx="150" cy="175" rx="120" ry="14" fill="#fed7aa" opacity="0.5"/>
+                            <rect x="60" y="150" width="180" height="10" rx="5" fill="#fdba74"/>
+                            <rect x="110" y="120" width="80" height="34" rx="6" fill="#f97316"/>
+                            <rect x="118" y="86" width="64" height="46" rx="6" fill="#ffffff" stroke="#f97316" stroke-width="4"/>
+                            <rect x="126" y="96" width="48" height="6" rx="3" fill="#fed7aa"/>
+                            <rect x="126" y="108" width="34" height="6" rx="3" fill="#fed7aa"/>
+                            <rect x="128" y="60" width="44" height="46" rx="18" fill="#fb923c"/>
+                            <circle cx="150" cy="42" r="22" fill="#fdba74"/>
+                            <path d="M130 38 a20 20 0 0 1 40 0" fill="none" stroke="#f97316" stroke-width="5" stroke-linecap="round"/>
+                            <circle cx="130" cy="42" r="6" fill="#f97316"/>
+                            <circle cx="170" cy="42" r="6" fill="#f97316"/>
+                            <g transform="translate(220,50)">
+                                <rect x="0" y="0" width="34" height="24" rx="3" fill="#ffffff" stroke="#f97316" stroke-width="3"/>
+                                <line x1="17" y1="0" x2="17" y2="24" stroke="#f97316" stroke-width="3"/>
+                            </g>
+                            <g transform="translate(50,70)">
+                                <path d="M12 0 L15 8 L24 8 L17 13 L19 22 L12 17 L5 22 L7 13 L0 8 L9 8 Z" fill="#fdba74"/>
+                            </g>
+                        </svg>
+                    </div>
+                    {{-- 4 Skill icons --}}
                     <div>
                         <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-5">Phát triển 4 kỹ năng</p>
                         <div class="grid grid-cols-4 gap-2">
-                            @foreach(['Nghe' => 88, 'Nói' => 85, 'Đọc' => 90, 'Viết' => 82] as $skill => $pct)
+                            @foreach(['Nghe' => 'headphones', 'Nói' => 'record_voice_over', 'Đọc' => 'menu_book', 'Viết' => 'edit'] as $skill => $skillIcon)
                             <div class="flex flex-col items-center gap-2">
-                                <div class="w-16 h-16 rounded-full flex items-center justify-center"
-                                     style="background: conic-gradient(#f97316 0% {{ $pct }}%, #fed7aa {{ $pct }}% 100%);">
-                                    <div class="w-11 h-11 rounded-full bg-white flex items-center justify-center">
-                                        <span class="text-[11px] font-black text-primary-container">{{ $pct }}%</span>
-                                    </div>
+                                <div class="w-12 h-12 rounded-full bg-primary-container/10 flex items-center justify-center">
+                                    <span class="material-symbols-outlined ms-filled text-primary-container text-[20px]">{{ $skillIcon }}</span>
                                 </div>
                                 <span class="text-[12px] font-semibold text-gray-600">{{ $skill }}</span>
                             </div>
