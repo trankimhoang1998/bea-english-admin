@@ -30,7 +30,7 @@ $inactiveClass = 'font-medium text-on-surface hover:text-primary-container';
                 {{-- Trang chủ --}}
                 <li>
                     <a href="{{ route('home') }}"
-                       class="px-4 py-2 text-[16px] block transition-colors {{ $activePage === 'home' ? $activeClass : $inactiveClass }}">
+                       class="px-4 py-2 text-[16px] block transition-all duration-200 hover:-translate-y-0.5 {{ $activePage === 'home' ? $activeClass : $inactiveClass }}">
                         Trang chủ
                     </a>
                 </li>
@@ -38,7 +38,7 @@ $inactiveClass = 'font-medium text-on-surface hover:text-primary-container';
                 {{-- Giới thiệu --}}
                 <li>
                     <a href="{{ route('home.gioi-thieu') }}"
-                       class="px-4 py-2 text-[16px] block transition-colors {{ $activePage === 'gioi-thieu' ? $activeClass : $inactiveClass }}">
+                       class="px-4 py-2 text-[16px] block transition-all duration-200 hover:-translate-y-0.5 {{ $activePage === 'gioi-thieu' ? $activeClass : $inactiveClass }}">
                         Giới thiệu
                     </a>
                 </li>
@@ -46,14 +46,14 @@ $inactiveClass = 'font-medium text-on-surface hover:text-primary-container';
                 {{-- Phương pháp --}}
                 <li>
                     <a href="{{ route('home.phuong-phap') }}"
-                       class="px-4 py-2 text-[16px] block transition-colors {{ $activePage === 'phuong-phap' ? $activeClass : $inactiveClass }}">
+                       class="px-4 py-2 text-[16px] block transition-all duration-200 hover:-translate-y-0.5 {{ $activePage === 'phuong-phap' ? $activeClass : $inactiveClass }}">
                         Phương pháp
                     </a>
                 </li>
 
                 {{-- Dropdown: Học tại BeA --}}
                 <li class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                    <button class="flex items-center gap-0.5 px-4 py-2 text-[16px] transition-colors {{ $dropdownActive ? 'font-semibold text-primary-container' : 'font-medium text-on-surface hover:text-primary-container' }}"
+                    <button class="flex items-center gap-0.5 px-4 py-2 text-[16px] transition-all duration-200 hover:-translate-y-0.5 {{ $dropdownActive ? 'font-semibold text-primary-container' : 'font-medium text-on-surface hover:text-primary-container' }}"
                             :aria-expanded="open.toString()"
                             aria-haspopup="true">
                         <span class="{{ $dropdownActive ? 'underline decoration-primary-container decoration-2 underline-offset-[6px]' : '' }}">Học tại BeA</span>
@@ -84,7 +84,7 @@ $inactiveClass = 'font-medium text-on-surface hover:text-primary-container';
                 {{-- Tin tức sự kiện --}}
                 <li>
                     <a href="{{ route('home.tin-tuc') }}"
-                       class="px-4 py-2 text-[16px] block transition-colors {{ $activePage === 'tin-tuc' ? $activeClass : $inactiveClass }}">
+                       class="px-4 py-2 text-[16px] block transition-all duration-200 hover:-translate-y-0.5 {{ $activePage === 'tin-tuc' ? $activeClass : $inactiveClass }}">
                         Tin tức sự kiện
                     </a>
                 </li>
