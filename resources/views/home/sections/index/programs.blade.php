@@ -129,7 +129,7 @@
         </div>
 
         {{-- ===== PHẦN 2: NGƯỜI LỚN ===== --}}
-        <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center reveal">
+        <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-stretch reveal">
 
             {{-- Visual panel: Level Progression Dashboard --}}
             <div class="rounded-3xl overflow-hidden shadow-xl border border-gray-100 flex flex-col bg-white">
@@ -139,30 +139,36 @@
                     <span class="text-white font-black text-[15px] uppercase tracking-wide">Khóa Học Tiếng Anh Người Lớn</span>
                 </div>
                 <div class="flex-1 p-6 flex flex-col gap-6">
-                    {{-- Level progress bars --}}
+                    {{-- Illustration --}}
+                    <div class="rounded-2xl bg-primary-container/5 flex items-center justify-center px-4 pt-5">
+                        <svg viewBox="0 0 300 200" class="w-full max-w-[260px] h-auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Người lớn học tiếng Anh trực tuyến">
+                            <ellipse cx="150" cy="175" rx="120" ry="14" fill="#fed7aa" opacity="0.5"/>
+                            <rect x="60" y="150" width="180" height="10" rx="5" fill="#fdba74"/>
+                            <rect x="110" y="120" width="80" height="34" rx="6" fill="#f97316"/>
+                            <rect x="118" y="86" width="64" height="46" rx="6" fill="#ffffff" stroke="#f97316" stroke-width="4"/>
+                            <rect x="126" y="96" width="48" height="6" rx="3" fill="#fed7aa"/>
+                            <rect x="126" y="108" width="34" height="6" rx="3" fill="#fed7aa"/>
+                            <path d="M128 106 L128 66 Q128 58 138 58 L162 58 Q172 58 172 66 L172 106 Z" fill="#78350f"/>
+                            <path d="M150 58 L140 74 L150 90 L160 74 Z" fill="#ffffff"/>
+                            <circle cx="150" cy="40" r="22" fill="#fdba74"/>
+                            <path d="M129 34 a21 21 0 0 1 42 0 q0 -14 -21 -14 t-21 14" fill="#3f2a1a"/>
+                            <g transform="translate(215,95)">
+                                <rect x="0" y="6" width="40" height="28" rx="4" fill="#78350f"/>
+                                <rect x="14" y="0" width="12" height="10" rx="2" fill="none" stroke="#78350f" stroke-width="3"/>
+                                <rect x="0" y="18" width="40" height="4" fill="#fdba74"/>
+                            </g>
+                            <g transform="translate(48,68)">
+                                <path d="M12 0 L15 8 L24 8 L17 13 L19 22 L12 17 L5 22 L7 13 L0 8 L9 8 Z" fill="#fdba74"/>
+                            </g>
+                        </svg>
+                    </div>
+                    {{-- Level badges --}}
                     <div>
                         <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-5">Lộ trình học 04 cấp độ</p>
-                        <div class="space-y-4">
-                            @foreach([
-                                ['A1–A2', 'Cơ bản',     100, true],
-                                ['B1',    'Trung cấp',    72, false],
-                                ['B2',    'Nâng cao',     40, false],
-                                ['C1',    'Thành thạo',   12, false],
-                            ] as [$code, $label, $pct, $done])
-                            <div>
-                                <div class="flex justify-between items-center mb-2">
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-xs font-black px-2 py-0.5 rounded-md {{ $done ? 'bg-primary-container text-white' : 'bg-primary-container/10 text-primary-container' }}">{{ $code }}</span>
-                                        <span class="text-[13px] font-semibold text-gray-700">{{ $label }}</span>
-                                        @if($done)
-                                        <span class="material-symbols-outlined ms-filled text-primary-container text-[16px]">check_circle</span>
-                                        @endif
-                                    </div>
-                                    <span class="text-xs font-bold text-primary-container">{{ $pct }}%</span>
-                                </div>
-                                <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
-                                    <div class="h-full rounded-full prog-bar" style="width:{{ $pct }}%;"></div>
-                                </div>
+                        <div class="grid grid-cols-4 gap-2">
+                            @foreach(['A1-A2', 'B1', 'B2', 'C1'] as $code)
+                            <div class="flex items-center justify-center py-2.5 rounded-xl bg-primary-container/10">
+                                <span class="text-[13px] font-black text-primary-container">{{ $code }}</span>
                             </div>
                             @endforeach
                         </div>
