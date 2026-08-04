@@ -5,6 +5,8 @@ Allow: /
 Disallow: /dashboard
 Disallow: /manager/
 Disallow: /vice-manager/
+Disallow: /teacher/
+Disallow: /student/
 Disallow: /login
 Disallow: /register
 Disallow: /forgot-password

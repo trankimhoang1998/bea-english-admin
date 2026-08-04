@@ -25,8 +25,10 @@ $methods = [
             <div class="inline-flex items-center gap-3">
                 <div class="h-[2px] w-6 lg:w-10 bg-primary-container rounded-full"></div>
                 <div class="bg-primary-container rounded-full px-4 py-2 lg:px-8 lg:py-3">
-                    <h1 class="lg:hidden text-white font-black text-base uppercase tracking-wide">Phương Pháp 6P – BeA</h1>
-                    <h1 class="hidden lg:block text-white font-black text-2xl uppercase tracking-wide">Phương Pháp Đào Tạo 6P – BEA English</h1>
+                    <h1 class="text-white font-black uppercase tracking-wide">
+                        <span class="lg:hidden text-base">Phương Pháp 6P – BeA</span>
+                        <span class="hidden lg:inline text-2xl">Phương Pháp Đào Tạo 6P – BEA English</span>
+                    </h1>
                 </div>
                 <div class="h-[2px] w-6 lg:w-10 bg-primary-container rounded-full"></div>
             </div>

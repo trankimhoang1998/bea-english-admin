@@ -1,6 +1,6 @@
 {{-- resources/views/layouts/home.blade.php --}}
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
+<html lang="vi" class="scroll-smooth">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,20 +13,27 @@
     <link rel="canonical" href="{{ url()->current() }}">
 
     <!-- Favicon -->
-    <link rel="icon" href="{{ asset('images/logo.png') }}" type="image/png">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+    <meta name="theme-color" content="#f97316">
 
     <!-- Open Graph -->
     <meta property="og:type"        content="{{ $ogType ?? 'website' }}">
     <meta property="og:url"         content="{{ url()->current() }}">
     <meta property="og:title"       content="{{ $title ?? 'BEA English – Nền Tảng Vững Vàng, Tương Lai Rộng Mở' }}">
     <meta property="og:description" content="{{ $description ?? 'BEA English cung cấp các khóa học tiếng Anh chất lượng cao, luyện thi IELTS và chương trình học thử miễn phí.' }}">
-    <meta property="og:image"       content="{{ $ogImage ?? asset('images/logo.png') }}">
+    <meta property="og:image"       content="{{ $ogImage ?? asset('images/og-image.png') }}">
+    <meta property="og:image:width"  content="1200">
+    <meta property="og:image:height" content="630">
     <meta property="og:locale"      content="vi_VN">
     <meta property="og:site_name"   content="BEA English">
     <meta name="twitter:card"        content="summary_large_image">
     <meta name="twitter:title"       content="{{ $title ?? 'BEA English – Nền Tảng Vững Vàng, Tương Lai Rộng Mở' }}">
     <meta name="twitter:description" content="{{ $description ?? 'BEA English cung cấp các khóa học tiếng Anh chất lượng cao, luyện thi IELTS và chương trình học thử miễn phí.' }}">
-    <meta name="twitter:image"       content="{{ $ogImage ?? asset('images/logo.png') }}">
+    <meta name="twitter:image"       content="{{ $ogImage ?? asset('images/og-image.png') }}">
     @isset($ogPublishedTime)
     <meta property="article:published_time" content="{{ $ogPublishedTime }}">
     @endisset
