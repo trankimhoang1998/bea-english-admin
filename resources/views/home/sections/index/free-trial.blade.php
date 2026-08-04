@@ -64,7 +64,7 @@
 
         {{-- CTA button --}}
         <div class="text-center">
-            <a href="{{ route('home.gioi-thieu') }}#contact"
+            <a href="#contact"
                class="inline-flex items-center gap-2 px-6 sm:px-10 py-2.5 sm:py-4 rounded-full border-2 border-primary-container text-primary-container font-bold text-sm uppercase tracking-widest hover:bg-primary-container hover:text-white transition-all duration-300 animate-zoom-pulse">
                 Học thử miễn phí
                 <span class="material-symbols-outlined text-[18px]">arrow_forward</span>

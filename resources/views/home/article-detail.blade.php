@@ -1,5 +1,5 @@
 @php
-    $ogImage = $article->thumbnail ? asset('storage/' . $article->thumbnail) : asset('images/logo.png');
+    $ogImage = $article->thumbnail ? asset('storage/' . $article->thumbnail) : asset('images/og-image.png');
 @endphp
 
 @extends('layouts.home', [
@@ -204,6 +204,8 @@
 
     </div>
 </div>
+
+@include('home.sections.shared.contact')
 
 {{-- Toast notification --}}
 <div id="toast"

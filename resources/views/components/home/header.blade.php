@@ -111,14 +111,14 @@ $inactiveClass = 'font-medium text-on-surface hover:text-primary-container';
                    class="px-6 py-2.5 rounded-full text-[15px] font-semibold text-on-surface border border-gray-300 hover:border-primary-container hover:text-primary-container transition-all duration-200">
                     Đăng nhập
                 </a>
-                <a href="{{ route('home.gioi-thieu') }}#contact"
+                <a href="#contact"
                    class="px-6 py-[11px] bg-primary-container text-white rounded-full text-[15px] font-semibold hover:bg-primary transition-all duration-200 animate-float-cta">
                     Học thử miễn phí
                 </a>
             </div>
 
             {{-- Mobile CTA --}}
-            <a href="{{ route('home.gioi-thieu') }}#contact"
+            <a href="#contact"
                class="lg:hidden ml-auto shrink-0 px-3.5 py-2 bg-primary-container text-white rounded-full text-[13px] font-semibold hover:bg-primary transition-all duration-200 animate-float-cta">
                 Học thử miễn phí
             </a>

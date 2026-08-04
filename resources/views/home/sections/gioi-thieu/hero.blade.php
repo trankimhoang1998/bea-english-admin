@@ -54,7 +54,7 @@
 
                 {{-- CTA --}}
                 <div class="hidden lg:block gt-in-cta">
-                    <a href="{{ route('home.gioi-thieu') }}#contact"
+                    <a href="#contact"
                        class="inline-flex items-center gap-2.5 bg-white text-orange-600 font-black uppercase tracking-widest rounded-full shadow-2xl shadow-black/20 hover:bg-orange-50 hover:scale-105 active:scale-95 transition-all duration-200"
                        style="font-size: clamp(11px, 1.2vw, 13px); padding: clamp(12px, 1.4vw, 14px) clamp(24px, 2.8vw, 32px);">
                         Học thử miễn phí
