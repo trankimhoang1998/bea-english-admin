@@ -45,35 +45,47 @@ $inactiveClass = 'font-medium text-on-surface hover:text-primary-container';
                 {{-- Trang chủ --}}
                 <li>
                     <a href="{{ route('home') }}"
-                       class="px-4 py-2 text-[16px] block transition-all duration-200 hover:-translate-y-0.5 {{ $activePage === 'home' ? $activeClass : $inactiveClass }}">
+                       class="relative group px-4 py-2 text-[16px] block transition-colors duration-200 {{ $activePage === 'home' ? $activeClass : $inactiveClass }}">
                         Trang chủ
+                        @if($activePage !== 'home')
+                        <span class="pointer-events-none absolute inset-x-4 -bottom-0.5 h-[2px] bg-primary-container rounded-full origin-center scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
+                        @endif
                     </a>
                 </li>
 
                 {{-- Giới thiệu --}}
                 <li>
                     <a href="{{ route('home.gioi-thieu') }}"
-                       class="px-4 py-2 text-[16px] block transition-all duration-200 hover:-translate-y-0.5 {{ $activePage === 'gioi-thieu' ? $activeClass : $inactiveClass }}">
+                       class="relative group px-4 py-2 text-[16px] block transition-colors duration-200 {{ $activePage === 'gioi-thieu' ? $activeClass : $inactiveClass }}">
                         Giới thiệu
+                        @if($activePage !== 'gioi-thieu')
+                        <span class="pointer-events-none absolute inset-x-4 -bottom-0.5 h-[2px] bg-primary-container rounded-full origin-center scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
+                        @endif
                     </a>
                 </li>
 
                 {{-- Phương pháp --}}
                 <li>
                     <a href="{{ route('home.phuong-phap') }}"
-                       class="px-4 py-2 text-[16px] block transition-all duration-200 hover:-translate-y-0.5 {{ $activePage === 'phuong-phap' ? $activeClass : $inactiveClass }}">
+                       class="relative group px-4 py-2 text-[16px] block transition-colors duration-200 {{ $activePage === 'phuong-phap' ? $activeClass : $inactiveClass }}">
                         Phương pháp
+                        @if($activePage !== 'phuong-phap')
+                        <span class="pointer-events-none absolute inset-x-4 -bottom-0.5 h-[2px] bg-primary-container rounded-full origin-center scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
+                        @endif
                     </a>
                 </li>
 
                 {{-- Dropdown: Học tại BeA --}}
                 <li class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                    <button class="flex items-center gap-0.5 px-4 py-2 text-[16px] transition-all duration-200 hover:-translate-y-0.5 {{ $dropdownActive ? 'font-semibold text-primary-container' : 'font-medium text-on-surface hover:text-primary-container' }}"
+                    <button class="relative group flex items-center gap-0.5 px-4 py-2 text-[16px] transition-colors duration-200 {{ $dropdownActive ? 'font-semibold text-primary-container' : 'font-medium text-on-surface hover:text-primary-container' }}"
                             :aria-expanded="open.toString()"
                             aria-haspopup="true">
                         <span class="{{ $dropdownActive ? 'underline decoration-primary-container decoration-2 underline-offset-[6px]' : '' }}">Học tại BeA</span>
                         <span class="material-symbols-outlined text-[16px] transition-transform duration-200"
                               :class="open ? 'rotate-180' : ''">expand_more</span>
+                        @if(!$dropdownActive)
+                        <span class="pointer-events-none absolute inset-x-4 -bottom-0.5 h-[2px] bg-primary-container rounded-full origin-center scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
+                        @endif
                     </button>
                     <div x-show="open"
                          x-transition:enter="transition ease-out duration-150"
@@ -99,8 +111,11 @@ $inactiveClass = 'font-medium text-on-surface hover:text-primary-container';
                 {{-- Tin tức sự kiện --}}
                 <li>
                     <a href="{{ route('home.tin-tuc') }}"
-                       class="px-4 py-2 text-[16px] block transition-all duration-200 hover:-translate-y-0.5 {{ $activePage === 'tin-tuc' ? $activeClass : $inactiveClass }}">
+                       class="relative group px-4 py-2 text-[16px] block transition-colors duration-200 {{ $activePage === 'tin-tuc' ? $activeClass : $inactiveClass }}">
                         Tin tức sự kiện
+                        @if($activePage !== 'tin-tuc')
+                        <span class="pointer-events-none absolute inset-x-4 -bottom-0.5 h-[2px] bg-primary-container rounded-full origin-center scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
+                        @endif
                     </a>
                 </li>
             </ul>
