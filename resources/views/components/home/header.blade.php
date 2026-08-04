@@ -8,7 +8,7 @@ $dropdownItems = [
 ];
 $dropdownActive = in_array($activePage, ['hoc-sinh', 'nguoi-lon', 'ielts']);
 
-$activeClass   = 'font-semibold text-primary-container underline decoration-primary-container decoration-2 underline-offset-[6px]';
+$activeClass   = 'font-semibold text-primary-container';
 $inactiveClass = 'font-medium text-on-surface hover:text-primary-container';
 @endphp
 
@@ -47,9 +47,7 @@ $inactiveClass = 'font-medium text-on-surface hover:text-primary-container';
                     <a href="{{ route('home') }}"
                        class="relative group px-4 py-2 text-[16px] block transition-colors duration-200 {{ $activePage === 'home' ? $activeClass : $inactiveClass }}">
                         Trang chủ
-                        @if($activePage !== 'home')
-                        <span class="pointer-events-none absolute inset-x-4 -bottom-0.5 h-[2px] bg-primary-container rounded-full origin-center scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
-                        @endif
+                        <span class="pointer-events-none absolute inset-x-4 bottom-1 h-[2px] bg-primary-container rounded-full origin-center transition-transform duration-300 {{ $activePage === 'home' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100' }}"></span>
                     </a>
                 </li>
 
@@ -58,9 +56,7 @@ $inactiveClass = 'font-medium text-on-surface hover:text-primary-container';
                     <a href="{{ route('home.gioi-thieu') }}"
                        class="relative group px-4 py-2 text-[16px] block transition-colors duration-200 {{ $activePage === 'gioi-thieu' ? $activeClass : $inactiveClass }}">
                         Giới thiệu
-                        @if($activePage !== 'gioi-thieu')
-                        <span class="pointer-events-none absolute inset-x-4 -bottom-0.5 h-[2px] bg-primary-container rounded-full origin-center scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
-                        @endif
+                        <span class="pointer-events-none absolute inset-x-4 bottom-1 h-[2px] bg-primary-container rounded-full origin-center transition-transform duration-300 {{ $activePage === 'gioi-thieu' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100' }}"></span>
                     </a>
                 </li>
 
@@ -69,9 +65,7 @@ $inactiveClass = 'font-medium text-on-surface hover:text-primary-container';
                     <a href="{{ route('home.phuong-phap') }}"
                        class="relative group px-4 py-2 text-[16px] block transition-colors duration-200 {{ $activePage === 'phuong-phap' ? $activeClass : $inactiveClass }}">
                         Phương pháp
-                        @if($activePage !== 'phuong-phap')
-                        <span class="pointer-events-none absolute inset-x-4 -bottom-0.5 h-[2px] bg-primary-container rounded-full origin-center scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
-                        @endif
+                        <span class="pointer-events-none absolute inset-x-4 bottom-1 h-[2px] bg-primary-container rounded-full origin-center transition-transform duration-300 {{ $activePage === 'phuong-phap' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100' }}"></span>
                     </a>
                 </li>
 
@@ -80,12 +74,10 @@ $inactiveClass = 'font-medium text-on-surface hover:text-primary-container';
                     <button class="relative group flex items-center gap-0.5 px-4 py-2 text-[16px] transition-colors duration-200 {{ $dropdownActive ? 'font-semibold text-primary-container' : 'font-medium text-on-surface hover:text-primary-container' }}"
                             :aria-expanded="open.toString()"
                             aria-haspopup="true">
-                        <span class="{{ $dropdownActive ? 'underline decoration-primary-container decoration-2 underline-offset-[6px]' : '' }}">Học tại BeA</span>
+                        <span>Học tại BeA</span>
                         <span class="material-symbols-outlined text-[16px] transition-transform duration-200"
                               :class="open ? 'rotate-180' : ''">expand_more</span>
-                        @if(!$dropdownActive)
-                        <span class="pointer-events-none absolute inset-x-4 -bottom-0.5 h-[2px] bg-primary-container rounded-full origin-center scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
-                        @endif
+                        <span class="pointer-events-none absolute inset-x-4 bottom-1 h-[2px] bg-primary-container rounded-full origin-center transition-transform duration-300 {{ $dropdownActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100' }}"></span>
                     </button>
                     <div x-show="open"
                          x-transition:enter="transition ease-out duration-150"
@@ -113,9 +105,7 @@ $inactiveClass = 'font-medium text-on-surface hover:text-primary-container';
                     <a href="{{ route('home.tin-tuc') }}"
                        class="relative group px-4 py-2 text-[16px] block transition-colors duration-200 {{ $activePage === 'tin-tuc' ? $activeClass : $inactiveClass }}">
                         Tin tức sự kiện
-                        @if($activePage !== 'tin-tuc')
-                        <span class="pointer-events-none absolute inset-x-4 -bottom-0.5 h-[2px] bg-primary-container rounded-full origin-center scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
-                        @endif
+                        <span class="pointer-events-none absolute inset-x-4 bottom-1 h-[2px] bg-primary-container rounded-full origin-center transition-transform duration-300 {{ $activePage === 'tin-tuc' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100' }}"></span>
                     </a>
                 </li>
             </ul>
