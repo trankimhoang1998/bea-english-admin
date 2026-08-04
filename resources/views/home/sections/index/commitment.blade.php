@@ -1,21 +1,21 @@
 {{-- resources/views/home/partials/commitment.blade.php --}}
-<section id="commitment" class="py-16 lg:py-28 relative overflow-hidden">
+<section id="commitment" class="py-10 lg:py-28 relative overflow-hidden">
 
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {{-- Header --}}
-        <div class="text-center mb-16 reveal">
+        <div class="text-center mb-8 lg:mb-16 reveal">
             <div class="inline-flex items-center gap-3 mb-5">
-                <div class="h-[2px] w-10 bg-primary-container rounded-full"></div>
-                <div class="bg-primary-container rounded-full px-8 py-3">
-                    <h2 class="text-white font-black text-xl lg:text-2xl uppercase tracking-wide">Cam Kết Đào Tạo</h2>
+                <div class="h-[2px] w-6 lg:w-10 bg-primary-container rounded-full"></div>
+                <div class="bg-primary-container rounded-full px-4 py-2 lg:px-8 lg:py-3">
+                    <h2 class="text-white font-black text-base lg:text-2xl uppercase tracking-wide">Cam Kết Đào Tạo</h2>
                 </div>
-                <div class="h-[2px] w-10 bg-primary-container rounded-full"></div>
+                <div class="h-[2px] w-6 lg:w-10 bg-primary-container rounded-full"></div>
             </div>
         </div>
 
         {{-- 3 Cards --}}
-        <div class="grid lg:grid-cols-3 gap-6">
+        <div class="grid lg:grid-cols-3 gap-4 lg:gap-6">
 
             @php
             $items = [
@@ -56,37 +56,37 @@
                 <div class="absolute inset-0 bg-gradient-to-br {{ $item['gradient'] }} opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
                 {{-- Big number decoration --}}
-                <div class="absolute -top-4 -right-2 font-black text-[7rem] leading-none text-gray-900/[0.08] select-none pointer-events-none group-hover:text-orange-500/20 transition-colors duration-500">
+                <div class="absolute -top-4 -right-2 font-black text-[4.5rem] lg:text-[7rem] leading-none text-gray-900/[0.08] select-none pointer-events-none group-hover:text-orange-500/20 transition-colors duration-500">
                     {{ $item['num'] }}
                 </div>
 
-                <div class="relative p-7 lg:p-8 flex flex-col h-full">
+                <div class="relative p-5 lg:p-8 flex flex-col h-full">
 
                     {{-- Icon --}}
-                    <div class="w-14 h-14 rounded-2xl bg-orange-500/10 border border-orange-500/20
-                                flex items-center justify-center mb-6
+                    <div class="w-11 h-11 lg:w-14 lg:h-14 rounded-2xl bg-orange-500/10 border border-orange-500/20
+                                flex items-center justify-center mb-3 lg:mb-6
                                 group-hover:bg-orange-500 group-hover:border-orange-500
                                 transition-all duration-300">
-                        <span class="material-symbols-outlined ms-filled text-orange-500 text-[26px] group-hover:text-white transition-colors duration-300">{{ $item['icon'] }}</span>
+                        <span class="material-symbols-outlined ms-filled text-orange-500 text-[20px] lg:text-[26px] group-hover:text-white transition-colors duration-300">{{ $item['icon'] }}</span>
                     </div>
 
                     {{-- Number badge --}}
-                    <span class="text-orange-500/60 text-[11px] font-black uppercase tracking-[0.25em] mb-3">{{ $item['num'] }}</span>
+                    <span class="hidden lg:inline-block text-orange-500/60 text-[11px] font-black uppercase tracking-[0.25em] mb-3">{{ $item['num'] }}</span>
 
                     {{-- Title --}}
-                    <h3 class="text-gray-900 font-black text-[1.1rem] leading-snug mb-4">
+                    <h3 class="text-gray-900 font-black text-[1rem] lg:text-[1.1rem] leading-snug mb-2 lg:mb-4">
                         {{ $item['title'] }}
                     </h3>
 
                     {{-- Desc --}}
-                    <p class="text-gray-500 text-[13.5px] leading-relaxed mb-6 flex-1">
+                    <p class="text-gray-500 text-[13px] lg:text-[13.5px] leading-relaxed mb-4 lg:mb-6 flex-1">
                         {{ $item['desc'] }}
                     </p>
 
                     {{-- Tags --}}
-                    <div class="flex flex-wrap gap-2">
+                    <div class="flex flex-wrap gap-1.5 lg:gap-2">
                         @foreach($item['tags'] as $tag)
-                        <span class="text-[11px] font-semibold text-orange-600 bg-orange-50 border border-orange-200 px-2.5 py-1 rounded-full">
+                        <span class="text-[10px] lg:text-[11px] font-semibold text-orange-600 bg-orange-50 border border-orange-200 px-2 py-0.5 lg:px-2.5 lg:py-1 rounded-full">
                             {{ $tag }}
                         </span>
                         @endforeach

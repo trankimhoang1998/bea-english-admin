@@ -29,7 +29,7 @@
                         <p class="slide-badge text-white/80 text-xs lg:text-sm font-medium uppercase tracking-[0.15em] mb-2 lg:mb-5">
                             🎓 Hơn 10 năm kinh nghiệm
                         </p>
-                        <h1 class="slide-title text-white font-black text-[1.75rem] lg:text-[3.2rem] uppercase leading-[1.2] mb-3 lg:mb-6">
+                        <h1 class="slide-title text-white font-black text-[1.35rem] lg:text-[3.2rem] uppercase leading-[1.2] mb-3 lg:mb-6">
                             BEA ENGLISH.<br>
                             HƯỚNG TỚI TƯƠNG LAI!
                         </h1>
@@ -98,7 +98,7 @@
                         <p class="slide-badge text-white/80 text-xs lg:text-sm font-medium uppercase tracking-[0.15em] mb-2 lg:mb-5">
                             ✨ Phương pháp 6P-BeA
                         </p>
-                        <h2 class="slide-title text-white font-black text-[1.75rem] lg:text-[3.2rem] uppercase leading-[1.2] mb-3 lg:mb-6">
+                        <h2 class="slide-title text-white font-black text-[1.35rem] lg:text-[3.2rem] uppercase leading-[1.2] mb-3 lg:mb-6">
                             PHƯƠNG PHÁP<br>
                             GIÁO DỤC SÁNG TẠO
                         </h2>
@@ -172,7 +172,7 @@
                         <p class="slide-badge text-white/80 text-xs lg:text-sm font-medium uppercase tracking-[0.15em] mb-2 lg:mb-5">
                             🏆 Cam kết đầu ra
                         </p>
-                        <h2 class="slide-title text-white font-black text-[1.75rem] lg:text-[3.2rem] uppercase leading-[1.2] mb-3 lg:mb-6">
+                        <h2 class="slide-title text-white font-black text-[1.35rem] lg:text-[3.2rem] uppercase leading-[1.2] mb-3 lg:mb-6">
                             CHINH PHỤC IELTS<br>
                             CÙNG BEA ENGLISH
                         </h2>
@@ -224,7 +224,7 @@
                             </div>
                             <div class="absolute -bottom-5 -right-12 lg:-right-14 bg-white/20 backdrop-blur-sm rounded-2xl px-3 py-2 lg:px-4 lg:py-2.5 border border-white/30 text-xs lg:text-sm font-semibold text-white whitespace-nowrap"
                                  style="animation: chipFloat 4s ease-in-out 0.5s infinite;">
-                                Cam kết hoàn tiền 100%
+                                Cam kết chất lượng
                             </div>
                         </div>
                     </div>

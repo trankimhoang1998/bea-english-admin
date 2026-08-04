@@ -40,7 +40,7 @@
 </div>
 
 <div class="bg-white min-h-screen">
-    <div class="max-w-5xl mx-auto px-5 lg:px-8 py-10 lg:py-14">
+    <div class="max-w-5xl mx-auto px-5 lg:px-8 py-6 lg:py-14">
 
         <div class="lg:grid lg:grid-cols-[1fr_240px] lg:gap-12">
 
@@ -48,20 +48,20 @@
             <article>
 
                 {{-- Article header --}}
-                <header class="mb-8">
+                <header class="mb-5 lg:mb-8">
                     @if($article->category)
                     <a href="{{ route('home.tin-tuc', ['category_id' => $article->category->id]) }}"
-                       class="inline-block bg-orange-50 text-primary-container text-[12px] font-bold px-3 py-1 rounded-full mb-4 hover:bg-orange-100 transition-colors">
+                       class="inline-block bg-orange-50 text-primary-container text-[12px] font-bold px-3 py-1 rounded-full mb-3 lg:mb-4 hover:bg-orange-100 transition-colors">
                         {{ $article->category->name }}
                     </a>
                     @endif
 
-                    <h1 class="font-black text-on-background leading-tight mb-5"
-                        style="font-size: clamp(1.6rem, 4vw, 2.4rem);">
+                    <h1 class="font-black text-on-background leading-tight mb-3 lg:mb-5"
+                        style="font-size: clamp(1.35rem, 4vw, 2.4rem);">
                         {{ $article->title }}
                     </h1>
 
-                    <div class="flex flex-wrap items-center gap-4 text-[13px] text-gray-400 pb-5 border-b border-gray-100">
+                    <div class="flex flex-wrap items-center gap-2.5 lg:gap-4 text-[12px] lg:text-[13px] text-gray-400 pb-4 lg:pb-5 border-b border-gray-100">
                         <span class="flex items-center gap-1.5">
                             <span class="material-symbols-outlined text-[16px] text-primary-container">person</span>
                             {{ $article->author?->name ?? 'BEA English' }}
@@ -79,7 +79,7 @@
 
                 {{-- Thumbnail --}}
                 @if($article->thumbnail)
-                <div class="mb-8 rounded-2xl overflow-hidden">
+                <div class="mb-5 lg:mb-8 rounded-2xl overflow-hidden">
                     <img src="{{ asset('storage/' . $article->thumbnail) }}"
                          alt="{{ $article->title }}"
                          class="w-full max-h-[480px] object-cover">
@@ -88,8 +88,8 @@
 
                 {{-- Excerpt --}}
                 @if($article->excerpt)
-                <div class="mb-8 px-5 py-4 bg-orange-50 border-l-4 border-primary-container rounded-r-xl">
-                    <p class="text-[15px] text-gray-700 leading-relaxed italic">{{ $article->excerpt }}</p>
+                <div class="mb-5 lg:mb-8 px-4 py-3 lg:px-5 lg:py-4 bg-orange-50 border-l-4 border-primary-container rounded-r-xl">
+                    <p class="text-[14px] lg:text-[15px] text-gray-700 leading-relaxed italic">{{ $article->excerpt }}</p>
                 </div>
                 @endif
 
@@ -116,7 +116,7 @@
 
                 {{-- Tags --}}
                 @if($article->tags->count() > 0)
-                <div class="mt-10 pt-6 border-t border-gray-100">
+                <div class="mt-6 pt-4 lg:mt-10 lg:pt-6 border-t border-gray-100">
                     <span class="text-[12px] font-bold text-gray-400 uppercase tracking-widest mr-3">Tags</span>
                     @foreach($article->tags as $tag)
                     <span class="inline-block bg-orange-50 text-primary-container text-[12px] font-semibold px-3 py-1 rounded-full mr-1.5 mb-1.5">
@@ -127,7 +127,7 @@
                 @endif
 
                 {{-- Share bar — bottom --}}
-                <div class="mt-8 pt-6 border-t border-gray-100 flex flex-wrap items-center gap-4">
+                <div class="mt-5 pt-4 lg:mt-8 lg:pt-6 border-t border-gray-100 flex flex-wrap items-center gap-3 lg:gap-4">
                     <span class="text-[11px] font-bold text-gray-400 uppercase tracking-widest">Chia sẻ</span>
                     <div class="flex items-center gap-2">
                         @include('home.sections.tin-tuc._share-buttons')
@@ -165,9 +165,9 @@
 
         {{-- ══════════════ RELATED ARTICLES ══════════════ --}}
         @if($related->count() > 0)
-        <section class="mt-16 pt-10 border-t border-gray-100">
-            <h2 class="font-black text-on-background text-[1.4rem] mb-7">Bài viết liên quan</h2>
-            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <section class="mt-8 pt-5 lg:mt-16 lg:pt-10 border-t border-gray-100">
+            <h2 class="font-black text-on-background text-[1.2rem] lg:text-[1.4rem] mb-4 lg:mb-7">Bài viết liên quan</h2>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-6">
                 @foreach($related as $rel)
                 <a href="{{ route('home.article-detail', $rel->slug) }}"
                    class="group bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 flex flex-col">
@@ -188,7 +188,7 @@
                         </span>
                         @endif
                     </div>
-                    <div class="p-4 flex flex-col flex-1">
+                    <div class="p-3 lg:p-4 flex flex-col flex-1">
                         <h3 class="font-bold text-on-background text-[14px] leading-snug mb-2 line-clamp-2 group-hover:text-primary-container transition-colors">
                             {{ $rel->title }}
                         </h3>

@@ -1,5 +1,5 @@
 {{-- resources/views/home/partials/gioi-thieu-hero.blade.php --}}
-<section class="gt-section relative overflow-hidden">
+<section class="gt-section relative overflow-hidden pt-8 lg:pt-0">
 
     {{-- Animated gradient background --}}
     <div class="absolute inset-0 gt-bg pointer-events-none"></div>
@@ -22,11 +22,11 @@
     @endfor
 
     {{-- Content --}}
-    <div class="relative h-full max-w-7xl mx-auto px-5 lg:px-16 flex items-center">
+    <div class="relative max-w-7xl mx-auto px-5 lg:px-16 flex items-center">
         <div class="w-full grid grid-cols-1 lg:grid-cols-[60%_40%] gap-8 lg:gap-12 items-center py-10 lg:py-0">
 
             {{-- LEFT: Text --}}
-            <div>
+            <div class="order-2 lg:order-1">
                 {{-- Badge --}}
                 <div class="inline-flex items-center gap-2.5 bg-black/20 border border-white/25 backdrop-blur-sm rounded-full px-4 py-1.5 mb-5 gt-in-badge">
                     <span class="w-2 h-2 rounded-full bg-white gt-dot-blink"></span>
@@ -35,7 +35,7 @@
 
                 {{-- Title --}}
                 <h1 class="font-black uppercase leading-[1.1] mb-5 gt-in-title"
-                    style="font-size: clamp(1.65rem, 3.8vw, 2.75rem);">
+                    style="font-size: clamp(1.35rem, 3.8vw, 2.75rem);">
                     <span class="text-white">BEA ENGLISH.</span><br>
                     <span class="gt-shine-text">Hướng tới tương lai!</span>
                 </h1>
@@ -53,7 +53,7 @@
                 </p>
 
                 {{-- CTA --}}
-                <div class="gt-in-cta">
+                <div class="hidden lg:block gt-in-cta">
                     <a href="{{ route('home.gioi-thieu') }}#contact"
                        class="inline-flex items-center gap-2.5 bg-white text-orange-600 font-black uppercase tracking-widest rounded-full shadow-2xl shadow-black/20 hover:bg-orange-50 hover:scale-105 active:scale-95 transition-all duration-200"
                        style="font-size: clamp(11px, 1.2vw, 13px); padding: clamp(12px, 1.4vw, 14px) clamp(24px, 2.8vw, 32px);">
@@ -63,8 +63,8 @@
                 </div>
             </div>
 
-            {{-- RIGHT: Visual (desktop only) --}}
-            <div class="hidden lg:flex justify-center items-center gt-in-visual">
+            {{-- RIGHT: Visual --}}
+            <div class="flex justify-center items-center gt-in-visual order-1 lg:order-2">
                 <div class="gt-visual-wrap relative">
 
                     {{-- Outer ring, dashed CW --}}
@@ -128,6 +128,18 @@
                          style="animation: chipFloat 5s ease-in-out 1.2s infinite;">
                         <p class="text-white font-bold text-[11px]">🏆 10+ năm</p>
                     </div>
+
+                    {{-- 5+ chip --}}
+                    <div class="absolute top-1/2 -translate-y-1/2 -left-14 bg-white/12 backdrop-blur-md border border-white/20 rounded-xl px-3 py-2 whitespace-nowrap"
+                         style="animation: chipFloat 4.6s ease-in-out 0.8s infinite;">
+                        <p class="text-white font-bold text-[11px]">⭐ 5+ năm</p>
+                    </div>
+
+                    {{-- 3+ chip --}}
+                    <div class="absolute top-[72%] -left-4 bg-white/12 backdrop-blur-md border border-white/20 rounded-xl px-3 py-2 whitespace-nowrap"
+                         style="animation: chipFloat 3.6s ease-in-out 1.6s infinite;">
+                        <p class="text-white font-bold text-[11px]">🎯 3+ năm</p>
+                    </div>
                 </div>
             </div>
 
@@ -137,8 +149,6 @@
 
 <style>
 .gt-section {
-    height: calc(100vh - 80px);
-    min-height: 0;
     display: flex;
     align-items: center;
 }
@@ -157,7 +167,10 @@
     to   { opacity: .4; transform: scale(1.12) rotate(-12deg); }
 }
 
-.gt-visual-wrap { width: 320px; height: 320px; }
+.gt-visual-wrap { width: 190px; height: 190px; }
+@media (min-width: 1024px) {
+    .gt-visual-wrap { width: 320px; height: 320px; }
+}
 
 .gt-dot-blink { animation: gtDotBlink 1.6s ease-in-out infinite; }
 @keyframes gtDotBlink {

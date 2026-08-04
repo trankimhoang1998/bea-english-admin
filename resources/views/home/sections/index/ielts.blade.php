@@ -1,35 +1,46 @@
 {{-- resources/views/home/partials/ielts.blade.php --}}
-<section id="ielts" class="py-14 lg:py-24 bg-surface-alt">
+<section id="ielts" class="py-8 lg:py-24 bg-surface-alt">
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
 
         {{-- Header --}}
-        <div class="text-center mb-12 reveal">
+        <div class="text-center mb-6 lg:mb-12 reveal">
             <div class="inline-flex items-center gap-3 mb-5">
-                <div class="h-[2px] w-10 bg-primary-container rounded-full"></div>
-                <div class="bg-primary-container rounded-full px-8 py-3">
-                    <h2 class="text-white font-black text-xl lg:text-2xl uppercase tracking-wide">Luyện Thi IELTS</h2>
+                <div class="h-[2px] w-6 lg:w-10 bg-primary-container rounded-full"></div>
+                <div class="bg-primary-container rounded-full px-4 py-2 lg:px-8 lg:py-3">
+                    <h2 class="text-white font-black text-base lg:text-2xl uppercase tracking-wide">Luyện Thi IELTS</h2>
                 </div>
-                <div class="h-[2px] w-10 bg-primary-container rounded-full"></div>
+                <div class="h-[2px] w-6 lg:w-10 bg-primary-container rounded-full"></div>
             </div>
-            <p class="text-gray-800 font-semibold text-lg">4 lộ trình từ mất gốc đến 6.5+ <span class="text-orange-500">&mdash;</span> Cam kết đầu ra, hoàn tiền 100%</p>
+            <p class="text-gray-800 font-semibold text-lg">5 lộ trình từ mất gốc đến 6.5+ <span class="hidden lg:inline"><span class="text-orange-500">&mdash;</span> Cam kết chất lượng</span></p>
         </div>
 
         @php
         $sharedFeatures = [
-            ['my_location',       'Luyện đề thi thật 100%'],
-            ['auto_stories',      'Tặng bộ tài liệu từ vựng IELTS trị giá 990.000 VNĐ'],
-            ['currency_exchange', 'Hoàn tiền 100% nếu không đạt cam kết'],
+            ['my_location',  'Luyện đề thi thật 100%'],
+            ['auto_stories', 'Tặng bộ tài liệu từ vựng IELTS trị giá 990.000 VNĐ'],
+            ['description',  'Cam kết chất lượng đầu ra bằng văn bản'],
         ];
         $courses = [
             [
                 'type'     => 'Lộ Trình IELTS',
                 'icon'     => 'verified',
-                'score'    => '3.5 – 4.5+',
-                'scorePct' => 44,
-                'level'    => 'Cơ Bản',
+                'score'    => '0 – 3.5+',
+                'scorePct' => 39,
+                'level'    => 'Nền Tảng',
                 'duration' => '3 tháng',
                 'target'   => 'Người mới bắt đầu / mất gốc',
+                'gradient' => 'from-orange-300 to-orange-500',
+                'features' => array_merge([['school', 'Cam kết đầu ra 0 – 3.5 IELTS']], $sharedFeatures),
+            ],
+            [
+                'type'     => 'Lộ Trình IELTS',
+                'icon'     => 'verified',
+                'score'    => '3.5 – 4.5+',
+                'scorePct' => 50,
+                'level'    => 'Cơ Bản',
+                'duration' => '4 tháng',
+                'target'   => 'Đã có nền tảng cơ bản',
                 'gradient' => 'from-orange-400 to-orange-600',
                 'features' => array_merge([['school', 'Cam kết đầu ra 3.5 – 4.5 IELTS']], $sharedFeatures),
             ],
@@ -37,10 +48,10 @@
                 'type'     => 'Lộ Trình IELTS',
                 'icon'     => 'verified',
                 'score'    => '4.5 – 5.5+',
-                'scorePct' => 56,
+                'scorePct' => 63,
                 'level'    => 'Trung Cấp',
-                'duration' => '4 tháng',
-                'target'   => 'Đã có nền tảng cơ bản',
+                'duration' => '5 tháng',
+                'target'   => 'Hướng đến mục tiêu quốc tế',
                 'gradient' => 'from-orange-500 to-red-500',
                 'features' => array_merge([['school', 'Cam kết đầu ra 4.5 – 5.5 IELTS']], $sharedFeatures),
             ],
@@ -48,10 +59,10 @@
                 'type'     => 'Lộ Trình IELTS',
                 'icon'     => 'verified',
                 'score'    => '5.5 – 6.5+',
-                'scorePct' => 69,
+                'scorePct' => 79,
                 'level'    => 'Nâng Cao',
-                'duration' => '5 tháng',
-                'target'   => 'Hướng đến mục tiêu quốc tế',
+                'duration' => '6 tháng',
+                'target'   => 'Chinh phục mục tiêu điểm cao',
                 'gradient' => 'from-amber-500 to-orange-600',
                 'features' => array_merge([['school', 'Cam kết đầu ra 5.5 – 6.5 IELTS']], $sharedFeatures),
             ],
@@ -61,10 +72,10 @@
                 'score'    => 'CẤP TỐC',
                 'scorePct' => 80,
                 'level'    => 'Intensive',
-                'duration' => '4 tuần',
+                'duration' => '4-8 tuần',
                 'target'   => 'Thi gấp — Cần điểm nhanh',
                 'gradient' => 'from-red-500 to-orange-500',
-                'features' => array_merge([['bolt', 'Luyện thi cấp tốc 4 tuần']], $sharedFeatures),
+                'features' => array_merge([['bolt', 'Luyện thi cấp tốc 4-8 tuần']], $sharedFeatures),
             ],
         ];
         @endphp
@@ -72,7 +83,7 @@
         {{-- Cards slider --}}
         <div class="relative"
              x-data="{
-                 pos: 0, anim: true, timer: null, step: 0, total: 4,
+                 pos: 0, anim: true, timer: null, step: 0, total: 5,
                  init() {
                      this.$nextTick(() => {
                          const card = this.$refs.track.querySelector('[data-card]');
@@ -128,7 +139,7 @@
 
             {{-- Track wrapper: overflow-hidden tách khỏi arrow --}}
             <div class="overflow-hidden pt-3 pb-1">
-            {{-- Track: 4 real + 4 clones for seamless loop --}}
+            {{-- Track: 5 real + 5 clones for seamless loop --}}
             <div x-ref="track"
                  class="flex gap-5"
                  :style="`transform: translateX(-${pos}px); transition: transform ${anim ? '0.55s cubic-bezier(0.25,0.46,0.45,0.94)' : '0s'}`">
@@ -139,7 +150,7 @@
                     $circ = round(2 * M_PI * $r, 2);
                     $dash = round($circ * (1 - $c['scorePct'] / 100), 2);
                 @endphp
-                <div {{ $i < 4 ? 'data-card' : 'aria-hidden="true"' }}
+                <div {{ $i < 5 ? 'data-card' : 'aria-hidden="true"' }}
                      class="shrink-0
                             w-[calc(85vw)] sm:w-[calc(50%-10px)] lg:w-[calc(25%-15px)]
                             flex flex-col rounded-3xl overflow-hidden
@@ -212,7 +223,7 @@
                            class="mt-5 flex items-center justify-center gap-2 py-3 rounded-2xl
                                   bg-primary-container text-white font-bold text-sm uppercase tracking-wide
                                   hover:bg-orange-600 transition-colors">
-                            Đăng Ký Ngay
+                            Xem Chi Tiết
                             <span class="material-symbols-outlined text-[17px]">arrow_forward</span>
                         </a>
                     </div>

@@ -1,5 +1,5 @@
 {{-- resources/views/home/sections/luyen-thi-ielts/intro.blade.php --}}
-<section class="relative overflow-hidden bg-white py-20 lg:py-28">
+<section class="relative overflow-hidden bg-white py-10 lg:py-28">
 
     <div class="absolute inset-0 pointer-events-none opacity-[.22]"
          style="background-image: radial-gradient(rgba(249,115,22,.25) 1px, transparent 1px); background-size: 30px 30px;"></div>
@@ -9,21 +9,21 @@
     <div class="relative max-w-7xl mx-auto px-5 lg:px-16">
 
         {{-- Header --}}
-        <div class="text-center mb-14 reveal">
+        <div class="text-center mb-6 lg:mb-14 reveal">
             <div class="inline-flex items-center gap-3">
-                <div class="h-[2px] w-10 bg-primary-container rounded-full"></div>
-                <div class="bg-primary-container rounded-full px-8 py-3">
-                    <h1 class="text-white font-black text-xl lg:text-2xl uppercase tracking-wide">Luyện Thi IELTS</h1>
+                <div class="h-[2px] w-6 lg:w-10 bg-primary-container rounded-full"></div>
+                <div class="bg-primary-container rounded-full px-4 py-2 lg:px-8 lg:py-3">
+                    <h1 class="text-white font-black text-base lg:text-2xl uppercase tracking-wide">Luyện Thi IELTS</h1>
                 </div>
-                <div class="h-[2px] w-10 bg-primary-container rounded-full"></div>
+                <div class="h-[2px] w-6 lg:w-10 bg-primary-container rounded-full"></div>
             </div>
         </div>
 
         {{-- 2-col: text + visual --}}
-        <div class="grid lg:grid-cols-[58%_42%] gap-12 lg:gap-16 items-center">
+        <div class="grid lg:grid-cols-[58%_42%] gap-6 lg:gap-16 items-center">
 
             {{-- LEFT: text --}}
-            <div class="reveal">
+            <div class="order-2 lg:order-1 reveal">
                 <p class="text-gray-600 text-[15px] lg:text-[16px] leading-relaxed mb-6">
                     Chương trình luyện thi IELTS toàn diện của BeA English sẽ giúp bạn đạt band điểm từ
                     <span class="text-primary-container font-bold">0 lên 6.5+</span>,
@@ -55,7 +55,7 @@
             </div>
 
             {{-- RIGHT: IELTS band score visual --}}
-            <div class="flex justify-center reveal-delay-1 reveal">
+            <div class="order-1 lg:order-2 flex justify-center reveal-delay-1 reveal">
                 <div class="relative w-full max-w-xs">
 
                     {{-- Central IELTS badge --}}
@@ -75,7 +75,13 @@
                     ];
                     @endphp
                     <div class="space-y-2.5">
-                        @foreach($bands as $i => [$band, $level, $grad, $w])
+                        <div class="flex items-center gap-3">
+                            <div class="h-7 w-2/6 rounded-full bg-gradient-to-r from-orange-500 to-red-600 flex items-center px-3 shadow-md" style="animation: hsLevelFloat 3.8s ease-in-out .8s infinite;">
+                                <span class="text-white font-black text-[11px] whitespace-nowrap">Cấp tốc</span>
+                            </div>
+                            <span class="text-gray-500 text-[11px] font-semibold shrink-0">Chạy nước rút</span>
+                        </div>
+                        @foreach(array_reverse($bands) as $i => [$band, $level, $grad, $w])
                         <div class="flex items-center gap-3">
                             <div class="h-7 {{ $w }} rounded-full bg-gradient-to-r {{ $grad }} flex items-center px-3 shadow-sm" style="animation: hsLevelFloat {{ 2.6 + $i * 0.3 }}s ease-in-out {{ $i * 0.2 }}s infinite;">
                                 <span class="text-white font-black text-[11px] whitespace-nowrap">{{ $band }}</span>
@@ -83,12 +89,6 @@
                             <span class="text-gray-500 text-[11px] font-semibold shrink-0">{{ $level }}</span>
                         </div>
                         @endforeach
-                        <div class="flex items-center gap-3 mt-1">
-                            <div class="h-7 w-2/6 rounded-full bg-gradient-to-r from-orange-500 to-red-600 flex items-center px-3 shadow-md" style="animation: hsLevelFloat 3.8s ease-in-out .8s infinite;">
-                                <span class="text-white font-black text-[11px] whitespace-nowrap">Cấp tốc</span>
-                            </div>
-                            <span class="text-gray-500 text-[11px] font-semibold shrink-0">Chạy nước rút</span>
-                        </div>
                     </div>
 
                 </div>

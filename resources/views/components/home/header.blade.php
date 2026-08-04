@@ -15,13 +15,28 @@ $inactiveClass = 'font-medium text-on-surface hover:text-primary-container';
 <header class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 lg:px-8">
         <nav class="flex items-center gap-2 h-20 lg:h-[84px]"
-             x-data="{ mobileOpen: false }">
+             x-data="{ mobileOpen: false, mobileSubmenuOpen: {{ $dropdownActive ? 'true' : 'false' }} }"
+             x-effect="document.body.style.overflow = mobileOpen ? 'hidden' : ''"
+             @keydown.escape.window="mobileOpen = false">
+
+            {{-- Mobile hamburger --}}
+            <button @click="mobileOpen = !mobileOpen"
+                    :aria-expanded="mobileOpen.toString()"
+                    aria-controls="mobile-menu"
+                    class="lg:hidden p-2 rounded-lg text-on-surface hover:bg-surface-container-low transition-colors"
+                    aria-label="Toggle navigation menu">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="w-6 h-6">
+                    <line x1="3" y1="6" x2="21" y2="6"/>
+                    <line x1="3" y1="12" x2="21" y2="12"/>
+                    <line x1="3" y1="18" x2="21" y2="18"/>
+                </svg>
+            </button>
 
             {{-- Logo --}}
-            <a href="{{ route('home') }}" class="shrink-0 mr-4">
+            <a href="{{ route('home') }}" class="shrink-0 mr-2 lg:mr-4">
                 <img src="{{ asset('images/logo.png') }}"
                      alt="BEA English"
-                     class="h-12 lg:h-14 w-auto object-contain">
+                     class="h-9 lg:h-14 w-auto object-contain">
             </a>
 
             {{-- Desktop nav --}}
@@ -102,44 +117,84 @@ $inactiveClass = 'font-medium text-on-surface hover:text-primary-container';
                 </a>
             </div>
 
-            {{-- Mobile hamburger --}}
-            <button @click="mobileOpen = !mobileOpen"
-                    :aria-expanded="mobileOpen.toString()"
-                    aria-controls="mobile-menu"
-                    class="lg:hidden ml-auto p-2 rounded-lg text-on-surface hover:bg-surface-container-low transition-colors"
-                    aria-label="Toggle navigation menu">
-                <span class="material-symbols-outlined" x-text="mobileOpen ? 'close' : 'menu'">menu</span>
-            </button>
+            {{-- Mobile CTA --}}
+            <a href="{{ route('home.gioi-thieu') }}#contact"
+               class="lg:hidden ml-auto shrink-0 px-3.5 py-2 bg-primary-container text-white rounded-full text-[13px] font-semibold hover:bg-primary transition-all duration-200 animate-float-cta">
+                Học thử miễn phí
+            </a>
 
-            {{-- Mobile menu --}}
+            {{-- Mobile menu backdrop --}}
+            <div x-show="mobileOpen"
+                 x-transition:enter="transition-opacity ease-out duration-300"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="transition-opacity ease-in duration-200"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 @click="mobileOpen = false"
+                 class="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+                 style="display: none;"></div>
+
+            {{-- Mobile menu drawer --}}
             <div id="mobile-menu"
                  x-show="mobileOpen"
-                 x-transition:enter="transition ease-out duration-200"
-                 x-transition:enter-start="opacity-0 -translate-y-2"
-                 x-transition:enter-end="opacity-100 translate-y-0"
-                 x-transition:leave="transition ease-in duration-150"
-                 x-transition:leave-start="opacity-100 translate-y-0"
-                 x-transition:leave-end="opacity-0 -translate-y-2"
-                 class="lg:hidden absolute top-full left-0 right-0 bg-white border-b border-gray-100 shadow-lg">
-                <div class="px-6 py-4 flex flex-col gap-1">
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="-translate-x-full"
+                 x-transition:enter-end="translate-x-0"
+                 x-transition:leave="transition ease-in duration-200"
+                 x-transition:leave-start="translate-x-0"
+                 x-transition:leave-end="-translate-x-full"
+                 class="lg:hidden fixed top-0 left-0 h-full w-3/4 max-w-sm bg-white z-50 overflow-y-auto shadow-2xl"
+                 style="display: none;">
+
+                {{-- Drawer header: logo + close --}}
+                <div class="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+                    <img src="{{ asset('images/logo.png') }}" alt="BEA English" class="h-9 w-auto object-contain">
+                    <button @click="mobileOpen = false" aria-label="Đóng menu"
+                            class="p-1.5 rounded-lg text-on-surface hover:bg-surface-container-low transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="w-6 h-6">
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="px-5 py-3 flex flex-col gap-0.5">
                     @foreach([
-                        ['route' => 'home',             'label' => 'Trang chủ',       'key' => 'home'],
-                        ['route' => 'home.gioi-thieu',  'label' => 'Giới thiệu',      'key' => 'gioi-thieu'],
-                        ['route' => 'home.phuong-phap', 'label' => 'Phương pháp',     'key' => 'phuong-phap'],
-                        ['route' => 'home.tin-tuc',     'label' => 'Tin tức sự kiện', 'key' => 'tin-tuc'],
+                        ['route' => 'home',             'label' => 'Trang chủ',   'key' => 'home'],
+                        ['route' => 'home.gioi-thieu',  'label' => 'Giới thiệu',  'key' => 'gioi-thieu'],
+                        ['route' => 'home.phuong-phap', 'label' => 'Phương pháp', 'key' => 'phuong-phap'],
                     ] as $item)
                     <a href="{{ route($item['route']) }}" @click="mobileOpen = false"
-                       class="px-4 py-3 rounded-lg text-sm transition-colors
+                       class="px-3.5 py-2 rounded-lg text-sm transition-colors
                               {{ $activePage === $item['key']
                                   ? 'font-semibold text-primary-container bg-primary-container/5'
                                   : 'font-medium text-on-surface hover:bg-surface-container-low' }}">
                         {{ $item['label'] }}
                     </a>
                     @endforeach
-                    <div class="pl-2 border-l-2 border-primary-container/20 ml-2 flex flex-col gap-1">
+
+                    {{-- Học tại BeA (toggle) --}}
+                    <button @click="mobileSubmenuOpen = !mobileSubmenuOpen"
+                            :aria-expanded="mobileSubmenuOpen.toString()"
+                            class="flex items-center justify-between px-3.5 py-2 rounded-lg text-sm transition-colors
+                                   {{ $dropdownActive ? 'font-semibold text-primary-container' : 'font-medium text-on-surface hover:bg-surface-container-low' }}">
+                        Học tại BeA
+                        <span class="material-symbols-outlined text-[18px] transition-transform duration-200"
+                              :class="mobileSubmenuOpen ? 'rotate-180' : ''">expand_more</span>
+                    </button>
+                    <div x-show="mobileSubmenuOpen"
+                         x-transition:enter="transition ease-out duration-150"
+                         x-transition:enter-start="opacity-0"
+                         x-transition:enter-end="opacity-100"
+                         x-transition:leave="transition ease-in duration-100"
+                         x-transition:leave-start="opacity-100"
+                         x-transition:leave-end="opacity-0"
+                         class="flex flex-col gap-0.5 mb-1"
+                         style="display: none;">
                         @foreach($dropdownItems as $item)
                         <a href="{{ route($item['route']) }}" @click="mobileOpen = false"
-                           class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-colors
+                           class="flex items-center gap-3 px-3.5 py-2 rounded-lg text-sm transition-colors
                                   {{ $activePage === $item['key']
                                       ? 'font-semibold text-primary-container bg-primary-container/5'
                                       : 'font-medium text-on-surface hover:bg-surface-container-low' }}">
@@ -148,14 +203,20 @@ $inactiveClass = 'font-medium text-on-surface hover:text-primary-container';
                         </a>
                         @endforeach
                     </div>
+
+                    {{-- Tin tức sự kiện --}}
+                    <a href="{{ route('home.tin-tuc') }}" @click="mobileOpen = false"
+                       class="px-3.5 py-2 rounded-lg text-sm transition-colors
+                              {{ $activePage === 'tin-tuc'
+                                  ? 'font-semibold text-primary-container bg-primary-container/5'
+                                  : 'font-medium text-on-surface hover:bg-surface-container-low' }}">
+                        Tin tức sự kiện
+                    </a>
+
                     <div class="border-t border-gray-100 mt-2 pt-3 flex flex-col gap-2">
                         <a href="{{ route('login') }}"
-                           class="px-4 py-2.5 text-center rounded-full text-sm font-semibold text-on-surface border border-gray-300 hover:border-primary-container hover:text-primary-container transition-colors">
+                           class="px-4 py-2 text-center rounded-full text-sm font-semibold text-on-surface border border-gray-300 hover:border-primary-container hover:text-primary-container transition-colors">
                             Đăng nhập
-                        </a>
-                        <a href="{{ route('home.gioi-thieu') }}#contact" @click="mobileOpen = false"
-                           class="px-4 py-2.5 text-center rounded-full text-sm font-semibold bg-primary-container text-white hover:bg-primary transition-colors">
-                            Học thử miễn phí
                         </a>
                     </div>
                 </div>

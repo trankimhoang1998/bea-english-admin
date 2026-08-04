@@ -12,13 +12,14 @@
     <div class="relative max-w-7xl mx-auto px-5 lg:px-16">
 
         {{-- Header --}}
-        <div class="text-center mb-10 reveal">
+        <div class="text-center mb-6 lg:mb-10 reveal">
             <div class="inline-flex items-center gap-3 mb-5">
-                <div class="h-[2px] w-10 bg-primary-container rounded-full"></div>
-                <div class="bg-primary-container rounded-full px-8 py-3">
-                    <h2 class="text-white font-black text-xl lg:text-2xl uppercase tracking-wide">Lộ Trình Các Khóa Học Trong Chương Trình</h2>
+                <div class="h-[2px] w-6 lg:w-10 bg-primary-container rounded-full"></div>
+                <div class="bg-primary-container rounded-full px-4 py-2 lg:px-8 lg:py-3">
+                    <h2 class="lg:hidden text-white font-black text-base uppercase tracking-wide">Lộ Trình Khóa Học</h2>
+                    <h2 class="hidden lg:block text-white font-black text-2xl uppercase tracking-wide">Lộ Trình Các Khóa Học Trong Chương Trình</h2>
                 </div>
-                <div class="h-[2px] w-10 bg-primary-container rounded-full"></div>
+                <div class="h-[2px] w-6 lg:w-10 bg-primary-container rounded-full"></div>
             </div>
             <p class="text-gray-400 text-[13px] italic">* Click vào các khóa học để xem thông tin chi tiết</p>
         </div>
@@ -207,7 +208,7 @@
         <div class="{{ $revealDelay }} mb-8 last:mb-0">
 
             {{-- Group label (mobile only) --}}
-            <div class="flex items-center gap-3 mb-4 lg:hidden">
+            <div class="flex items-center gap-3 mb-3 lg:hidden">
                 <div class="h-8 w-1 rounded-full bg-gradient-to-b from-orange-400 to-red-500"></div>
                 <div>
                     <span class="text-on-background font-black text-[14px]">{{ $row['label'] }}</span>
@@ -216,13 +217,13 @@
             </div>
 
             {{-- MOBILE: 2-col grid --}}
-            <div class="grid grid-cols-2 gap-3 lg:hidden">
+            <div class="grid grid-cols-2 gap-2 lg:hidden">
                 @foreach($row['items'] as $i => $item)
-                <div class="lt-card group flex flex-col items-center bg-white border border-gray-200 rounded-2xl px-3 py-5 cursor-pointer relative"
+                <div class="lt-card group flex flex-col items-center bg-white border border-gray-200 rounded-2xl px-2 py-4 cursor-pointer relative"
                      @click="openModal = '{{ $item['cefr'] }}'">
                     <span class="absolute top-2 left-3 text-[10px] font-black text-gray-300 select-none">{{ str_pad($ri * 5 + $i + 1, 2, '0', STR_PAD_LEFT) }}</span>
-                    <div class="w-16 h-16 rounded-full bg-gradient-to-br {{ $item['grad'] }} flex items-center justify-center mb-3 shadow-md shadow-orange-400/25 group-hover:scale-110 transition-transform duration-300">
-                        <span class="text-white font-black text-[15px] leading-none">{{ $item['cefr'] }}</span>
+                    <div class="w-14 h-14 rounded-full bg-gradient-to-br {{ $item['grad'] }} flex items-center justify-center mb-2 shadow-md shadow-orange-400/25 group-hover:scale-110 transition-transform duration-300">
+                        <span class="text-white font-black text-[14px] leading-none">{{ $item['cefr'] }}</span>
                     </div>
                     <span class="text-primary-container font-black text-[11px] text-center leading-tight mb-0.5">{{ $item['en'] }}</span>
                     <span class="text-gray-400 text-[10px] text-center">{{ $item['vi'] }}</span>

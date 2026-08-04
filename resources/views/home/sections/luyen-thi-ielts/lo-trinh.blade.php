@@ -1,5 +1,5 @@
 {{-- resources/views/home/sections/luyen-thi-ielts/lo-trinh.blade.php --}}
-<section class="relative overflow-hidden bg-surface-alt py-20 lg:py-28"
+<section class="relative overflow-hidden bg-surface-alt py-10 lg:py-28"
          x-data="{ openModal: null }"
          x-effect="document.body.style.overflow = openModal ? 'hidden' : ''"
          @keydown.escape.window="openModal = null">
@@ -12,11 +12,12 @@
         {{-- Header --}}
         <div class="text-center mb-4 reveal">
             <div class="inline-flex items-center gap-3 mb-5">
-                <div class="h-[2px] w-10 bg-primary-container rounded-full"></div>
-                <div class="bg-primary-container rounded-full px-8 py-3">
-                    <h2 class="text-white font-black text-xl lg:text-2xl uppercase tracking-wide">Lộ Trình Các Khóa Học Trong Chương Trình</h2>
+                <div class="h-[2px] w-6 lg:w-10 bg-primary-container rounded-full"></div>
+                <div class="bg-primary-container rounded-full px-4 py-2 lg:px-8 lg:py-3">
+                    <h2 class="lg:hidden text-white font-black text-base uppercase tracking-wide">Lộ Trình Khóa Học</h2>
+                    <h2 class="hidden lg:block text-white font-black text-2xl uppercase tracking-wide">Lộ Trình Các Khóa Học Trong Chương Trình</h2>
                 </div>
-                <div class="h-[2px] w-10 bg-primary-container rounded-full"></div>
+                <div class="h-[2px] w-6 lg:w-10 bg-primary-container rounded-full"></div>
             </div>
             <p class="text-gray-400 text-[13px] italic">* Click vào các khóa học để xem thông tin chi tiết</p>
         </div>
@@ -142,12 +143,12 @@
         @endphp
 
         {{-- MOBILE: 2-col grid --}}
-        <div class="grid grid-cols-2 gap-4 lg:hidden reveal">
+        <div class="grid grid-cols-2 gap-2.5 lg:hidden reveal">
             @foreach($courses as $i => $course)
-            <div class="lt-ielts-card group {{ $course['cardBg'] }} border rounded-2xl p-5 cursor-pointer flex flex-col items-center text-center {{ $i === 4 ? 'col-span-2 max-w-xs mx-auto w-full' : '' }}"
+            <div class="lt-ielts-card group {{ $course['cardBg'] }} border rounded-2xl p-3 cursor-pointer flex flex-col items-center text-center {{ $i === 4 ? 'col-span-2 max-w-xs mx-auto w-full' : '' }}"
                  @click="openModal = '{{ $course['cefr'] }}'">
-                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br {{ $course['grad'] }} flex items-center justify-center mb-3 shadow-md shadow-orange-400/25 group-hover:scale-110 transition-transform duration-300">
-                    <span class="material-symbols-outlined ms-filled text-white text-[26px]">{{ $course['icon'] }}</span>
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br {{ $course['grad'] }} flex items-center justify-center mb-2 shadow-md shadow-orange-400/25 group-hover:scale-110 transition-transform duration-300">
+                    <span class="material-symbols-outlined ms-filled text-white text-[20px]">{{ $course['icon'] }}</span>
                 </div>
                 <span class="text-primary-container font-black text-[13px] leading-tight mb-0.5">{{ $course['cefr'] }}</span>
                 <span class="text-gray-500 text-[11px]">{{ $course['level'] }}</span>

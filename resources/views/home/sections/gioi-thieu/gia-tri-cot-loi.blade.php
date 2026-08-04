@@ -1,5 +1,5 @@
 {{-- resources/views/home/sections/gioi-thieu/gia-tri-cot-loi.blade.php --}}
-<section class="relative overflow-hidden bg-surface-alt py-20 lg:py-28">
+<section class="relative overflow-hidden bg-surface-alt py-10 lg:py-28">
 
     {{-- Dot grid --}}
     <div class="absolute inset-0 pointer-events-none"
@@ -8,15 +8,15 @@
     <div class="relative max-w-7xl mx-auto px-5 lg:px-16">
 
         {{-- Header --}}
-        <div class="text-center mb-14 reveal">
+        <div class="text-center mb-6 lg:mb-14 reveal">
             <div class="inline-flex items-center gap-3 mb-5">
-                <div class="h-[2px] w-10 bg-primary-container rounded-full"></div>
-                <div class="bg-primary-container rounded-full px-8 py-3">
-                    <h2 class="text-white font-black text-xl lg:text-2xl uppercase tracking-wide">Giá Trị Cốt Lõi</h2>
+                <div class="h-[2px] w-6 lg:w-10 bg-primary-container rounded-full"></div>
+                <div class="bg-primary-container rounded-full px-4 py-2 lg:px-8 lg:py-3">
+                    <h2 class="text-white font-black text-base lg:text-2xl uppercase tracking-wide">Giá Trị Cốt Lõi</h2>
                 </div>
-                <div class="h-[2px] w-10 bg-primary-container rounded-full"></div>
+                <div class="h-[2px] w-6 lg:w-10 bg-primary-container rounded-full"></div>
             </div>
-            <p class="text-gray-800 font-semibold text-lg">Những giá trị định hướng <span class="text-orange-500">&mdash;</span> mọi hoạt động của BeA English</p>
+            <p class="hidden lg:block text-gray-800 font-semibold text-lg">Những giá trị định hướng <span class="text-orange-500">&mdash;</span> mọi hoạt động của BeA English</p>
         </div>
 
         {{-- 6 cards --}}
@@ -79,16 +79,16 @@
         ];
         @endphp
 
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-6">
             @foreach($values as $v)
             <div class="gtv-card reveal {{ $v['delay'] }} group bg-white rounded-3xl overflow-hidden border border-gray-200 flex flex-col">
 
                 {{-- Card header --}}
-                <div class="bg-gradient-to-r {{ $v['grad'] }} px-6 py-5 flex items-center gap-4 relative overflow-hidden">
+                <div class="bg-gradient-to-r {{ $v['grad'] }} px-4 py-3 lg:px-6 lg:py-5 flex items-center gap-3 lg:gap-4 relative overflow-hidden">
                     <div class="absolute -top-6 -right-4 w-20 h-20 rounded-full bg-white/10"></div>
 
-                    <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
-                        <span class="material-symbols-outlined ms-filled text-white text-[22px]">{{ $v['icon'] }}</span>
+                    <div class="w-10 h-10 lg:w-12 lg:h-12 rounded-2xl bg-white/20 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
+                        <span class="material-symbols-outlined ms-filled text-white text-[18px] lg:text-[22px]">{{ $v['icon'] }}</span>
                     </div>
                     <div>
                         <p class="text-white/60 text-[10px] font-bold uppercase tracking-widest leading-none mb-1">{{ $v['num'] }}</p>
@@ -97,15 +97,15 @@
                 </div>
 
                 {{-- Card body --}}
-                <div class="p-6 flex-1 flex flex-col">
+                <div class="p-4 lg:p-6 flex-1 flex flex-col">
                     {{-- Subtitle --}}
-                    <div class="flex items-start gap-2 mb-3">
+                    <div class="flex items-start gap-2 mb-2 lg:mb-3">
                         <span class="material-symbols-outlined ms-filled text-primary-container text-[14px] mt-0.5 shrink-0">play_arrow</span>
                         <p class="text-primary-container font-bold text-[13px] leading-snug">{{ $v['sub'] }}</p>
                     </div>
 
                     {{-- Description --}}
-                    <p class="text-gray-500 text-[13.5px] leading-relaxed flex-1">{{ $v['desc'] }}</p>
+                    <p class="text-gray-500 text-[12.5px] lg:text-[13.5px] leading-relaxed flex-1">{{ $v['desc'] }}</p>
                 </div>
             </div>
             @endforeach

@@ -1,12 +1,15 @@
 {{-- resources/views/home/partials/programs.blade.php --}}
-<section id="programs" class="bg-white py-14 lg:py-24 overflow-hidden">
+<section id="programs" class="bg-white py-8 lg:py-24 overflow-hidden">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {{-- Title pill --}}
-        <div class="flex items-center justify-center gap-3 mb-16 reveal">
+        <div class="flex items-center justify-center gap-3 mb-6 lg:mb-16 reveal">
             <div class="h-[2px] flex-1 max-w-[60px] sm:max-w-[80px] bg-primary-container rounded-full shrink-0"></div>
-            <div class="bg-primary-container rounded-full px-6 sm:px-10 py-3 sm:py-4 text-center">
-                <h2 class="text-white font-black text-base sm:text-xl lg:text-2xl uppercase tracking-wide leading-snug">
+            <div class="bg-primary-container rounded-full px-4 lg:px-10 py-2 lg:py-4 text-center">
+                <h2 class="lg:hidden text-white font-black text-base uppercase tracking-wide leading-snug">
+                    Học Tại BEA English
+                </h2>
+                <h2 class="hidden lg:block text-white font-black text-2xl uppercase tracking-wide leading-snug">
                     Các Chương Trình Học Tại BEA English
                 </h2>
             </div>
@@ -14,20 +17,22 @@
         </div>
 
         {{-- ===== PHẦN 1: HỌC SINH ===== --}}
-        <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-stretch mb-16 lg:mb-24 reveal">
+        <div class="grid lg:grid-cols-2 gap-6 lg:gap-16 items-stretch mb-8 lg:mb-24 reveal">
 
             {{-- Content --}}
             <div class="order-2 lg:order-1">
-                <div class="inline-flex items-center gap-2 bg-primary-container/10 rounded-full px-4 py-1.5 mb-5">
-                    <span class="material-symbols-outlined ms-filled text-primary-container text-[16px]">school</span>
-                    <span class="text-sm font-semibold text-primary-container uppercase tracking-wide">Dành cho học sinh</span>
+                <div class="hidden lg:block">
+                    <div class="inline-flex items-center gap-2 bg-primary-container/10 rounded-full px-4 py-1.5 mb-5">
+                        <span class="material-symbols-outlined ms-filled text-primary-container text-[16px]">school</span>
+                        <span class="text-sm font-semibold text-primary-container uppercase tracking-wide">Dành cho học sinh</span>
+                    </div>
+                    <h3 class="text-2xl lg:text-[1.9rem] font-black text-primary-container uppercase leading-tight mb-4">
+                        Các Khóa Học Tiếng Anh<br>Cho Học Sinh
+                    </h3>
+                    <p class="text-gray-500 text-[15px] leading-relaxed mb-7">
+                        Chương trình toàn diện bám sát khung chuẩn Cambridge Young Learners và CEFR, giúp học sinh từ 6–18 tuổi làm chủ tiếng Anh và tự tin bước ra thế giới.
+                    </p>
                 </div>
-                <h3 class="text-2xl lg:text-[1.9rem] font-black text-primary-container uppercase leading-tight mb-4">
-                    Các Khóa Học Tiếng Anh<br>Cho Học Sinh
-                </h3>
-                <p class="text-gray-500 text-[15px] leading-relaxed mb-7">
-                    Chương trình toàn diện bám sát khung chuẩn Cambridge Young Learners và CEFR, giúp học sinh từ 6–18 tuổi làm chủ tiếng Anh và tự tin bước ra thế giới.
-                </p>
                 <div class="divide-y divide-gray-100 mb-8">
                     @foreach([
                         ['menu_book',     'Chương trình gồm 10 khóa học',                            'Nội dung giáo trình giảng dạy bám sát khung chuẩn Cambridge Young Learners và phù hợp với khung tham chiếu ngôn ngữ chung châu Âu CEFR.'],
@@ -58,7 +63,8 @@
                 {{-- Header --}}
                 <div class="bg-primary-container px-6 py-4 flex items-center gap-3 shrink-0">
                     <span class="material-symbols-outlined ms-filled text-white text-[22px]">school</span>
-                    <span class="text-white font-black text-[15px] uppercase tracking-wide">Khóa Học Tiếng Anh Học Sinh</span>
+                    <span class="lg:hidden text-white font-black text-[15px] uppercase tracking-wide">Tiếng Anh Cho Học Sinh</span>
+                    <span class="hidden lg:inline text-white font-black text-[15px] uppercase tracking-wide">Khóa Học Tiếng Anh Học Sinh</span>
                 </div>
                 <div class="flex-1 p-6 flex flex-col gap-6">
                     {{-- Illustration --}}
@@ -120,7 +126,7 @@
         </div>
 
         {{-- Divider --}}
-        <div class="relative flex items-center gap-4 mb-16 lg:mb-24">
+        <div class="relative flex items-center gap-4 mb-8 lg:mb-24">
             <div class="flex-1 h-px bg-gray-100"></div>
             <div class="w-2 h-2 rounded-full bg-primary-container/30 shrink-0"></div>
             <div class="w-3 h-3 rounded-full bg-primary-container/50 shrink-0"></div>
@@ -136,7 +142,8 @@
                 {{-- Header --}}
                 <div class="bg-primary-container px-6 py-4 flex items-center gap-3 shrink-0">
                     <span class="material-symbols-outlined ms-filled text-white text-[22px]">person</span>
-                    <span class="text-white font-black text-[15px] uppercase tracking-wide">Khóa Học Tiếng Anh Người Lớn</span>
+                    <span class="lg:hidden text-white font-black text-[15px] uppercase tracking-wide">Tiếng Anh Cho Người Lớn</span>
+                    <span class="hidden lg:inline text-white font-black text-[15px] uppercase tracking-wide">Khóa Học Tiếng Anh Người Lớn</span>
                 </div>
                 <div class="flex-1 p-6 flex flex-col gap-6">
                     {{-- Illustration --}}
@@ -195,16 +202,18 @@
 
             {{-- Content --}}
             <div>
-                <div class="inline-flex items-center gap-2 bg-primary-container/10 rounded-full px-4 py-1.5 mb-5">
-                    <span class="material-symbols-outlined ms-filled text-primary-container text-[16px]">person</span>
-                    <span class="text-sm font-semibold text-primary-container uppercase tracking-wide">Dành cho người lớn</span>
+                <div class="hidden lg:block">
+                    <div class="inline-flex items-center gap-2 bg-primary-container/10 rounded-full px-4 py-1.5 mb-5">
+                        <span class="material-symbols-outlined ms-filled text-primary-container text-[16px]">person</span>
+                        <span class="text-sm font-semibold text-primary-container uppercase tracking-wide">Dành cho người lớn</span>
+                    </div>
+                    <h3 class="text-2xl lg:text-[1.9rem] font-black text-primary-container uppercase leading-tight mb-4">
+                        Các Khóa Học Tiếng Anh<br>Cho Người Lớn
+                    </h3>
+                    <p class="text-gray-500 text-[15px] leading-relaxed mb-7">
+                        04 cấp độ từ cơ bản đến nâng cao, phù hợp người mới bắt đầu lẫn người muốn nâng cao toàn diện, lịch học linh hoạt theo nhu cầu.
+                    </p>
                 </div>
-                <h3 class="text-2xl lg:text-[1.9rem] font-black text-primary-container uppercase leading-tight mb-4">
-                    Các Khóa Học Tiếng Anh<br>Cho Người Lớn
-                </h3>
-                <p class="text-gray-500 text-[15px] leading-relaxed mb-7">
-                    04 cấp độ từ cơ bản đến nâng cao, phù hợp người mới bắt đầu lẫn người muốn nâng cao toàn diện, lịch học linh hoạt theo nhu cầu.
-                </p>
                 <div class="divide-y divide-gray-100 mb-8">
                     @foreach([
                         ['auto_awesome', 'Chương trình gồm 04 cấp độ với 10 khóa học chuyên sâu',       'Phù hợp cả với người mới bắt đầu và người muốn học nâng cao toàn diện.'],

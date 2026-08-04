@@ -1,17 +1,17 @@
-<section class="bg-white py-16 lg:py-24">
+<section class="bg-white pt-4 pb-8 lg:pt-8 lg:pb-24">
     <div class="max-w-7xl mx-auto px-5 lg:px-16">
 
         {{-- Category filter tabs --}}
         @if($categories->count() > 0)
-        <div class="flex flex-wrap gap-2 mb-10">
+        <div class="flex flex-wrap gap-1.5 lg:gap-2 mb-5 lg:mb-10">
             <a href="{{ route('home.tin-tuc') }}"
-               class="px-5 py-2 rounded-full text-[13px] font-bold transition-all
+               class="px-3.5 py-1.5 lg:px-5 lg:py-2 rounded-full text-[12px] lg:text-[13px] font-bold transition-all
                       {{ !request('category_id') ? 'bg-primary-container text-white' : 'bg-gray-100 text-gray-600 hover:bg-orange-50 hover:text-primary-container' }}">
                 Tất cả
             </a>
             @foreach($categories as $cat)
             <a href="{{ route('home.tin-tuc', ['category_id' => $cat->id]) }}"
-               class="px-5 py-2 rounded-full text-[13px] font-bold transition-all
+               class="px-3.5 py-1.5 lg:px-5 lg:py-2 rounded-full text-[12px] lg:text-[13px] font-bold transition-all
                       {{ request('category_id') == $cat->id ? 'bg-primary-container text-white' : 'bg-gray-100 text-gray-600 hover:bg-orange-50 hover:text-primary-container' }}">
                 {{ $cat->name }}
             </a>
@@ -21,7 +21,7 @@
 
         {{-- Article grid --}}
         @if($articles->count() > 0)
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-5 lg:gap-6 lg:mb-10">
             @foreach($articles as $article)
             <a href="{{ route('home.article-detail', $article->slug) }}"
                class="group bg-white border border-gray-100 rounded-3xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col">
@@ -46,25 +46,23 @@
                 </div>
 
                 {{-- Content --}}
-                <div class="p-5 flex flex-col flex-1">
-                    <h2 class="font-black text-on-background text-[16px] leading-snug mb-2 line-clamp-2 group-hover:text-primary-container transition-colors">
+                <div class="p-4 lg:p-5 flex flex-col flex-1">
+                    <h2 class="font-black text-on-background text-[15px] lg:text-[16px] leading-snug mb-1.5 lg:mb-2 line-clamp-2 group-hover:text-primary-container transition-colors">
                         {{ $article->title }}
                     </h2>
                     @if($article->excerpt)
-                    <p class="text-gray-500 text-[13px] leading-relaxed mb-4 line-clamp-3 flex-1">{{ $article->excerpt }}</p>
+                    <p class="text-gray-500 text-[12.5px] lg:text-[13px] leading-relaxed mb-3 lg:mb-4 line-clamp-3 flex-1">{{ $article->excerpt }}</p>
                     @endif
 
-                    <div class="flex items-center justify-between mt-auto pt-3 border-t border-gray-100">
-                        <span class="text-gray-400 text-[12px]">
-                            {{ $article->published_at?->format('d/m/Y') }}
-                        </span>
-                        @if($article->tags->count() > 0)
+                    @if($article->tags->count() > 0)
+                    <div class="flex items-center justify-end mt-auto pt-2.5 lg:pt-3 border-t border-gray-100">
                         <div class="flex gap-1 flex-wrap justify-end">
                             @foreach($article->tags->take(2) as $tag)
                             <span class="bg-orange-50 text-primary-container text-[11px] px-2 py-0.5 rounded-full font-medium">{{ $tag->name }}</span>
                             @endforeach
                         </div>
-                        @endif
+                    </div>
+                    @endif
                     </div>
                 </div>
             </a>

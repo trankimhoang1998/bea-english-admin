@@ -1,5 +1,5 @@
 {{-- resources/views/home/partials/contact.blade.php --}}
-<section id="contact" class="py-14 lg:py-24 bg-on-background relative overflow-hidden">
+<section id="contact" class="py-8 lg:py-24 bg-on-background relative overflow-hidden">
 
     {{-- Decorative glow --}}
     <div class="absolute top-0 right-0 w-[500px] h-[400px] bg-primary-container/10 blur-[100px] rounded-full pointer-events-none"></div>
@@ -10,26 +10,26 @@
          style="background-image: radial-gradient(rgba(249,115,22,0.12) 1px, transparent 1px); background-size: 32px 32px;"></div>
 
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid lg:grid-cols-[1fr_380px] gap-12 lg:gap-16 items-center">
+        <div class="grid lg:grid-cols-[1fr_380px] gap-6 lg:gap-16 items-center">
 
             {{-- LEFT: gifts --}}
             <div class="reveal">
                 {{-- Title --}}
                 <div class="mb-2">
-                    <span class="inline-flex items-center gap-2 bg-primary-container/20 border border-primary-container/30 text-primary-container text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full mb-5">
+                    <span class="inline-flex items-center gap-2 bg-primary-container/20 border border-primary-container/30 text-primary-container text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full mb-3 lg:mb-5">
                         <span class="material-symbols-outlined ms-filled text-[14px]">redeem</span>
                         Đăng ký nhận ngay
                     </span>
                 </div>
-                <h2 class="text-white font-black text-2xl lg:text-[2rem] uppercase leading-tight mb-3">
+                <h2 class="text-white font-black text-xl lg:text-[2rem] uppercase leading-tight mb-3">
                     Nhận Quà Tặng/<br>Ưu Đãi Khủng
                 </h2>
-                <p class="text-white/40 text-[13px] mb-8">
+                <p class="text-white/40 text-[13px] mb-5 lg:mb-8">
                     Chính sách quà tặng có thể thay đổi theo thời điểm mà không được báo trước
                 </p>
 
                 {{-- Gift items --}}
-                <div class="space-y-4">
+                <div class="space-y-3 lg:space-y-4">
                     @foreach([
                         [
                             'icon'  => 'redeem',
@@ -50,15 +50,15 @@
                             'value' => '2TR',
                         ],
                     ] as $i => $g)
-                    <div class="flex items-start gap-4 bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/8 transition-colors reveal reveal-delay-{{ $i + 1 }}">
-                        <div class="w-11 h-11 rounded-full bg-primary-container flex items-center justify-center shrink-0">
-                            <span class="material-symbols-outlined ms-filled text-white text-[20px]">{{ $g['icon'] }}</span>
+                    <div class="flex items-start gap-3 lg:gap-4 bg-white/5 border border-white/10 rounded-2xl p-4 lg:p-5 hover:bg-white/8 transition-colors reveal reveal-delay-{{ $i + 1 }}">
+                        <div class="w-9 h-9 lg:w-11 lg:h-11 rounded-full bg-primary-container flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined ms-filled text-white text-[16px] lg:text-[20px]">{{ $g['icon'] }}</span>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <p class="text-white font-bold text-[13px] uppercase tracking-wide mb-1">{{ $g['title'] }}</p>
-                            <p class="text-white/50 text-[12.5px] leading-relaxed">{{ $g['desc'] }}</p>
+                            <p class="text-white font-bold text-[12.5px] lg:text-[13px] uppercase tracking-wide mb-1">{{ $g['title'] }}</p>
+                            <p class="text-white/50 text-[12px] lg:text-[12.5px] leading-relaxed">{{ $g['desc'] }}</p>
                         </div>
-                        <span class="shrink-0 bg-primary-container/20 text-primary-container text-[11px] font-black px-2.5 py-1 rounded-full border border-primary-container/30">
+                        <span class="shrink-0 bg-primary-container/20 text-primary-container text-[10px] lg:text-[11px] font-black px-2 py-0.5 lg:px-2.5 lg:py-1 rounded-full border border-primary-container/30">
                             {{ $g['value'] }}
                         </span>
                     </div>
@@ -66,7 +66,7 @@
                 </div>
 
                 {{-- Total value --}}
-                <div class="mt-6 flex items-center gap-3 bg-primary-container/10 border border-primary-container/20 rounded-2xl px-5 py-4">
+                <div class="mt-4 lg:mt-6 flex items-center gap-3 bg-primary-container/10 border border-primary-container/20 rounded-2xl px-4 py-3 lg:px-5 lg:py-4">
                     <span class="material-symbols-outlined ms-filled text-primary-container text-[22px]">savings</span>
                     <div>
                         <p class="text-white/60 text-[11px] uppercase tracking-widest">Tổng giá trị quà tặng lên đến</p>
@@ -133,23 +133,23 @@
                      class="rounded-3xl overflow-hidden shadow-2xl shadow-black/40">
 
                     {{-- Orange header --}}
-                    <div class="bg-gradient-to-br from-orange-500 to-primary-container px-6 py-6 text-center relative overflow-hidden">
+                    <div class="bg-gradient-to-br from-orange-500 to-primary-container px-5 py-4 lg:px-6 lg:py-6 text-center relative overflow-hidden">
                         <div class="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-white/10"></div>
                         <div class="absolute -bottom-4 -left-4 w-16 h-16 rounded-full bg-white/10"></div>
-                        <h3 class="text-white font-black text-xl lg:text-2xl uppercase leading-tight relative">
+                        <h3 class="text-white font-black text-base lg:text-2xl uppercase leading-tight relative">
                             Đăng Ký Tư Vấn<br>Và Học Thử Miễn Phí
                         </h3>
-                        <p class="text-white/80 text-[13px] mt-2 relative">Đăng ký liền tay, nhận ngay quà khủng</p>
+                        <p class="text-white/80 text-[12px] lg:text-[13px] mt-1 lg:mt-2 relative">Đăng ký liền tay, nhận ngay quà khủng</p>
                     </div>
 
                     {{-- Form body --}}
-                    <div class="bg-white px-6 pb-6 pt-5">
-                        <form @submit.prevent="submit" class="space-y-3">
+                    <div class="bg-white px-5 pb-5 pt-4 lg:px-6 lg:pb-6 lg:pt-5">
+                        <form @submit.prevent="submit" class="space-y-2.5 lg:space-y-3">
 
                             <div>
                                 <input type="text" x-model="name" placeholder="Mời nhập họ tên (*)"
                                        :class="errors.name ? 'border-red-400 bg-red-50' : 'border-gray-200 bg-gray-50'"
-                                       class="w-full px-4 py-3 rounded-xl text-gray-800 placeholder-gray-400 text-[14px] focus:outline-none focus:border-primary-container focus:bg-white transition-colors border">
+                                       class="w-full px-4 py-2.5 lg:py-3 rounded-xl text-gray-800 placeholder-gray-400 text-[14px] focus:outline-none focus:border-primary-container focus:bg-white transition-colors border">
                                 <p x-show="errors.name" x-text="errors.name?.[0]"
                                    class="text-red-500 text-[12px] mt-1 ml-1"></p>
                             </div>
@@ -157,13 +157,13 @@
                             <div>
                                 <input type="tel" x-model="phone" placeholder="Mời nhập số điện thoại (*)"
                                        :class="errors.phone ? 'border-red-400 bg-red-50' : 'border-gray-200 bg-gray-50'"
-                                       class="w-full px-4 py-3 rounded-xl text-gray-800 placeholder-gray-400 text-[14px] focus:outline-none focus:border-primary-container focus:bg-white transition-colors border">
+                                       class="w-full px-4 py-2.5 lg:py-3 rounded-xl text-gray-800 placeholder-gray-400 text-[14px] focus:outline-none focus:border-primary-container focus:bg-white transition-colors border">
                                 <p x-show="errors.phone" x-text="errors.phone?.[0]"
                                    class="text-red-500 text-[12px] mt-1 ml-1"></p>
                             </div>
 
                             <select x-model="audience"
-                                    class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-500 text-[14px] focus:outline-none focus:border-primary-container focus:bg-white transition-colors"
+                                    class="w-full px-4 py-2.5 lg:py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-500 text-[14px] focus:outline-none focus:border-primary-container focus:bg-white transition-colors"
                                     style="-webkit-appearance:none;-moz-appearance:none;appearance:none;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%239ca3af'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E&quot;);background-repeat:no-repeat;background-position:right 0.75rem center;background-size:1.2em;padding-right:2.5rem;">
                                 <option value="">Mời chọn đối tượng</option>
                                 <option value="hoc-sinh-tieu-hoc">Học sinh tiểu học</option>
@@ -176,7 +176,7 @@
                             </select>
 
                             <button type="submit"
-                                    class="w-full py-3.5 rounded-xl bg-primary-container text-white font-black text-[14px] uppercase tracking-widest
+                                    class="w-full py-3 lg:py-3.5 rounded-xl bg-primary-container text-white font-black text-[14px] uppercase tracking-widest
                                            hover:bg-orange-600 transition-all duration-200 shadow-lg shadow-primary-container/30
                                            hover:-translate-y-0.5 disabled:opacity-60 flex items-center justify-center gap-2"
                                     :disabled="loading">
@@ -199,9 +199,9 @@
                      x-transition:enter="transition ease-out duration-300"
                      x-transition:enter-start="opacity-0 scale-95"
                      x-transition:enter-end="opacity-100 scale-100"
-                     class="rounded-3xl bg-white/5 border border-white/10 p-12 text-center">
-                    <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-5">
-                        <span class="material-symbols-outlined ms-filled text-green-400 text-[32px]">check_circle</span>
+                     class="rounded-3xl bg-white/5 border border-white/10 p-8 lg:p-12 text-center">
+                    <div class="w-12 h-12 lg:w-16 lg:h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-3 lg:mb-5">
+                        <span class="material-symbols-outlined ms-filled text-green-400 text-[24px] lg:text-[32px]">check_circle</span>
                     </div>
                     <h3 class="font-black text-white text-xl mb-2">Đăng ký thành công!</h3>
                     <p class="text-white/60 text-sm leading-relaxed max-w-xs mx-auto">

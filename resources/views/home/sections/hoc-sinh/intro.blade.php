@@ -1,5 +1,5 @@
 {{-- resources/views/home/sections/khoa-hoc/intro.blade.php --}}
-<section class="relative overflow-hidden bg-white py-20 lg:py-28">
+<section class="relative overflow-hidden bg-white py-10 lg:py-28">
 
     <div class="absolute inset-0 pointer-events-none opacity-[.22]"
          style="background-image: radial-gradient(rgba(249,115,22,.25) 1px, transparent 1px); background-size: 30px 30px;"></div>
@@ -9,21 +9,21 @@
     <div class="relative max-w-7xl mx-auto px-5 lg:px-16">
 
         {{-- Header --}}
-        <div class="text-center mb-14 reveal">
+        <div class="text-center mb-6 lg:mb-14 reveal">
             <div class="inline-flex items-center gap-3">
-                <div class="h-[2px] w-10 bg-primary-container rounded-full"></div>
-                <div class="bg-primary-container rounded-full px-8 py-3">
-                    <h1 class="text-white font-black text-xl lg:text-2xl uppercase tracking-wide">Tiếng Anh Cho Học Sinh</h1>
+                <div class="h-[2px] w-6 lg:w-10 bg-primary-container rounded-full"></div>
+                <div class="bg-primary-container rounded-full px-4 py-2 lg:px-8 lg:py-3">
+                    <h1 class="text-white font-black text-base lg:text-2xl uppercase tracking-wide">Tiếng Anh Cho Học Sinh</h1>
                 </div>
-                <div class="h-[2px] w-10 bg-primary-container rounded-full"></div>
+                <div class="h-[2px] w-6 lg:w-10 bg-primary-container rounded-full"></div>
             </div>
         </div>
 
         {{-- 2-col: text + visual --}}
-        <div class="grid lg:grid-cols-[55%_45%] gap-12 lg:gap-16 items-center">
+        <div class="grid lg:grid-cols-[55%_45%] gap-6 lg:gap-16 items-center">
 
             {{-- LEFT: text --}}
-            <div class="reveal">
+            <div class="order-2 lg:order-1 reveal">
                 <p class="text-gray-600 text-[15px] lg:text-[16px] leading-relaxed mb-5">
                     Chào mừng bạn đến với chương trình học tiếng Anh
                     <span class="text-primary-container font-bold">trực tuyến 1:1</span>
@@ -45,11 +45,11 @@
             </div>
 
             {{-- RIGHT: CEFR level ladder --}}
-            <div class="flex justify-center reveal-delay-1 reveal">
+            <div class="order-1 lg:order-2 flex justify-center reveal-delay-1 reveal">
                 <div class="relative w-full max-w-sm">
 
                     {{-- Connecting line --}}
-                    <div class="absolute left-7 top-6 bottom-6 w-[2px] bg-gradient-to-b from-orange-200 via-orange-400 to-orange-600 pointer-events-none rounded-full"></div>
+                    <div class="absolute left-7 top-6 bottom-6 w-[2px] bg-gradient-to-t from-orange-200 via-orange-400 to-orange-600 pointer-events-none rounded-full"></div>
 
                     @php
                     $levels = [
@@ -61,10 +61,10 @@
                     @endphp
 
                     <div class="flex flex-col gap-3.5">
-                        @foreach($levels as [$level, $cefr, $certs, $chips, $dotGrad, $dotText, $cardBg, $dur, $delay])
-                        @php $isTop = $loop->last; @endphp
+                        @foreach(array_reverse($levels) as [$level, $cefr, $certs, $chips, $dotGrad, $dotText, $cardBg, $dur, $delay])
+                        @php $isTop = $loop->first; @endphp
                         <div class="relative flex items-center gap-4 {{ $cardBg }} border rounded-2xl px-5 py-4 {{ $isTop ? 'shadow-xl shadow-orange-500/20' : 'shadow-sm' }}"
-                             style="animation: hsLevelFloat {{ $dur }} ease-in-out {{ $delay }} infinite; margin-left: {{ ($loop->index) * 8 }}px;">
+                             style="animation: hsLevelFloat {{ $dur }} ease-in-out {{ $delay }} infinite; margin-left: {{ ($loop->count - 1 - $loop->index) * 8 }}px;">
 
                             {{-- Dot on line --}}
                             <div class="absolute -left-[1.15rem] w-5 h-5 rounded-full bg-gradient-to-br {{ $dotGrad }} flex items-center justify-center shadow-md shrink-0">
