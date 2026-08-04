@@ -63,7 +63,6 @@
                         </div>
                     </div>
                     @endif
-                    </div>
                 </div>
             </a>
             @endforeach
