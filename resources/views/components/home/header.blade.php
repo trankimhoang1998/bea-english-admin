@@ -15,7 +15,7 @@ $inactiveClass = 'font-medium text-on-surface hover:text-primary-container';
 <header class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 lg:px-8">
         <nav class="flex items-center gap-2 h-20 lg:h-[84px]"
-             x-data="{ mobileOpen: false, mobileSubmenuOpen: {{ $dropdownActive ? 'true' : 'false' }} }"
+             x-data="{ mobileOpen: false }"
              x-effect="document.body.style.overflow = mobileOpen ? 'hidden' : ''"
              @keydown.escape.window="mobileOpen = false">
 
@@ -179,24 +179,12 @@ $inactiveClass = 'font-medium text-on-surface hover:text-primary-container';
                     </a>
                     @endforeach
 
-                    {{-- Học tại BeA (toggle) --}}
-                    <button @click="mobileSubmenuOpen = !mobileSubmenuOpen"
-                            :aria-expanded="mobileSubmenuOpen.toString()"
-                            class="flex items-center justify-between px-3.5 py-2 rounded-lg text-sm transition-colors
-                                   {{ $dropdownActive ? 'font-semibold text-primary-container' : 'font-medium text-on-surface hover:bg-surface-container-low' }}">
+                    {{-- Học tại BeA (always expanded) --}}
+                    <p class="px-3.5 py-2 rounded-lg text-sm
+                              {{ $dropdownActive ? 'font-semibold text-primary-container' : 'font-medium text-on-surface' }}">
                         Học tại BeA
-                        <span class="material-symbols-outlined text-[18px] transition-transform duration-200"
-                              :class="mobileSubmenuOpen ? 'rotate-180' : ''">expand_more</span>
-                    </button>
-                    <div x-show="mobileSubmenuOpen"
-                         x-transition:enter="transition ease-out duration-150"
-                         x-transition:enter-start="opacity-0"
-                         x-transition:enter-end="opacity-100"
-                         x-transition:leave="transition ease-in duration-100"
-                         x-transition:leave-start="opacity-100"
-                         x-transition:leave-end="opacity-0"
-                         class="flex flex-col gap-0.5 mb-1"
-                         style="display: none;">
+                    </p>
+                    <div class="flex flex-col gap-0.5 mb-1">
                         @foreach($dropdownItems as $item)
                         <a href="{{ route($item['route']) }}" @click="mobileOpen = false"
                            class="flex items-center gap-3 px-3.5 py-2 rounded-lg text-sm transition-colors
