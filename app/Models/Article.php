@@ -17,6 +17,20 @@ class Article extends Model
         'published_at' => 'datetime',
     ];
 
+    public function setContentAttribute(?string $value): void
+    {
+        $this->attributes['content'] = $value === null
+            ? null
+            : str_replace(["\u{00A0}", '&nbsp;'], ' ', $value);
+    }
+
+    public function setExcerptAttribute(?string $value): void
+    {
+        $this->attributes['excerpt'] = $value === null
+            ? null
+            : str_replace(["\u{00A0}", '&nbsp;'], ' ', $value);
+    }
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(ArticleCategory::class, 'article_category_id');
