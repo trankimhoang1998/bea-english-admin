@@ -13,9 +13,6 @@
         </div>
     </x-slot>
 
-    {{-- Quill CDN --}}
-    <link href="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.snow.css" rel="stylesheet">
-
     @if($errors->any())
     <div class="flex items-start gap-sm p-md bg-error-container border border-error/20 rounded-xl mb-md">
         <span class="material-symbols-outlined text-error text-[20px] shrink-0 mt-xs">error</span>
@@ -51,7 +48,7 @@
                     <div class="border-b border-outline-variant px-md py-sm">
                         <p class="text-label-md font-semibold text-on-surface">Content <span class="text-error">*</span></p>
                     </div>
-                    <div id="quill-editor" style="min-height:320px;"></div>
+                    <div id="content-editor" style="min-height:320px;"></div>
                     <input type="hidden" name="content" id="content-input">
                 </div>
 
@@ -136,7 +133,7 @@
         </div>
     </form>
 
-    @include('manager.articles._quill', ['initialContent' => old('content', $article->content)])
+    @include('manager.articles._ckeditor', ['initialContent' => old('content', $article->content)])
     <script>
         (function () {
             const input    = document.getElementById('thumb-input-edit');
