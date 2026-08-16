@@ -22,7 +22,7 @@
                 ['online_prediction', '6P-BeA',                    'Phương pháp đào tạo tiếng anh hiệu quả', 'tiến bộ sau từng buổi học.'],
                 ['supervisor_account','Cá nhân hóa lộ trình học',  'dựa trên trình độ, mục tiêu và tốc độ tiếp thu của học viên.', ''],
                 ['manage_search',     'Phát triển tư duy nói',     'phản xạ giao tiếp như người bản ngữ.', ''],
-                ['school',            'Chương trình học gắn trực tiếp', 'với đời sống, học tập và công việc.', ''],
+                ['school',            'Chương trình học gắn trực tiếp', '', 'với đời sống, học tập và công việc.'],
             ] as [$icon, $highlight, $text, $text2])
             <div class="flex items-start gap-2.5 sm:gap-3 bg-white rounded-2xl px-3.5 sm:px-6 py-3.5 sm:py-5 shadow-sm border border-gray-100 reveal">
                 <div class="shrink-0 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-primary-container flex items-center justify-center shadow-md shadow-primary-container/25">
