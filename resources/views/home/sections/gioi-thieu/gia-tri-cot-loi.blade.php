@@ -101,11 +101,11 @@
                     {{-- Subtitle --}}
                     <div class="flex items-start gap-2 mb-2 lg:mb-3">
                         <span class="material-symbols-outlined ms-filled text-primary-container text-[14px] mt-0.5 shrink-0">play_arrow</span>
-                        <p class="text-primary-container font-bold text-[13px] leading-snug">{{ $v['sub'] }}</p>
+                        <p class="text-primary-container font-bold text-[14px] leading-snug">{{ $v['sub'] }}</p>
                     </div>
 
                     {{-- Description --}}
-                    <p class="text-gray-500 text-[12.5px] lg:text-[13.5px] leading-relaxed flex-1">{{ $v['desc'] }}</p>
+                    <p class="text-gray-500 text-[13.5px] lg:text-[14.5px] leading-relaxed flex-1">{{ $v['desc'] }}</p>
                 </div>
             </div>
             @endforeach
