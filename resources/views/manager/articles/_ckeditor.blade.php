@@ -1,30 +1,24 @@
 {{-- CKEditor 5 partial. Pass $initialContent (string) to pre-populate. --}}
-<script src="https://cdn.jsdelivr.net/npm/ckeditor5@48.4.0/dist/browser/ckeditor5.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ckeditor5@48.4.0/dist/browser/ckeditor5.umd.js" defer></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ckeditor5@48.4.0/dist/browser/ckeditor5.css">
 <script>
-(function () {
-    const {
-        ClassicEditor, Essentials, Paragraph, Heading,
-        Bold, Italic, Underline, Strikethrough,
-        FontColor, FontBackgroundColor, Alignment,
-        List, Indent, BlockQuote, CodeBlock, Link,
-        Image, ImageUpload, ImageResize, ImageStyle, ImageToolbar, ImageCaption, SimpleUploadAdapter,
-        Table, TableToolbar, MediaEmbed, PasteFromOffice,
-    } = CKEDITOR;
+document.addEventListener('DOMContentLoaded', function () {
+    const PLUGIN_NAMES = [
+        'Essentials', 'Paragraph', 'Heading',
+        'Bold', 'Italic', 'Underline', 'Strikethrough',
+        'FontColor', 'FontBackgroundColor', 'Alignment',
+        'List', 'Indent', 'BlockQuote', 'CodeBlock', 'Link',
+        'Image', 'ImageUpload', 'ImageResize', 'ImageStyle', 'ImageToolbar', 'ImageCaption', 'SimpleUploadAdapter',
+        'Table', 'TableToolbar', 'MediaEmbed', 'PasteFromOffice',
+    ];
+    const { ClassicEditor } = CKEDITOR;
 
     const ckCsrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
     ClassicEditor
         .create(document.getElementById('content-editor'), {
             licenseKey: 'GPL',
-            plugins: [
-                Essentials, Paragraph, Heading,
-                Bold, Italic, Underline, Strikethrough,
-                FontColor, FontBackgroundColor, Alignment,
-                List, Indent, BlockQuote, CodeBlock, Link,
-                Image, ImageUpload, ImageResize, ImageStyle, ImageToolbar, ImageCaption, SimpleUploadAdapter,
-                Table, TableToolbar, MediaEmbed, PasteFromOffice,
-            ],
+            plugins: PLUGIN_NAMES.map(name => CKEDITOR[name]),
             toolbar: [
                 'heading', '|',
                 'bold', 'italic', 'underline', 'strikethrough', '|',
@@ -55,7 +49,7 @@
             },
         })
         .then(editor => {
-            window.contentEditor = editor;
+            window.contentEditor = editor; // debugging hook: inspect/drive the editor from the browser console
 
             @if(!empty($initialContent))
             editor.setData({!! Js::from($initialContent) !!});
@@ -66,5 +60,5 @@
             });
         })
         .catch(error => console.error('CKEditor init failed:', error));
-})();
+});
 </script>
