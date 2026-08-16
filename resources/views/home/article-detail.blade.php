@@ -110,6 +110,7 @@
                             prose-code:bg-gray-100 prose-code:rounded prose-code:px-1
                             prose-pre:bg-gray-900 prose-pre:rounded-xl
                             [&_table]:w-full [&_table]:block [&_table]:overflow-x-auto
+                            [&_figure.table]:w-full [&_figure.table]:overflow-x-auto
                             [&_img]:mx-auto break-words">
                     {!! $article->content !!}
                 </div>
