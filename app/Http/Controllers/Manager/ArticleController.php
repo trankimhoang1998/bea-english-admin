@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class ArticleController extends Controller
@@ -157,7 +158,12 @@ class ArticleController extends Controller
 
     public function uploadImage(Request $request): JsonResponse
     {
-        $request->validate(['upload' => ['required', 'image', 'max:5120']]);
+        try {
+            $request->validate(['upload' => ['required', 'image', 'max:5120']]);
+        } catch (ValidationException $e) {
+            return response()->json(['error' => ['message' => $e->validator->errors()->first()]], 422);
+        }
+
         $path = $request->file('upload')->store('articles/images', 'public');
         return response()->json(['url' => $request->getSchemeAndHttpHost() . '/storage/' . $path]);
     }

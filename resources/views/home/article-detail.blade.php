@@ -111,6 +111,11 @@
                             prose-pre:bg-gray-900 prose-pre:rounded-xl
                             [&_table]:w-full [&_table]:block [&_table]:overflow-x-auto
                             [&_figure.table]:w-full [&_figure.table]:overflow-x-auto
+                            [&_figure.table_td]:border [&_figure.table_td]:border-gray-300 [&_figure.table_td]:p-2
+                            [&_figure.table_th]:border [&_figure.table_th]:border-gray-300 [&_figure.table_th]:p-2 [&_figure.table_th]:bg-gray-50
+                            [&_pre]:overflow-x-auto
+                            [&_.image-style-side]:float-right [&_.image-style-side]:max-w-[50%] [&_.image-style-side]:ml-4
+                            [&_figcaption]:text-sm [&_figcaption]:text-gray-500 [&_figcaption]:text-center [&_figcaption]:mt-2
                             [&_img]:mx-auto break-words">
                     {!! $article->content !!}
                 </div>

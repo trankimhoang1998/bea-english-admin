@@ -2,6 +2,7 @@
 <script src="https://cdn.jsdelivr.net/npm/ckeditor5@48.4.0/dist/browser/ckeditor5.umd.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ckeditor5@48.4.0/dist/browser/ckeditor5.css">
 <script>
+(function () {
     const {
         ClassicEditor, Essentials, Paragraph, Heading,
         Bold, Italic, Underline, Strikethrough,
@@ -43,6 +44,10 @@
             },
             mediaEmbed: {
                 previewsInData: true,
+                // Only providers with an actual HTML preview renderer produce a real <iframe>
+                // when previewsInData is on. The rest silently save a non-functional <oembed>
+                // placeholder tag that does nothing in a plain browser, so they're disabled here.
+                removeProviders: ['instagram', 'twitter', 'googleMaps', 'googleDocs', 'flickr', 'facebook'],
             },
             simpleUpload: {
                 uploadUrl: '{{ route('manager.articles.upload-image') }}',
@@ -61,4 +66,5 @@
             });
         })
         .catch(error => console.error('CKEditor init failed:', error));
+})();
 </script>
