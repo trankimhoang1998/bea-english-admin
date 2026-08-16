@@ -30,7 +30,7 @@
         <div class="grid lg:grid-cols-[1fr_300px] gap-md">
 
             {{-- Left: main content --}}
-            <div class="space-y-md">
+            <div class="space-y-md min-w-0">
 
                 <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md">
                     <label class="block text-label-md font-semibold text-on-surface mb-xs">Title <span class="text-error">*</span></label>
