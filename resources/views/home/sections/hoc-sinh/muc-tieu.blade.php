@@ -50,7 +50,7 @@
                     <h3 class="text-on-background font-black text-[15px] lg:text-[16px] leading-snug mb-2 lg:mb-3">{{ $title }}</h3>
 
                     {{-- Body --}}
-                    <p class="text-gray-500 text-[12.5px] lg:text-[13.5px] leading-relaxed flex-1">{{ $desc }}</p>
+                    <p class="text-gray-500 text-[13.5px] lg:text-[14.5px] leading-relaxed flex-1">{{ $desc }}</p>
                 </div>
 
             </div>
