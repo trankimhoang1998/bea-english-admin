@@ -114,7 +114,7 @@ $inactiveClass = 'font-medium text-on-surface hover:text-primary-container';
             <div class="hidden lg:flex items-center gap-2 shrink-0 ml-auto">
                 <a href="{{ route('login') }}"
                    class="px-6 py-2.5 rounded-full text-[15px] font-semibold text-on-surface border border-gray-300 hover:border-primary-container hover:text-primary-container transition-all duration-200">
-                    Đăng nhập
+                    Login
                 </a>
                 <a href="#contact"
                    class="px-6 py-[11px] bg-primary-container text-white rounded-full text-[15px] font-semibold hover:bg-primary transition-all duration-200 animate-float-cta">
@@ -221,7 +221,7 @@ $inactiveClass = 'font-medium text-on-surface hover:text-primary-container';
                     <div class="border-t border-gray-100 mt-2 pt-3 flex flex-col gap-2">
                         <a href="{{ route('login') }}"
                            class="px-4 py-2 text-center rounded-full text-sm font-semibold text-on-surface border border-gray-300 hover:border-primary-container hover:text-primary-container transition-colors">
-                            Đăng nhập
+                            Login
                         </a>
                     </div>
                 </div>
