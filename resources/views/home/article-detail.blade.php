@@ -45,7 +45,7 @@
         <div class="lg:grid lg:grid-cols-[1fr_240px] lg:gap-12">
 
             {{-- ══════════════ MAIN CONTENT ══════════════ --}}
-            <article>
+            <article class="min-w-0">
 
                 {{-- Article header --}}
                 <header class="mb-5 lg:mb-8">
