@@ -54,7 +54,7 @@
                         <span class="text-primary-container text-[10px] font-black uppercase tracking-widest">{{ $num }}</span>
                         <h3 class="text-on-background font-black text-[14px] lg:text-[15px] uppercase leading-tight">{{ $title }}</h3>
                     </div>
-                    <p class="text-gray-500 text-[12px] lg:text-[13px] leading-relaxed">{{ $desc }}</p>
+                    <p class="text-gray-500 text-[13px] lg:text-[14px] leading-relaxed">{{ $desc }}</p>
                 </div>
 
                 {{-- Arrow --}}
