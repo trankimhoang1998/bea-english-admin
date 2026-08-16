@@ -1,5 +1,5 @@
 {{-- resources/views/home/sections/khoa-hoc/intro.blade.php --}}
-<section class="relative overflow-hidden bg-white py-10 lg:py-28">
+<section class="relative overflow-hidden bg-white py-10 lg:pt-14 lg:pb-28">
 
     <div class="absolute inset-0 pointer-events-none opacity-[.22]"
          style="background-image: radial-gradient(rgba(249,115,22,.25) 1px, transparent 1px); background-size: 30px 30px;"></div>

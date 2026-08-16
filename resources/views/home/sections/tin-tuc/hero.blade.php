@@ -1,4 +1,4 @@
-<section class="relative overflow-hidden bg-white pt-10 pb-6 lg:pt-28 lg:pb-10">
+<section class="relative overflow-hidden bg-white pt-10 pb-6 lg:pt-14 lg:pb-10">
 
     <div class="relative max-w-7xl mx-auto px-5 lg:px-16">
 
