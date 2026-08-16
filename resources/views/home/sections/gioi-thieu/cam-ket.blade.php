@@ -39,7 +39,7 @@
                         Cam kết hiệu quả, cá nhân hóa 100%
                     </h3>
                     {{-- Body --}}
-                    <p class="text-gray-500 text-[13px] lg:text-[13.5px] leading-relaxed flex-1">
+                    <p class="text-gray-500 text-[14px] lg:text-[14.5px] leading-relaxed flex-1">
                         Giáo trình và phương pháp đào tạo được
                         <span class="ck-highlight">cá nhân hóa theo lộ trình và mục tiêu</span>,
                         BeA English cam kết giúp học viên tự tin chinh phục các chứng chỉ quốc tế như
@@ -61,7 +61,7 @@
                     <h3 class="text-on-background font-black text-[15px] lg:text-[17px] leading-snug mb-2 lg:mb-4">
                         Giáo viên chất lượng, lựa chọn theo nhu cầu
                     </h3>
-                    <p class="text-gray-500 text-[13px] lg:text-[13.5px] leading-relaxed flex-1">
+                    <p class="text-gray-500 text-[14px] lg:text-[14.5px] leading-relaxed flex-1">
                         Đội ngũ giảng viên người Philippines có
                         <span class="ck-highlight">trình độ sư phạm đại học trở lên</span>,
                         sở hữu chứng chỉ quốc tế
@@ -84,7 +84,7 @@
                     <h3 class="text-on-background font-black text-[15px] lg:text-[17px] leading-snug mb-2 lg:mb-4">
                         Chi phí hợp lý, lịch học linh hoạt
                     </h3>
-                    <p class="text-gray-500 text-[13px] lg:text-[13.5px] leading-relaxed mb-3 lg:mb-5">
+                    <p class="text-gray-500 text-[14px] lg:text-[14.5px] leading-relaxed mb-3 lg:mb-5">
                         Chi phí tại BeA English không phải thấp nhất nhưng
                         <span class="ck-highlight">xứng đáng nhất</span>. Cam kết
                         <span class="ck-highlight">hoàn tiền nếu học viên không tiến bộ</span>.
