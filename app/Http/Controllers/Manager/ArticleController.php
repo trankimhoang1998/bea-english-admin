@@ -157,8 +157,8 @@ class ArticleController extends Controller
 
     public function uploadImage(Request $request): JsonResponse
     {
-        $request->validate(['image' => ['required', 'image', 'max:5120']]);
-        $path = $request->file('image')->store('articles/images', 'public');
+        $request->validate(['upload' => ['required', 'image', 'max:5120']]);
+        $path = $request->file('upload')->store('articles/images', 'public');
         return response()->json(['url' => $request->getSchemeAndHttpHost() . '/storage/' . $path]);
     }
 

@@ -7,7 +7,7 @@
         Bold, Italic, Underline, Strikethrough,
         FontColor, FontBackgroundColor, Alignment,
         List, Indent, BlockQuote, CodeBlock, Link,
-        Image, ImageUpload, ImageResize, ImageStyle, ImageToolbar, SimpleUploadAdapter,
+        Image, ImageUpload, ImageResize, ImageStyle, ImageToolbar, ImageCaption, SimpleUploadAdapter,
         Table, TableToolbar, MediaEmbed, PasteFromOffice,
     } = CKEDITOR;
 
@@ -21,7 +21,7 @@
                 Bold, Italic, Underline, Strikethrough,
                 FontColor, FontBackgroundColor, Alignment,
                 List, Indent, BlockQuote, CodeBlock, Link,
-                Image, ImageUpload, ImageResize, ImageStyle, ImageToolbar, SimpleUploadAdapter,
+                Image, ImageUpload, ImageResize, ImageStyle, ImageToolbar, ImageCaption, SimpleUploadAdapter,
                 Table, TableToolbar, MediaEmbed, PasteFromOffice,
             ],
             toolbar: [
@@ -40,6 +40,9 @@
             },
             table: {
                 contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells'],
+            },
+            mediaEmbed: {
+                previewsInData: true,
             },
             simpleUpload: {
                 uploadUrl: '{{ route('manager.articles.upload-image') }}',
