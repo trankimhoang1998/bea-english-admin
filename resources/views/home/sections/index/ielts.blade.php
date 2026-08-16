@@ -12,7 +12,7 @@
                 </div>
                 <div class="h-[2px] w-6 lg:w-10 bg-primary-container rounded-full"></div>
             </div>
-            <p class="text-gray-800 font-semibold text-lg">5 lộ trình từ mất gốc đến 6.5+ <span class="hidden lg:inline"><span class="text-orange-500">&mdash;</span> Cam kết chất lượng</span></p>
+            <p class="text-gray-800 font-semibold text-lg">Lộ trình từ mất gốc đến 6.5+ <span class="hidden lg:inline"><span class="text-orange-500">&mdash;</span> Cam kết chất lượng</span></p>
         </div>
 
         @php
